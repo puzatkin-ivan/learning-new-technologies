@@ -1,10 +1,9 @@
 #include <iostream>
-#include <cmath>
 
-int findFactorial(int number)
+unsigned FindFactorial(int number)
 {
-	int factorial = 1;
-	for (int count = 1; count <= number; ++count)
+	unsigned factorial = 1;
+	for (unsigned count = 1; count <= number; ++count)
 	{
 		factorial *= count;
 	}
@@ -12,9 +11,19 @@ int findFactorial(int number)
 	return factorial;
 }
 
-int main() {
+int main() 
+{
 	int number;
 	std::cin >> number;
-	std::cout << findFactorial(number) << std::endl;
+	
+	if (number >= 0)
+	{
+		std::cout << FindFactorial(number) << std::endl;
+	}
+	else
+	{
+		std::cout << "This number is negative" << std::endl;
+	}
+
 	return 0;
 }

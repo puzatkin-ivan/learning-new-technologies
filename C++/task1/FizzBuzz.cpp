@@ -2,10 +2,10 @@
 
 int main()
 {
-	for (int count = 1; count <= 100; ++index)
+	for (int count = 0; count <= 100; ++count)
 	{
-		int modOnThree = count % 3;
-		int modOnFive = count % 5;
+		const int modOnThree = count % 3;
+		const int modOnFive = count % 5;
 
 		if (modOnThree == 0 && modOnFive == 0)
 		{
@@ -18,6 +18,10 @@ int main()
 		else if (modOnFive == 0)
 		{
 			std::cout << "Buzz" << std::endl;
+		}
+		else
+		{
+			std::cout << count << std::endl;
 		}
 	} 
 	return 0;

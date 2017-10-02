@@ -1,21 +1,23 @@
 #include <iostream>
-#include <cmath>
 
-int findFactorial(int number)
+unsigned FindFactorial(int number)
 {
-	if (number == 1)
+	return number == 1 ? 1 : FindFactorial(number - 1) * number;
+}
+
+int main()
+{
+	int number;
+	std::cin >> number;
+
+	if (number >= 0)
 	{
-		return 1;
+		std::cout << FindFactorial(number) << std::endl;
 	}
 	else
 	{
-		return findFactorial(number - 1) * number;
+		std::cout << "This number is negative" << std::endl;
 	}
-}
 
-int main() {
-	int number;
-	std::cin >> number;
-	std::cout << findFactorial(number) << std::endl;
 	return 0;
 }

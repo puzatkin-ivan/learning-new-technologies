@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 
-struct rootEquation
+struct RootEquation
 {
 public:
 	float first = 0;
@@ -9,29 +9,21 @@ public:
 	int amount = 0;
 };
 
-rootEquation solve2(int a,  int b, int c) 
+RootEquation Solve2(int a,  int b, int c) 
 {
-	float discriminant = pow(b, 2) - 4 * a * c;
-	rootEquation root;
+	const float discriminant = pow(b, 2) - 4 * a * c;
+	RootEquation root;
 
 	if (discriminant > 0)
 	{
 		root.amount = 2;
-	} else if (discriminant == 0) 
-	{
-		root.amount = 1;
-	}
-
-	switch (root.amount)
-	{
-	case 2:
 		root.first = (-b + std::sqrt(discriminant)) / (2 * a);
 		root.second = (-b - std::sqrt(discriminant)) / (2 * a);
-			break;
-	case 1:
-		root.first = (-b) / (2 * a);
-		root.second = root.first;
-		break;
+	} 
+	else if (discriminant == 0) 
+	{
+		root.amount = 1;
+		root.first = -b / (2 * a);
 	}
 	
 	return root;
@@ -40,20 +32,35 @@ rootEquation solve2(int a,  int b, int c)
 int main()
 {
 	int a, b, c;
+	std::cout << "Coefficient A: ";
+	std::cin >> a;
+	std::cout << "Coefficient B: ";
+	std::cin >> b;
+	std::cout << "Coefficient C: ";
+	std::cin >> c;
+	std::cout << std::endl;
 
-	std::cin >> a >> b >> c;
-	switch (solve2(a, b, c).amount)
+	if (a != 0)
 	{
-	case 2:
-		std::cout << "First root: " << solve2(a, b, c).first << std::endl; 
-		std::cout << "Second root: " << solve2(a, b, c).second << std::endl;
-		break;
-	case 1:
-		std::cout << "Only root: " << solve2(a, b, c).first << std::endl;
-		break;
-	case 0:
-		std::cout << "No real roots"<< std::endl;
-		break;
+		const RootEquation decision = Solve2(a, b, c);
+
+		switch (decision.amount)
+		{
+		case 2:
+			std::cout << "First root: " << decision.first << std::endl;
+			std::cout << "Second root: " << decision.second << std::endl;
+			break;
+		case 1:
+			std::cout << "Only root: " << decision.first << std::endl;
+			break;
+		case 0:
+			std::cout << "No real roots" << std::endl;
+			break;
+		}
+	}
+	else
+	{
+		std::cout << "The equation is not square" << std::endl;
 	}
 	return 0;
 }
