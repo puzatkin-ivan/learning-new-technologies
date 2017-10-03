@@ -1,8 +1,9 @@
+#include "stdafx.h"
 #include <iostream>
 
-unsigned FindFactorial(int number)
+unsigned FindFactorial(unsigned number)
 {
-	return number == 1 ? 1 : FindFactorial(number - 1) * number;
+	return (number == 1) ? 1 : (FindFactorial(number - 1) * number);
 }
 
 int main()

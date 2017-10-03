@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include <iostream>
 
 int main()
@@ -23,6 +24,6 @@ int main()
 		{
 			std::cout << count << std::endl;
 		}
-	} 
+	}
 	return 0;
 }

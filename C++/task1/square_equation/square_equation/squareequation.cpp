@@ -1,15 +1,16 @@
+#include "stdafx.h"
 #include <iostream>
 #include <cmath>
 
 struct RootEquation
 {
 public:
-	float first = 0;
-	float second = 0;
-	int amount = 0;
+	float first;
+	float second;
+	unsigned amount;
 };
 
-RootEquation Solve2(int a,  int b, int c) 
+RootEquation Solve2(int a, int b, int c)
 {
 	const float discriminant = pow(b, 2) - 4 * a * c;
 	RootEquation root;
@@ -19,13 +20,17 @@ RootEquation Solve2(int a,  int b, int c)
 		root.amount = 2;
 		root.first = (-b + std::sqrt(discriminant)) / (2 * a);
 		root.second = (-b - std::sqrt(discriminant)) / (2 * a);
-	} 
-	else if (discriminant == 0) 
+	}
+	else if (discriminant == 0)
 	{
 		root.amount = 1;
 		root.first = -b / (2 * a);
 	}
-	
+	else
+	{
+		root.amount = 0;
+	}
+
 	return root;
 }
 

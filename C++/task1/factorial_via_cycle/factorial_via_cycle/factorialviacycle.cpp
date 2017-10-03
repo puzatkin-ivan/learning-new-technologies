@@ -1,6 +1,7 @@
+#include "stdafx.h"
 #include <iostream>
 
-unsigned FindFactorial(int number)
+unsigned FindFactorial(unsigned number)
 {
 	unsigned factorial = 1;
 	for (unsigned count = 1; count <= number; ++count)
@@ -11,11 +12,11 @@ unsigned FindFactorial(int number)
 	return factorial;
 }
 
-int main() 
+int main()
 {
 	int number;
 	std::cin >> number;
-	
+
 	if (number >= 0)
 	{
 		std::cout << FindFactorial(number) << std::endl;
