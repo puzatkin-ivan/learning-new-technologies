@@ -3,7 +3,7 @@
 
 unsigned FindFactorial(unsigned number)
 {
-	return (number == 1) ? 1 : (FindFactorial(number - 1) * number);
+	return (number != 0) ? (FindFactorial(number - 1) * number) : 1;
 }
 
 int main()
