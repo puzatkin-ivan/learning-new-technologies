@@ -1,4 +1,4 @@
-# learning-new-technologies
+# WarShooter
 
 ## Документация
 
