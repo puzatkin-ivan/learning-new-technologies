@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "Game.h"
 
+const sf::Color WINDOW_COLOR = sf::Color::White;
+
 Game::Game()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "WarShooter 2.0", sf::Style::Close)
 {
@@ -15,7 +17,7 @@ void Game::DoGameLoop()
 		CheckEvents();
 		Update();
 		Draw(m_window);
-		
+		m_window.display();
 	}
 }
 
@@ -33,7 +35,7 @@ void Game::CheckEvents()
 	}
 }
 
-void Game::CheckKeyboardEvent(sf::Event & event)
+void Game::CheckKeyboardEvent(const sf::Event & event)
 {
 	bool isNeedUpdate = false;
 	CheckKeyPressed(event, isNeedUpdate);
@@ -41,7 +43,7 @@ void Game::CheckKeyboardEvent(sf::Event & event)
 
 	if (isNeedUpdate)
 	{
-		player.UpdateDirection(keyMap);
+		m_player.UpdateDirection(m_keyMap);
 	}
 }
 
@@ -52,19 +54,19 @@ void Game::CheckKeyPressed(const sf::Event & event, bool & isNeedUpdate)
 		switch (event.key.code)
 		{
 		case sf::Keyboard::A:
-			keyMap.isPressedKeyA = true;
+			m_keyMap.isPressedKeyA = true;
 			isNeedUpdate = true;
 			break;
 		case sf::Keyboard::D:
-			keyMap.isPressedKeyD = true;
+			m_keyMap.isPressedKeyD = true;
 			isNeedUpdate = true;
 			break;
 		case sf::Keyboard::W:
-			keyMap.isPressedKeyW = true;
+			m_keyMap.isPressedKeyW = true;
 			isNeedUpdate = true;
 			break;
 		case sf::Keyboard::S:
-			keyMap.isPressedKeyS = true;
+			m_keyMap.isPressedKeyS = true;
 			isNeedUpdate = true;
 			break;
 		}
@@ -78,19 +80,19 @@ void Game::CheckKeyReleased(const sf::Event & event, bool & isNeedUpdate)
 		switch (event.key.code)
 		{
 		case sf::Keyboard::A:
-			keyMap.isPressedKeyA = false;
+			m_keyMap.isPressedKeyA = false;
 			isNeedUpdate = true;
 			break;
 		case sf::Keyboard::D:
-			keyMap.isPressedKeyD = false;
+			m_keyMap.isPressedKeyD = false;
 			isNeedUpdate = true;
 			break;
 		case sf::Keyboard::W:
-			keyMap.isPressedKeyW = false;
+			m_keyMap.isPressedKeyW = false;
 			isNeedUpdate = true;
 			break;
 		case sf::Keyboard::S:
-			keyMap.isPressedKeyS = false;
+			m_keyMap.isPressedKeyS = false;
 			isNeedUpdate = true;
 			break;
 		}
@@ -99,12 +101,11 @@ void Game::CheckKeyReleased(const sf::Event & event, bool & isNeedUpdate)
 
 void Game::Update()
 {
-	player.UpdatePosition();
+	m_player.Update();
 }
 
 void Game::Draw(sf::RenderWindow & window)
 {
-	m_window.clear({255, 255, 255});
-	player.Draw(m_window);
-	m_window.display();
+	m_window.clear(WINDOW_COLOR);
+	m_player.Draw(m_window);
 }

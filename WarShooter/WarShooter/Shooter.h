@@ -5,13 +5,10 @@ class Shooter
 {
 public:
 	Shooter();
+
 	void Draw(sf::RenderWindow & window);
-	void UpdatePosition();
-	void UpdateDirection(KeyMap keyMap);
-
-	float x;
-	float y;
-
+	void Update();
+	void UpdateDirection(const KeyMap & keyMap);
 
 private:
 	void UpdatePositionX(float deltaMove);
@@ -20,9 +17,8 @@ private:
 	void UpdateDirectionY(bool isUp, bool isDown);
 
 	sf::RectangleShape m_body;
+	sf::Vector2f m_position = INITIAL_POSITION;
 
-	unsigned directionX;
-	unsigned directionY;
-
+	Direction m_directionX = Direction::None;
+	Direction m_directionY = Direction::None;
 };
-
