@@ -1,5 +1,7 @@
 #pragma once
 #include "Shooter.h"
+#include "Block.h"
+#include "Bullet.h"
 
 class Game
 {
@@ -20,4 +22,6 @@ private:
 	sf::RenderWindow m_window;
 	KeyMap m_keyMap;
 	Shooter m_player;
+	Block m_block;
+	Bullet m_bullet;
 };
