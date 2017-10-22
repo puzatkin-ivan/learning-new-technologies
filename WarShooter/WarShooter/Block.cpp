@@ -10,6 +10,11 @@ Block::Block(const sf::Vector2f & position, const sf::Vector2f & sizeBlock)
 	m_body.setPosition(position);
 }
 
+void Block::Update()
+{
+
+}
+
 void Block::Draw(sf::RenderWindow & window)
 {
 	window.draw(m_body);

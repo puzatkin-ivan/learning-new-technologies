@@ -7,12 +7,13 @@ public:
 	Shooter();
 
 	void Draw(sf::RenderWindow & window);
-	void Update();
-	void UpdateDirection(const KeyMap & keyMap);
+	void Update(const KeyMap & keyMap);
 
 private:
 	void UpdatePositionX(float deltaMove);
 	void UpdatePositionY(float deltaMove);
+
+	void UpdateDirection(const KeyMap & keyMap);
 	void UpdateDirectionX(bool isLeft, bool isRight);
 	void UpdateDirectionY(bool isUp, bool isDown);
 

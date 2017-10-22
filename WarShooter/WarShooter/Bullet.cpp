@@ -10,6 +10,11 @@ Bullet::Bullet(const sf::Vector2f & position, const sf::Vector2f & sizeBullet)
 	m_body.setPosition(position);
 }
 
+void Bullet::Update()
+{
+
+}
+
 void Bullet::Draw(sf::RenderWindow & window)
 {
 	window.draw(m_body);

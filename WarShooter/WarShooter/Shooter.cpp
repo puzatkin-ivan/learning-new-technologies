@@ -17,8 +17,9 @@ void Shooter::Draw(sf::RenderWindow & window)
 	window.draw(m_body);
 }
 
-void Shooter::Update()
+void Shooter::Update(const KeyMap & keyMap)
 {
+	UpdateDirection(keyMap);
 	const float singleDirectionMove = 6;
 
 	if (m_directionX == Direction::None)

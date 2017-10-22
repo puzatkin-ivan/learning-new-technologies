@@ -23,6 +23,19 @@ void Game::DoGameLoop()
 	}
 }
 
+void Game::Update()
+{
+	m_player.Update(m_keyMap);
+}
+
+void Game::Draw(sf::RenderWindow & window)
+{
+	m_window.clear(WINDOW_COLOR);
+	m_block.Draw(m_window);
+	m_bullet.Draw(m_window);
+	m_player.Draw(m_window);
+}	
+
 void Game::CheckEvents()
 {
 	sf::Event event;
@@ -39,109 +52,64 @@ void Game::CheckEvents()
 
 void Game::CheckKeyboardEvent(const sf::Event & event)
 {
-	bool isNeedUpdate = false;
-	CheckKeyPressed(event, isNeedUpdate);
-	CheckKeyReleased(event, isNeedUpdate);
-
-	if (isNeedUpdate)
-	{
-		m_player.UpdateDirection(m_keyMap);
-	}
+	CheckKeyPressed(event);
+	CheckKeyReleased(event);
 }
 
-void Game::CheckKeyPressed(const sf::Event & event, bool & isNeedUpdate)
+void Game::CheckKeyPressed(const sf::Event & event)
 {
 	if (event.type == sf::Event::KeyPressed)
 	{
-		switch (event.key.code)
-		{
-		case sf::Keyboard::A:
-			m_keyMap.isPressedKeyA = true;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::D:
-			m_keyMap.isPressedKeyD = true;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::W:
-			m_keyMap.isPressedKeyW = true;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::S:
-			m_keyMap.isPressedKeyS = true;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::Up:
-			m_keyMap.isPressedArrowUp = true;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::Down:
-			m_keyMap.isPressedArrowDown = true;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::Left:
-			m_keyMap.isPressedArrowLeft = true;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::Right:
-			m_keyMap.isPressedArrowRight = true;
-			isNeedUpdate = true;
-			break;
-		}
+		const auto isPressed = true;
+		CheckMovement(event, isPressed);
+		CheckDirection(event, isPressed);
 	}
 }
 
-void Game::CheckKeyReleased(const sf::Event & event, bool & isNeedUpdate)
+void Game::CheckKeyReleased(const sf::Event & event)
 {
 	if (event.type == sf::Event::KeyReleased)
 	{
-		switch (event.key.code)
-		{
-		case sf::Keyboard::A:
-			m_keyMap.isPressedKeyA = false;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::D:
-			m_keyMap.isPressedKeyD = false;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::W:
-			m_keyMap.isPressedKeyW = false;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::S:
-			m_keyMap.isPressedKeyS = false;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::Up:
-			m_keyMap.isPressedArrowUp = false;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::Down:
-			m_keyMap.isPressedArrowDown = false;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::Left:
-			m_keyMap.isPressedArrowLeft = false;
-			isNeedUpdate = true;
-			break;
-		case sf::Keyboard::Right:
-			m_keyMap.isPressedArrowRight = false;
-			isNeedUpdate = true;
-			break;
-		}
+		const auto isPressed = false;
+		CheckMovement(event, isPressed);
+		CheckDirection(event, isPressed);
 	}
 }
 
-void Game::Update()
+void Game::CheckMovement(const sf::Event & event, bool isPressed)
 {
-	m_player.Update();
+	switch (event.key.code)
+	{
+	case sf::Keyboard::A:
+		m_keyMap.isPressedKeyA = isPressed;
+		break;
+	case sf::Keyboard::D:
+		m_keyMap.isPressedKeyD = isPressed;
+		break;
+	case sf::Keyboard::W:
+		m_keyMap.isPressedKeyW = isPressed;
+		break;
+	case sf::Keyboard::S:
+		m_keyMap.isPressedKeyS = isPressed;
+		break;
+	}
 }
 
-void Game::Draw(sf::RenderWindow & window)
+void Game::CheckDirection(const sf::Event & event, bool isPressed)
 {
-	m_window.clear(WINDOW_COLOR);
-	m_block.Draw(m_window);
-	m_bullet.Draw(m_window);
-	m_player.Draw(m_window);
+	switch (event.key.code)
+	{
+	case sf::Keyboard::Up:
+		m_keyMap.isPressedArrowUp = isPressed;
+		break;
+	case sf::Keyboard::Down:
+		m_keyMap.isPressedArrowDown = isPressed;
+		break;
+	case sf::Keyboard::Left:
+		m_keyMap.isPressedArrowLeft = isPressed;
+		break;
+	case sf::Keyboard::Right:
+		m_keyMap.isPressedArrowRight = isPressed;
+		break;
+	}
 }
