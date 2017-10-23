@@ -18,10 +18,11 @@ private:
 	void CheckMovement(const sf::Event & event, bool isPressed);
 	void CheckDirection(const sf::Event & event, bool isPressed);
 
-	void Update();
+	void Update(float deltaTime);
 	void Draw(sf::RenderWindow & window);
 
 	sf::RenderWindow m_window;
+	sf::Clock m_clock;
 	KeyMap m_keyMap;
 	Shooter m_player;
 	Block m_block;

@@ -7,7 +7,7 @@ public:
 	Shooter();
 
 	void Draw(sf::RenderWindow & window);
-	void Update(const KeyMap & keyMap);
+	void Update(const KeyMap & keyMap, float deltaTime);
 
 private:
 	void UpdatePositionX(float deltaMove);

@@ -4,6 +4,7 @@
 const sf::Color SHOOTER_COLOR = { 0, 0, 170 };
 const sf::Vector2f SHOOTER_SIZE = { 40, 40 };
 const auto NO_DIRECTION_MOVE = 0.f;
+const auto SPEED = 200.f;
 
 Shooter::Shooter()
 {
@@ -17,10 +18,10 @@ void Shooter::Draw(sf::RenderWindow & window)
 	window.draw(m_body);
 }
 
-void Shooter::Update(const KeyMap & keyMap)
+void Shooter::Update(const KeyMap & keyMap, float deltaTime)
 {
 	UpdateDirection(keyMap);
-	const float singleDirectionMove = 6;
+	const float singleDirectionMove = SPEED * deltaTime;
 
 	if (m_directionX == Direction::None)
 	{

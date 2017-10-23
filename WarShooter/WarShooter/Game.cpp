@@ -16,16 +16,18 @@ void Game::DoGameLoop()
 {
 	while (m_window.isOpen())
 	{
+		const auto deltaTime = m_clock.restart().asSeconds();
+
 		CheckEvents();
-		Update();
+		Update(deltaTime);
 		Draw(m_window);
 		m_window.display();
 	}
 }
 
-void Game::Update()
+void Game::Update(float deltaTime)
 {
-	m_player.Update(m_keyMap);
+	m_player.Update(m_keyMap, deltaTime);
 }
 
 void Game::Draw(sf::RenderWindow & window)
@@ -61,8 +63,8 @@ void Game::CheckKeyPressed(const sf::Event & event)
 	if (event.type == sf::Event::KeyPressed)
 	{
 		const auto isPressed = true;
-		CheckMovement(event, isPressed);
-		CheckDirection(event, isPressed);
+		CheckMovement(event, true);
+		CheckDirection(event, true);
 	}
 }
 
@@ -70,9 +72,9 @@ void Game::CheckKeyReleased(const sf::Event & event)
 {
 	if (event.type == sf::Event::KeyReleased)
 	{
-		const auto isPressed = false;
-		CheckMovement(event, isPressed);
-		CheckDirection(event, isPressed);
+		const auto isReleased = false;
+		CheckMovement(event, false);
+		CheckDirection(event, false);
 	}
 }
 
