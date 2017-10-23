@@ -8,6 +8,7 @@ public:
 
 	void Draw(sf::RenderWindow & window);
 	void Update(const KeyMap & keyMap, float deltaTime);
+	sf::Vector2f GetPosition() const;
 
 private:
 	void UpdatePositionX(float deltaMove);

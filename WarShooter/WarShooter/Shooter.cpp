@@ -70,6 +70,11 @@ void Shooter::UpdatePositionY(float deltaMove)
 	}
 }
 
+sf::Vector2f Shooter::GetPosition() const
+{
+	return m_body.getPosition();
+}
+
 void Shooter::UpdateDirection(const KeyMap & keyMap)
 {
 	UpdateDirectionX(keyMap.isPressedKeyA, keyMap.isPressedKeyD);

@@ -4,9 +4,11 @@
 #include "Block.h"
 #include "Shooter.h"
 
-struct GameContext
+class GameContext
 {
 public:
+	GameContext();
+
 	void Update();
 	void Draw(sf::RenderWindow & window);
 

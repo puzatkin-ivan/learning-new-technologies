@@ -22,6 +22,7 @@ private:
 	void Draw(sf::RenderWindow & window);
 
 	sf::RenderWindow m_window;
+	sf::View m_view;
 	sf::Clock m_clock;
 	KeyMap m_keyMap;
 	Shooter m_player;

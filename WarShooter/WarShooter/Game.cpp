@@ -10,6 +10,8 @@ Game::Game()
 {
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
+
+	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
 
 void Game::DoGameLoop()
@@ -20,6 +22,7 @@ void Game::DoGameLoop()
 
 		CheckEvents();
 		Update(deltaTime);
+		m_window.setView(m_view);
 		Draw(m_window);
 		m_window.display();
 	}
@@ -28,6 +31,7 @@ void Game::DoGameLoop()
 void Game::Update(float deltaTime)
 {
 	m_player.Update(m_keyMap, deltaTime);
+	m_view.setCenter(m_player.GetPosition());
 }
 
 void Game::Draw(sf::RenderWindow & window)
