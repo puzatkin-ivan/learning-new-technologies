@@ -18,10 +18,16 @@ void Shooter::Draw(sf::RenderWindow & window)
 	window.draw(m_body);
 }
 
-void Shooter::Update(const KeyMap & keyMap, float deltaTime)
+void Shooter::Update(float dt, const KeyMap & keyMap)
 {
 	UpdateDirection(keyMap);
-	const float singleDirectionMove = SPEED * deltaTime;
+	UpdatePosition(dt);
+	m_body.setPosition(m_position);
+}
+
+void Shooter::UpdatePosition(float dt)
+{
+	const float singleDirectionMove = SPEED * dt;
 
 	if (m_directionX == Direction::None)
 	{
@@ -33,16 +39,13 @@ void Shooter::Update(const KeyMap & keyMap, float deltaTime)
 		UpdatePositionX(singleDirectionMove);
 		UpdatePositionY(NO_DIRECTION_MOVE);
 	}
-	else 
+	else
 	{
 		const float multiDirectionMove = singleDirectionMove / std::sqrt(2.f);
 		UpdatePositionX(multiDirectionMove);
 		UpdatePositionY(multiDirectionMove);
 	}
-
-	m_body.setPosition(m_position);
 }
-
 
 void Shooter::UpdatePositionX(float deltaMove)
 {

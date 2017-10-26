@@ -1,7 +1,5 @@
 #pragma once
-#include "Shooter.h"
-#include "Block.h"
-#include "Bullet.h"
+#include "GameContext.h"
 
 class Game
 {
@@ -25,7 +23,6 @@ private:
 	sf::View m_view;
 	sf::Clock m_clock;
 	KeyMap m_keyMap;
+	GameContext gameContext;
 	Shooter m_player;
-	Block m_block;
-	Bullet m_bullet;
 };

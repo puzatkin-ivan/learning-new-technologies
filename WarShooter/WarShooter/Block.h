@@ -6,7 +6,7 @@ class Block
 public:
 	Block(const sf::Vector2f & position, const sf::Vector2f & sizeBlock);
 	
-	void Update();
+	void Update(float dt);
 	void Draw(sf::RenderWindow & window);
 
 private:

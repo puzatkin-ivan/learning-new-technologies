@@ -7,10 +7,11 @@ public:
 	Shooter();
 
 	void Draw(sf::RenderWindow & window);
-	void Update(const KeyMap & keyMap, float deltaTime);
+	void Update(float dt, const KeyMap & keyMap);
 	sf::Vector2f GetPosition() const;
 
 private:
+	void UpdatePosition(float dt);
 	void UpdatePositionX(float deltaMove);
 	void UpdatePositionY(float deltaMove);
 

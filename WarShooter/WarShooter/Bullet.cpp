@@ -10,7 +10,7 @@ Bullet::Bullet(const sf::Vector2f & position, const sf::Vector2f & sizeBullet)
 	m_body.setPosition(position);
 }
 
-void Bullet::Update()
+void Bullet::Update(float dt)
 {
 
 }

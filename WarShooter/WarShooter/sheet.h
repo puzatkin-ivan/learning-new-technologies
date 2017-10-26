@@ -6,6 +6,8 @@ const sf::Vector2f INITIAL_POSITION = { 400, 300 };
 const unsigned FRAME_LIMIT = 60;
 
 const sf::Vector2f BLOCK_POSITION = { 100, 100 };
+const sf::Vector2f BLOCK_POSITION2 = { 100, 200 };
+const sf::Vector2f BLOCK_POSITION3 = { 100, 350 };
 const sf::Vector2f BLOCK_SIZE = { 150, 50 };
 
 const sf::Vector2f BULLET_POSITION = { 450, 325 };

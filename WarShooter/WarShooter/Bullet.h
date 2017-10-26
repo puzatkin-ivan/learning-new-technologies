@@ -6,7 +6,7 @@ class Bullet
 public:
 	Bullet(const sf::Vector2f & position, const sf::Vector2f & sizeBullet);
 
-	void Update();
+	void Update(float dt);
 	void Draw(sf::RenderWindow & window);
 
 private:

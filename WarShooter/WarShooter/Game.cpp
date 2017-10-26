@@ -5,8 +5,6 @@ const sf::Color WINDOW_COLOR = sf::Color::White;
 
 Game::Game()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "WarShooter 2.0", sf::Style::Close)
-	,m_block(BLOCK_POSITION, BLOCK_SIZE)
-	,m_bullet(BULLET_POSITION, BULLET_SIZE)
 {
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
@@ -30,15 +28,15 @@ void Game::DoGameLoop()
 
 void Game::Update(float deltaTime)
 {
-	m_player.Update(m_keyMap, deltaTime);
+	gameContext.Update(deltaTime, m_keyMap);
+	m_player.Update(deltaTime, m_keyMap);
 	m_view.setCenter(m_player.GetPosition());
 }
 
 void Game::Draw(sf::RenderWindow & window)
 {
 	m_window.clear(WINDOW_COLOR);
-	m_block.Draw(m_window);
-	m_bullet.Draw(m_window);
+	gameContext.Draw(m_window);
 	m_player.Draw(m_window);
 }	
 
@@ -67,8 +65,8 @@ void Game::CheckKeyPressed(const sf::Event & event)
 	if (event.type == sf::Event::KeyPressed)
 	{
 		const auto isPressed = true;
-		CheckMovement(event, true);
-		CheckDirection(event, true);
+		CheckMovement(event, isPressed);
+		CheckDirection(event, isPressed);
 	}
 }
 
@@ -77,8 +75,8 @@ void Game::CheckKeyReleased(const sf::Event & event)
 	if (event.type == sf::Event::KeyReleased)
 	{
 		const auto isReleased = false;
-		CheckMovement(event, false);
-		CheckDirection(event, false);
+		CheckMovement(event, isReleased);
+		CheckDirection(event, isReleased);
 	}
 }
 
