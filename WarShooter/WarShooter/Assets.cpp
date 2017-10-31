@@ -12,7 +12,6 @@ CAssets::~CAssets()
 {
 }
 
-
 void CAssets::addTexture(sf::Texture & texture, const std::string & path)
 {
 	if (!texture.loadFromFile(path))

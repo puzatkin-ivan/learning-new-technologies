@@ -5,7 +5,8 @@ const sf::Color WINDOW_COLOR = sf::Color::White;
 
 Game::Game()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "WarShooter 2.0", sf::Style::Close)
-	,m_player(m_assets)
+	,m_assets()
+	,m_gameContext(m_assets)
 {
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
@@ -29,16 +30,13 @@ void Game::DoGameLoop()
 
 void Game::Update(float deltaTime)
 {
-	gameContext.Update(deltaTime, m_keyMap);
-	m_player.Update(deltaTime, m_keyMap);
-	m_view.setCenter(m_player.GetPosition());
+	m_gameContext.Update(deltaTime, m_keyMap, m_view);
 }
 
 void Game::Draw()
 {
 	m_window.clear(WINDOW_COLOR);
-	gameContext.Draw(m_window);
-	m_player.Draw(m_window);
+	m_gameContext.Draw(m_window);
 }	
 
 void Game::CheckEvents()

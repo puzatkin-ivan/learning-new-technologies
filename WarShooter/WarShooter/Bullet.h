@@ -4,11 +4,13 @@
 class Bullet
 {
 public:
-	Bullet(const sf::Vector2f & position, const sf::Vector2f & sizeBullet);
+	Bullet(CAssets & assets);
 
 	void Update(float dt);
 	void Draw(sf::RenderWindow & window);
 
 private:
-	sf::RectangleShape m_body;
+	void SetTexture(sf::Texture & texture);
+	CAssets m_assets;
+	sf::Sprite m_body;
 };

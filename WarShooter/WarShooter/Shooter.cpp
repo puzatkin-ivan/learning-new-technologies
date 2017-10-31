@@ -1,8 +1,6 @@
 #include "stdafx.h"
 #include "Shooter.h"
 
-const sf::Color SHOOTER_COLOR = { 0, 0, 170 };
-const sf::Vector2f SHOOTER_SIZE = { 40, 40 };
 const auto NO_DIRECTION_MOVE = 0.f;
 const auto SPEED = 200.f;
 
@@ -120,4 +118,9 @@ void Shooter::UpdateDirectionY(bool isUp, bool isDown)
 	{
 		m_directionY = Direction::None;
 	}
+}
+
+unsigned Shooter::GetIp() const
+{
+	return m_ip;
 }

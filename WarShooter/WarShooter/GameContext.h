@@ -8,9 +8,9 @@
 class GameContext
 {
 public:
-	GameContext();
+	GameContext(CAssets & assets);
 
-	void Update(float dt, const KeyMap & keyMap);
+	void Update(float dt, const KeyMap & keyMap, sf::View & view);
 	void Draw(sf::RenderWindow & window);
 
 private:
@@ -20,6 +20,5 @@ private:
 	std::vector<Bullet> m_bullets;
 	std::vector<Block> m_blocks;
 	std::vector<Shooter> m_players;
-	
-	Block m_block;
+	unsigned m_clientIp = 10;
 };

@@ -1,13 +1,11 @@
 #include "stdafx.h"
 #include "Bullet.h"
 
-const sf::Color BULLET_COLOR = sf::Color::Magenta;
-
-Bullet::Bullet(const sf::Vector2f & position, const sf::Vector2f & sizeBullet)
+Bullet::Bullet(CAssets & assets)
+	:m_assets(assets)
 {
-	m_body.setFillColor(BULLET_COLOR);
-	m_body.setSize(sizeBullet);
-	m_body.setPosition(position);
+	m_body.setPosition(BLOCK_POSITION);
+	SetTexture(m_assets.BLOCK_TEXTURE);
 }
 
 void Bullet::Update(float dt)
@@ -18,4 +16,10 @@ void Bullet::Update(float dt)
 void Bullet::Draw(sf::RenderWindow & window)
 {
 	window.draw(m_body);
+}
+
+void Bullet::SetTexture(sf::Texture & texture)
+{
+	m_body.setTextureRect(sf::IntRect(BULLET_POSITION.x, BULLET_POSITION.y, int(texture.getSize().x), int(texture.getSize().y)));
+	m_body.setTexture(texture);
 }

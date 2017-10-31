@@ -24,6 +24,5 @@ private:
 	sf::Clock m_clock;
 	CAssets m_assets;
 	KeyMap m_keyMap;
-	GameContext gameContext;
-	Shooter m_player;
+	GameContext m_gameContext;
 };
