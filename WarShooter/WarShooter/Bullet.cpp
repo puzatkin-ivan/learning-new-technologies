@@ -12,7 +12,7 @@ Bullet::Bullet(const sf::Vector2f & position, const sf::Vector2f & sizeBullet)
 
 void Bullet::Update(float dt)
 {
-
+	(void)&dt;
 }
 
 void Bullet::Draw(sf::RenderWindow & window)

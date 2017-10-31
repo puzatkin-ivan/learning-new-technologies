@@ -17,11 +17,12 @@ private:
 	void CheckDirection(const sf::Event & event, bool isPressed);
 
 	void Update(float deltaTime);
-	void Draw(sf::RenderWindow & window);
+	void Draw();
 
 	sf::RenderWindow m_window;
 	sf::View m_view;
 	sf::Clock m_clock;
+	CAssets m_assets;
 	KeyMap m_keyMap;
 	GameContext gameContext;
 	Shooter m_player;

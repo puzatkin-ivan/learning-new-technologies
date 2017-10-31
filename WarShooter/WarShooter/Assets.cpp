@@ -1,18 +1,23 @@
 #include "stdafx.h"
 #include "Assets.h"
 
-Assets::Assets()
+CAssets::CAssets()
 {
-	addRepeatedTexture(m_backgroundTexture, "images/background.jpg");
-	addTexture(m_playerTexture, "images/player.png");
-	addTexture(m_blockTexture, "images/block.png");
+	addTexture(PLAYER_TEXTURE, "images/player.png");
+	addRepeatedTexture(BACKGROUND_TEXTURE, "images/background.jpg");
+	addTexture(BLOCK_TEXTURE, "images/block.png");
+}
+
+CAssets::~CAssets()
+{
 }
 
 
-void Assets::addTexture(sf::Texture & texture, std::string string)
+void CAssets::addTexture(sf::Texture & texture, const std::string & path)
 {
-	if (!texture.loadFromFile(string))
+	if (!texture.loadFromFile(path))
 	{
+		MessageBoxA(nullptr, std::string("File " + path + " not founded").c_str(), "Error", MB_ICONERROR | MB_OK);
 		_exit(-1);
 	}
 
@@ -20,18 +25,8 @@ void Assets::addTexture(sf::Texture & texture, std::string string)
 	texture.setRepeated(false);
 }
 
-void Assets::addRepeatedTexture(sf::Texture & texture, std::string string)
+void CAssets::addRepeatedTexture(sf::Texture & texture, std::string string)
 {
 	addTexture(texture, string);
 	texture.setRepeated(true);
-}
-
-sf::Texture Assets::getTextureBlock()
-{
-	return m_blockTexture;
-}
-
-sf::Texture Assets::getTexturePlayer()
-{
-	return m_playerTexture;
 }

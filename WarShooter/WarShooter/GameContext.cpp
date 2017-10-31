@@ -2,14 +2,12 @@
 #include "GameContext.h"
 
 GameContext::GameContext()
-	:m_block(BLOCK_POSITION, BLOCK_SIZE)
-	, m_block2(BLOCK_POSITION2, BLOCK_SIZE)
-	, m_block3(BLOCK_POSITION3, BLOCK_SIZE)
-	, m_bullet(BULLET_POSITION, BULLET_SIZE)
+	:m_assets()
+	,m_block(m_assets)
 {
 	m_blocks.push_back(m_block);
-	m_blocks.push_back(m_block2);
-	m_blocks.push_back(m_block3);
+	m_background.setTextureRect(sf::IntRect(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y));
+	m_background.setTexture(m_assets.BACKGROUND_TEXTURE);
 
 }
 
@@ -33,6 +31,7 @@ void GameContext::Update(float dt, const KeyMap & keyMap)
 
 void GameContext::Draw(sf::RenderWindow & window)
 {
+	window.draw(m_background);
 	for (auto & block : m_blocks)
 	{
 		block.Draw(window);

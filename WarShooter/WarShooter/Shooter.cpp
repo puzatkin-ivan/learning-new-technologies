@@ -6,11 +6,17 @@ const sf::Vector2f SHOOTER_SIZE = { 40, 40 };
 const auto NO_DIRECTION_MOVE = 0.f;
 const auto SPEED = 200.f;
 
-Shooter::Shooter()
+Shooter::Shooter(CAssets & assets)
+	:m_assets(assets)
 {
-	m_body.setFillColor(SHOOTER_COLOR);
-	m_body.setSize(SHOOTER_SIZE);
 	m_body.setPosition(m_position);
+	SetTexture(m_assets.PLAYER_TEXTURE);
+}
+
+void Shooter::SetTexture(const sf::Texture & texture)
+{
+	m_body.setTextureRect(sf::IntRect(0, 0, int(texture.getSize().x), int(texture.getSize().y)));
+	m_body.setTexture(texture);
 }
 
 void Shooter::Draw(sf::RenderWindow & window)

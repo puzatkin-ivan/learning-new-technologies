@@ -1,18 +1,23 @@
 #include "stdafx.h"
+#include "sheet.h"
 #include "Block.h"
 
-const sf::Color BLOCK_COLOR = sf::Color::Black;
-
-Block::Block(const sf::Vector2f & position, const sf::Vector2f & sizeBlock)
+Block::Block(CAssets & assets)
+	:m_assets(assets)
 {
-	m_body.setFillColor(BLOCK_COLOR);
-	m_body.setSize(sizeBlock);
-	m_body.setPosition(position);
+	m_body.setPosition(BLOCK_POSITION);
+	SetTexture(m_assets.BLOCK_TEXTURE);
+}
+
+void Block::SetTexture(sf::Texture & texture)
+{
+	m_body.setTextureRect(sf::IntRect(0, 0, int(texture.getSize().x), int(texture.getSize().y)));
+	m_body.setTexture(texture);
 }
 
 void Block::Update(float dt)
 {
-
+	(void)&dt;
 }
 
 void Block::Draw(sf::RenderWindow & window)

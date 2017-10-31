@@ -1,19 +1,17 @@
 #pragma once
-#include "sheet.h"
 
-struct Assets
+struct CAssets
 {
 public:
-	Assets();
+	CAssets();
+	~CAssets();
 
-	void addTexture(sf::Texture & texture, std::string string);
+	void addTexture(sf::Texture & texture, const std::string & path);
 	void addRepeatedTexture(sf::Texture & texture, std::string string);
 
-	sf::Texture getTexturePlayer();
-	sf::Texture getTextureBlock();
+	sf::Texture BACKGROUND_TEXTURE;
+	sf::Texture PLAYER_TEXTURE;
+	sf::Texture BLOCK_TEXTURE;
 
 private:
-	sf::Texture m_backgroundTexture;
-	sf::Texture m_playerTexture;
-	sf::Texture m_blockTexture;
 };

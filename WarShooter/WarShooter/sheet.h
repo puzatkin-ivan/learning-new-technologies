@@ -1,5 +1,4 @@
 #pragma once
-#include <SFML\Graphics.hpp>
 
 const sf::Vector2u WINDOW_SIZE = { 1500, 600 };
 const sf::Vector2f INITIAL_POSITION = { 400, 300 };

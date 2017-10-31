@@ -3,6 +3,7 @@
 #include "Bullet.h"
 #include "Block.h"
 #include "Shooter.h"
+#include "Assets.h"
 
 class GameContext
 {
@@ -13,13 +14,12 @@ public:
 	void Draw(sf::RenderWindow & window);
 
 private:
+	CAssets m_assets;
+
+	sf::Sprite m_background;
 	std::vector<Bullet> m_bullets;
 	std::vector<Block> m_blocks;
 	std::vector<Shooter> m_players;
-
-	Shooter m_player;
+	
 	Block m_block;
-	Block m_block2;
-	Block m_block3;
-	Bullet m_bullet;
 };
