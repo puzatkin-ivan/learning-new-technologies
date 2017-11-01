@@ -6,3 +6,6 @@ ReadMe.txt
 *.obj
 *.iobj
 *.vcxproj.user
+*.exp
+*.ilk
+*.lib

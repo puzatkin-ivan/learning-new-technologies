@@ -18,7 +18,7 @@ private:
 
 	sf::Sprite m_background;
 	std::vector<Bullet> m_bullets;
-	std::vector<Block> m_blocks;
-	std::vector<Shooter> m_players;
+	std::vector<std::unique_ptr<Block>> m_blocks;
+	std::vector<std::unique_ptr<Shooter>> m_players;
 	unsigned m_clientIp = 10;
 };

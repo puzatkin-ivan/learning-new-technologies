@@ -3,8 +3,8 @@
 
 CAssets::CAssets()
 {
-	addTexture(PLAYER_TEXTURE, "images/player.png");
 	addRepeatedTexture(BACKGROUND_TEXTURE, "images/background.jpg");
+	addTexture(PLAYER_TEXTURE, "images/player.png");
 	addTexture(BLOCK_TEXTURE, "images/block.png");
 }
 

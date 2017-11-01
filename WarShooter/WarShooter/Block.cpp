@@ -2,10 +2,10 @@
 #include "sheet.h"
 #include "Block.h"
 
-Block::Block(CAssets & assets)
+Block::Block(CAssets & assets, const sf::Vector2f & position)
 	:m_assets(assets)
 {
-	m_body.setPosition(BLOCK_POSITION);
+	m_body.setPosition(position);
 	SetTexture(m_assets.BLOCK_TEXTURE);
 }
 

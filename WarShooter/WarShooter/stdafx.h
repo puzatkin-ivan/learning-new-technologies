@@ -2,8 +2,7 @@
 
 #include "targetver.h"
 
-#include <stdio.h>
-#include <tchar.h>
+#include <memory>
 #include <Windows.h>
 
 #pragma warning (push, 3)

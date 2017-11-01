@@ -4,7 +4,7 @@
 class Block
 {
 public:
-	Block(CAssets & assets);
+	Block(CAssets & assets, const sf::Vector2f & position);
 	
 	void Update(float dt);
 	void Draw(sf::RenderWindow & window);

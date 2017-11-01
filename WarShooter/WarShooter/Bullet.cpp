@@ -4,7 +4,7 @@
 Bullet::Bullet(CAssets & assets)
 	:m_assets(assets)
 {
-	m_body.setPosition(BLOCK_POSITION);
+	m_body.setPosition(BULLET_POSITION);
 	SetTexture(m_assets.BLOCK_TEXTURE);
 }
 
@@ -20,6 +20,6 @@ void Bullet::Draw(sf::RenderWindow & window)
 
 void Bullet::SetTexture(sf::Texture & texture)
 {
-	m_body.setTextureRect(sf::IntRect(BULLET_POSITION.x, BULLET_POSITION.y, int(texture.getSize().x), int(texture.getSize().y)));
+	m_body.setTextureRect(sf::IntRect(0, 0, int(texture.getSize().x), int(texture.getSize().y)));
 	m_body.setTexture(texture);
 }
