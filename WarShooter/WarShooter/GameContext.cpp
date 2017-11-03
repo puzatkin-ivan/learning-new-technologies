@@ -40,7 +40,11 @@ void GameContext::Update(float dt, const KeyMap & keyMap, sf::View & view)
 		player->Update(dt, keyMap);
 		if (player->GetIp() == m_clientIp)
 		{
-			view.setCenter(player->GetPosition());
+			const auto playerPosition = player->GetPosition();
+			const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
+			m_background.setPosition(newPositionBackground);
+
+			view.setCenter(playerPosition);
 		}
 	}
 }
