@@ -11,6 +11,7 @@ public:
 	void Update(float dt, const KeyMap & keyMap);
 	sf::Vector2f GetPosition() const;
 	unsigned GetIp() const;
+	sf::Vector2f GetSize() const;
 
 private:
 	void UpdatePosition(float dt);

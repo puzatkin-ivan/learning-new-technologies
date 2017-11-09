@@ -1,6 +1,7 @@
 #pragma once
 
 #include "targetver.h"
+#include <functional>
 
 #include <memory>
 #include <Windows.h>

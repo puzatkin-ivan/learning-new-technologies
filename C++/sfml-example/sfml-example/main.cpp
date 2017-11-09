@@ -7,7 +7,6 @@ int main()
 	window.setFramerateLimit(60);
 
 	sf::Clock clock;
-	float time;
 
 	while (window.isOpen())
 	{

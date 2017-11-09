@@ -3,16 +3,17 @@
 
 CAssets::CAssets()
 {
-	addRepeatedTexture(BACKGROUND_TEXTURE, "images/background.jpg");
-	addTexture(PLAYER_TEXTURE, "images/player.png");
-	addTexture(BLOCK_TEXTURE, "images/block.png");
+	AddRepeatedTexture(BACKGROUND_TEXTURE, "images/background.jpg");
+	AddTexture(PLAYER_TEXTURE, "images/player.png");
+	AddTexture(BLOCK_TEXTURE, "images/block.png");
+	AddImage(WINDOW_ICON, "images/icon.png");
 }
 
 CAssets::~CAssets()
 {
 }
 
-void CAssets::addTexture(sf::Texture & texture, const std::string & path)
+void CAssets::AddTexture(sf::Texture & texture, const std::string & path)
 {
 	if (!texture.loadFromFile(path))
 	{
@@ -24,8 +25,17 @@ void CAssets::addTexture(sf::Texture & texture, const std::string & path)
 	texture.setRepeated(false);
 }
 
-void CAssets::addRepeatedTexture(sf::Texture & texture, std::string string)
+void CAssets::AddRepeatedTexture(sf::Texture & texture, const std::string & path)
 {
-	addTexture(texture, string);
+	AddTexture(texture, path);
 	texture.setRepeated(true);
+}
+
+void CAssets::AddImage(sf::Image & image, const std::string & path)
+{
+	if (!image.loadFromFile(path))
+	{
+		MessageBoxA(nullptr, std::string("File " + path + " not founded").c_str(), "Error", MB_ICONERROR | MB_OK);
+		_exit(-1);
+	}
 }

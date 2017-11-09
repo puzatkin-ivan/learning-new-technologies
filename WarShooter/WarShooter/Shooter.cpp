@@ -124,3 +124,9 @@ unsigned Shooter::GetIp() const
 {
 	return m_ip;
 }
+
+
+sf::Vector2f Shooter::GetSize() const
+{
+	return sf::Vector2f(m_body.getTexture()->getSize());
+}

@@ -8,7 +8,5 @@ public:
 	void Draw(sf::RenderWindow & window);
 
 private:
-	sf::CircleShape cloud1;
-	sf::CircleShape cloud2;
-	sf::CircleShape cloud3;
+	std::vector<sf::CircleShape> m_body;
 };

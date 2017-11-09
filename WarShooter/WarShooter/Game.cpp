@@ -10,6 +10,8 @@ Game::Game()
 {
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
+	const auto icon = m_assets.WINDOW_ICON;
+	m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
