@@ -4,21 +4,22 @@
 #include "Block.h"
 #include "Shooter.h"
 #include "Assets.h"
+#include "Application.h"
+#include "DataOfServer.h"
 
 class GameContext
 {
 public:
 	GameContext(CAssets & assets);
 
-	void Update(float dt, const KeyMap & keyMap, sf::View & view);
+	void Update(const DataOfServer & data, sf::View & view, const std::string & ip);
 	void Draw(sf::RenderWindow & window);
 
 private:
 	CAssets m_assets;
 
 	sf::Sprite m_background;
-	std::vector<Bullet> m_bullets;
+	std::vector<std::unique_ptr<Bullet>> m_bullets;
 	std::vector<std::unique_ptr<Block>> m_blocks;
 	std::vector<std::unique_ptr<Shooter>> m_players;
-	unsigned m_clientIp = 10;
 };

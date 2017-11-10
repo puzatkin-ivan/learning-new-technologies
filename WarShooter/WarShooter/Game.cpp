@@ -7,6 +7,7 @@ Game::Game()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "WarShooter 2.0", sf::Style::Close)
 	,m_assets()
 	,m_gameContext(m_assets)
+	,app()
 {
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
@@ -20,19 +21,17 @@ void Game::DoGameLoop()
 {
 	while (m_window.isOpen())
 	{
-		const auto deltaTime = m_clock.restart().asSeconds();
-
 		CheckEvents();
-		Update(deltaTime);
+		Update();
 		m_window.setView(m_view);
 		Draw();
 		m_window.display();
 	}
 }
 
-void Game::Update(float deltaTime)
+void Game::Update()
 {
-	m_gameContext.Update(deltaTime, m_keyMap, m_view);
+	app.Update(m_gameContext, m_view);
 }
 
 void Game::Draw()

@@ -4,48 +4,42 @@
 GameContext::GameContext(CAssets & assets)
 	:m_assets(assets)
 {
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION0));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION1));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION2));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION3));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION4));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION5));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION6));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION7));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION8));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION9));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION10));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION11));
-	m_blocks.push_back(std::make_unique<Block>(m_assets, BLOCK_POSITION12));
-	m_players.push_back(std::make_unique<Shooter>(m_assets));
-
 	m_background.setTextureRect(sf::IntRect(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y));
 	m_background.setTexture(m_assets.BACKGROUND_TEXTURE);
 }
 
-void GameContext::Update(float dt, const KeyMap & keyMap, sf::View & view)
+void GameContext::Update(const DataOfServer & data, sf::View & view, const std::string & ip)
 {
-	for (auto & block : m_blocks)
+	if (m_blocks.empty())
 	{
-		block->Update(dt);
-	}
-
-	for (auto & bullet : m_bullets)
-	{
-		bullet.Update(dt);
-	}
-
-	for (auto & player : m_players)
-	{
-		player->Update(dt, keyMap);
-		if (player->GetIp() == m_clientIp)
+		for (auto & block : data.m_vectorBlocks)
 		{
-			const auto playerPosition = player->GetPosition() + 0.5f * player->GetSize();
-			view.setCenter(playerPosition);
+			m_blocks.push_back(std::make_unique<Block>(m_assets, block.position));
+		}
+	}
 
-			const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
-			m_background.setPosition(newPositionBackground);
+	if (m_bullets.empty())
+	{
+		for (auto & bullet : data.m_vectorBullets)
+		{
+			m_bullets.push_back(std::make_unique<Bullet>(m_assets, bullet.position));
+		}
+	}
 
+	if (m_players.empty())
+	{
+		for (auto & playerObject : data.m_vectorPlayers)
+		{
+			const auto player = std::make_unique<Shooter>(m_assets, playerObject);
+			m_players.push_back(player);
+			if (player->GetIp() == ip)
+			{
+				const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();
+				view.setCenter(playerPosition);
+
+				const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
+				m_background.setPosition(newPositionBackground);
+			}
 		}
 	}
 }
@@ -59,7 +53,7 @@ void GameContext::Draw(sf::RenderWindow & window)
 	}
 	for (auto & bullet : m_bullets)
 	{
-		bullet.Draw(window);
+		bullet->Draw(window);
 	}
 	for (auto & player : m_players)
 	{

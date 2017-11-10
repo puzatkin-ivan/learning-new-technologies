@@ -1,5 +1,6 @@
 #pragma once
 #include "GameContext.h"
+#include "Application.h"
 
 class Game
 {
@@ -16,9 +17,10 @@ private:
 	void CheckMovement(const sf::Event & event, bool isPressed);
 	void CheckDirection(const sf::Event & event, bool isPressed);
 
-	void Update(float deltaTime);
+	void Update();
 	void Draw();
 
+	Application app;
 	sf::RenderWindow m_window;
 	sf::View m_view;
 	sf::Clock m_clock;
