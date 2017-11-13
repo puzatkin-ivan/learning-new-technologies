@@ -1,4 +1,5 @@
 #include "stdafx.h"
+
 #include "GameContext.h"
 
 GameContext::GameContext(CAssets & assets)
@@ -22,7 +23,8 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 	{
 		for (auto & bullet : data.m_vectorBullets)
 		{
-			m_bullets.push_back(std::make_unique<Bullet>(m_assets, bullet.position));
+			(void)&bullet;
+			m_bullets.push_back(std::make_unique<Bullet>(m_assets/*, bullet.position*/));
 		}
 	}
 
@@ -30,8 +32,7 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 	{
 		for (auto & playerObject : data.m_vectorPlayers)
 		{
-			const auto player = std::make_unique<Shooter>(m_assets, playerObject);
-			m_players.push_back(player);
+			auto player = std::make_unique<Shooter>(m_assets, playerObject);
 			if (player->GetIp() == ip)
 			{
 				const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();
@@ -39,6 +40,41 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 
 				const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
 				m_background.setPosition(newPositionBackground);
+			}
+			m_players.push_back(std::move(player));
+		}
+	}
+	else
+	{
+		size_t index = 0;
+		for (auto & playerObject : data.m_vectorPlayers)
+		{
+			if (index <= m_players.size() - 1)
+			{
+				m_players[index]->SetParameters(playerObject);
+				if (m_players[index]->GetIp() == ip)
+				{
+					const sf::Vector2f playerPosition = m_players[index]->GetPosition() + 0.5f * m_players[index]->GetSize();
+					view.setCenter(playerPosition);
+
+					const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
+					m_background.setPosition(newPositionBackground);
+				}
+
+				index++;
+			}
+			else
+			{
+				auto player = std::make_unique<Shooter>(m_assets, playerObject);
+				if (player->GetIp() == ip)
+				{
+					const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();
+					view.setCenter(playerPosition);
+
+					const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
+					m_background.setPosition(newPositionBackground);
+				}
+				m_players.push_back(std::move(player));
 			}
 		}
 	}

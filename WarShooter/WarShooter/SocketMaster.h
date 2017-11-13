@@ -1,6 +1,8 @@
 #pragma once
 
 #include <string>
+#include <thread>
+#include <chrono>
 #include <cstdarg>
 #include <iostream>
 #include <functional>
@@ -32,6 +34,11 @@ public:
 	void Emit(const std::string & key, const std::string & msg)
 	{
 		m_client.socket()->emit(key, msg);
+	}
+
+	bool IsConnected() const
+	{
+		return m_client.opened();
 	}
 
 	~SocketMaster()

@@ -5,9 +5,7 @@ const sf::Color WINDOW_COLOR = sf::Color::White;
 
 Game::Game()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "WarShooter 2.0", sf::Style::Close)
-	,m_assets()
 	,m_gameContext(m_assets)
-	,app()
 {
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
@@ -21,17 +19,20 @@ void Game::DoGameLoop()
 {
 	while (m_window.isOpen())
 	{
-		CheckEvents();
-		Update();
-		m_window.setView(m_view);
-		Draw();
-		m_window.display();
+		while (m_app.IsConnected())
+		{
+			CheckEvents();
+			Update();
+			m_window.setView(m_view);
+			Draw();
+			m_window.display();
+		}
 	}
 }
 
 void Game::Update()
 {
-	app.Update(m_gameContext, m_view);
+	m_app.Update(m_gameContext, m_view);
 }
 
 void Game::Draw()
@@ -85,16 +86,16 @@ void Game::CheckMovement(const sf::Event & event, bool isPressed)
 	switch (event.key.code)
 	{
 	case sf::Keyboard::A:
-		m_keyMap.isPressedKeyA = isPressed;
+		m_app.SendKeyMap(65, isPressed);
 		break;
 	case sf::Keyboard::D:
-		m_keyMap.isPressedKeyD = isPressed;
+		m_app.SendKeyMap(68, isPressed);
 		break;
 	case sf::Keyboard::W:
-		m_keyMap.isPressedKeyW = isPressed;
+		m_app.SendKeyMap(87, isPressed);
 		break;
 	case sf::Keyboard::S:
-		m_keyMap.isPressedKeyS = isPressed;
+		m_app.SendKeyMap(83, isPressed);
 		break;
 	}
 }
@@ -104,16 +105,16 @@ void Game::CheckDirection(const sf::Event & event, bool isPressed)
 	switch (event.key.code)
 	{
 	case sf::Keyboard::Up:
-		m_keyMap.isPressedArrowUp = isPressed;
+		m_app.SendKeyMap(38, isPressed);
 		break;
 	case sf::Keyboard::Down:
-		m_keyMap.isPressedArrowDown = isPressed;
+		m_app.SendKeyMap(40, isPressed);
 		break;
 	case sf::Keyboard::Left:
-		m_keyMap.isPressedArrowLeft = isPressed;
+		m_app.SendKeyMap(37, isPressed);
 		break;
 	case sf::Keyboard::Right:
-		m_keyMap.isPressedArrowRight = isPressed;
+		m_app.SendKeyMap(39, isPressed);
 		break;
 	}
 }

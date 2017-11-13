@@ -7,12 +7,7 @@ const auto SPEED = 200.f;
 Shooter::Shooter(CAssets & assets, const PlayerForDraw & playerOfServer)
 	:m_assets(assets)
 {
-	m_body.setPosition(playerOfServer.position);
-	m_direction = playerOfServer.direction;
-	m_health = playerOfServer.health;
-	m_ip = playerOfServer.playerId;
-	m_nickname = playerOfServer.nickname;
-
+	SetParameters(playerOfServer);
 	SetTexture(m_assets.PLAYER_TEXTURE);
 }
 
@@ -45,4 +40,13 @@ std::string Shooter::GetIp() const
 sf::Vector2f Shooter::GetSize() const
 {
 	return sf::Vector2f(m_body.getTexture()->getSize());
+}
+
+void Shooter::SetParameters(const PlayerForDraw & playerOfServer)
+{
+	m_body.setPosition(playerOfServer.position);
+	m_direction = playerOfServer.direction;
+	m_health = playerOfServer.health;
+	m_ip = playerOfServer.playerId;
+	m_nickname = playerOfServer.nickname;
 }

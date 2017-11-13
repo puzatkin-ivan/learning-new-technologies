@@ -4,7 +4,6 @@
 #include "Block.h"
 #include "Shooter.h"
 #include "Assets.h"
-#include "Application.h"
 #include "DataOfServer.h"
 
 class GameContext

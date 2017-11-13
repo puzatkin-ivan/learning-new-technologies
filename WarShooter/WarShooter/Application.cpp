@@ -14,6 +14,7 @@ namespace
 Application::Application()
 	:m_socketMaster(PORT)
 {
+	m_socketMaster.Emit("nickname", "Ghost");
 	m_socketMaster.SetHandler("new_player", [&](sio::event & e) {
 		ProcessInitMessage(e.get_message()->get_string());
 	});
@@ -48,9 +49,12 @@ void Application::ProcessInitMessage(const std::string & path)
 	{
 		PlayerForDraw player;
 		player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
+
+		std::cout << player.position.x << " " << player.position.y << std::endl;
 		player.health = element["health"];
 		player.direction = element["direction"].get<std::string>();
-		player.nickname = element["nickname"].get<std::string>();
+		//player.nickname = element["nickname"].get<std::string>();
+		player.nickname = "";
 		player.playerId = element["playerId"].get<std::string>();
 		m_data.m_vectorPlayers.push_back(player);
 	}
@@ -75,19 +79,33 @@ void Application::ProcessUpdateData(const std::string & path)
 		m_data.m_vectorBullets.push_back(bullet);;
 	}
 
-	for (auto & element : data["playersForDraw"])
+	if (m_data.m_vectorPlayers.empty())
 	{
-		PlayerForDraw player;
-		player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
-		player.health = element["health"];
-		player.direction = element["direction"].get<std::string>();
-		player.nickname = element["nickname"].get<std::string>();
-		player.playerId = element["playerId"].get<std::string>();
-		m_data.m_vectorPlayers.push_back(player);
+
+		for (auto & element : data["playersForDraw"])
+		{
+			PlayerForDraw player;
+			player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
+			player.health = element["health"];
+			std::cout << player.position.x << " " << player.position.y << std::endl;
+			player.direction = element["direction"].get<std::string>();
+			//player.nickname = element["nickname"].get<std::string>();
+			player.nickname = "";
+			player.playerId = element["playerId"].get<std::string>();
+			m_data.m_vectorPlayers.push_back(player);
+		}
 	}
 
 	for (auto & element : data["playersForTable"])
 	{
 		(void)&element;
 	}
+}
+
+void Application::SendKeyMap(const unsigned & keyCode, const bool & isPressed)
+{
+	json message;
+	message["key"] = keyCode;
+	message["isPressed"] = isPressed;
+	m_socketMaster.Emit("keyMap", message.dump());
 }

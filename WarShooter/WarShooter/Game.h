@@ -1,5 +1,5 @@
 #pragma once
-#include "GameContext.h"
+
 #include "Application.h"
 
 class Game
@@ -20,7 +20,7 @@ private:
 	void Update();
 	void Draw();
 
-	Application app;
+	Application m_app;
 	sf::RenderWindow m_window;
 	sf::View m_view;
 	sf::Clock m_clock;

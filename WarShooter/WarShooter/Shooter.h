@@ -10,6 +10,7 @@ public:
 
 	void Draw(sf::RenderWindow & window);
 	void Update();
+	void SetParameters(const PlayerForDraw & playerOfServer);
 	sf::Vector2f GetPosition() const;
 	std::string GetIp() const;
 	sf::Vector2f GetSize() const;
