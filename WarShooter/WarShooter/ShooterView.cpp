@@ -1,48 +1,48 @@
 #include "stdafx.h"
-#include "Shooter.h"
+#include "ShooterView.h"
 
 const auto NO_DIRECTION_MOVE = 0.f;
 const auto SPEED = 200.f;
 
-Shooter::Shooter(CAssets & assets, const PlayerForDraw & playerOfServer)
+ShooterView::ShooterView(CAssets & assets, const Shooter & playerOfServer)
 	:m_assets(assets)
 {
 	SetParameters(playerOfServer);
 	SetTexture(m_assets.PLAYER_TEXTURE);
 }
 
-void Shooter::SetTexture(const sf::Texture & texture)
+void ShooterView::SetTexture(const sf::Texture & texture)
 {
 	m_body.setTextureRect(sf::IntRect(0, 0, int(texture.getSize().x), int(texture.getSize().y)));
 	m_body.setTexture(texture);
 }
 
-void Shooter::Draw(sf::RenderWindow & window)
+void ShooterView::Draw(sf::RenderWindow & window)
 {
 	window.draw(m_body);
 }
 
-void Shooter::Update()
+void ShooterView::Update()
 {
 	
 }
 
-sf::Vector2f Shooter::GetPosition() const
+sf::Vector2f ShooterView::GetPosition() const
 {
 	return m_body.getPosition();
 }
 
-std::string Shooter::GetIp() const
+std::string ShooterView::GetIp() const
 {
 	return m_ip;
 }
 
-sf::Vector2f Shooter::GetSize() const
+sf::Vector2f ShooterView::GetSize() const
 {
 	return sf::Vector2f(m_body.getTexture()->getSize());
 }
 
-void Shooter::SetParameters(const PlayerForDraw & playerOfServer)
+void ShooterView::SetParameters(const Shooter & playerOfServer)
 {
 	m_body.setPosition(playerOfServer.position);
 	m_direction = playerOfServer.direction;

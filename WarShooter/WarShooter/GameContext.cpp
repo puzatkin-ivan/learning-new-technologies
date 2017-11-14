@@ -15,7 +15,7 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 	{
 		for (auto & block : data.m_vectorBlocks)
 		{
-			m_blocks.push_back(std::make_unique<Block>(m_assets, block.position));
+			m_blocks.push_back(std::make_unique<BlockView>(m_assets, block.position));
 		}
 	}
 
@@ -24,7 +24,7 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 		for (auto & bullet : data.m_vectorBullets)
 		{
 			(void)&bullet;
-			m_bullets.push_back(std::make_unique<Bullet>(m_assets/*, bullet.position*/));
+			m_bullets.push_back(std::make_unique<BulletView>(m_assets/*, bullet.position*/));
 		}
 	}
 
@@ -32,7 +32,7 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 	{
 		for (auto & playerObject : data.m_vectorPlayers)
 		{
-			auto player = std::make_unique<Shooter>(m_assets, playerObject);
+			auto player = std::make_unique<ShooterView>(m_assets, playerObject);
 			if (player->GetIp() == ip)
 			{
 				const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();
@@ -65,7 +65,7 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 			}
 			else
 			{
-				auto player = std::make_unique<Shooter>(m_assets, playerObject);
+				auto player = std::make_unique<ShooterView>(m_assets, playerObject);
 				if (player->GetIp() == ip)
 				{
 					const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();

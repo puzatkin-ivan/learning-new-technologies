@@ -1,8 +1,8 @@
 #pragma once
 #include "sheet.h"
-#include "Bullet.h"
-#include "Block.h"
-#include "Shooter.h"
+#include "BulletView.h"
+#include "BlockView.h"
+#include "ShooterView.h"
 #include "Assets.h"
 #include "DataOfServer.h"
 
@@ -18,7 +18,7 @@ private:
 	CAssets m_assets;
 
 	sf::Sprite m_background;
-	std::vector<std::unique_ptr<Bullet>> m_bullets;
-	std::vector<std::unique_ptr<Block>> m_blocks;
-	std::vector<std::unique_ptr<Shooter>> m_players;
+	std::vector<std::unique_ptr<BulletView>> m_bullets;
+	std::vector<std::unique_ptr<BlockView>> m_blocks;
+	std::vector<std::unique_ptr<ShooterView>> m_players;
 };

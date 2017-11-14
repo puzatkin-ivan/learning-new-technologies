@@ -3,10 +3,27 @@
 
 const sf::Color WINDOW_COLOR = sf::Color::White;
 
+using json = nlohmann::json;
+
+namespace
+{
+	static const auto PORT = "https://127.0.0.1:3000";
+}
+
 Game::Game()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "WarShooter 2.0", sf::Style::Close)
 	,m_gameContext(m_assets)
+	,m_socketMaster(PORT)
 {
+	m_socketMaster.Emit("nickname", "Ghost");
+	m_socketMaster.SetHandler("new_player", [&](sio::event & e) {
+		ProcessInitMessage(e.get_message()->get_string());
+	});
+
+	m_socketMaster.SetHandler("update_data", [&](sio::event & e) {
+		ProcessUpdateData(e.get_message()->get_string());
+	});
+
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
 	const auto icon = m_assets.WINDOW_ICON;
@@ -19,7 +36,7 @@ void Game::DoGameLoop()
 {
 	while (m_window.isOpen())
 	{
-		while (m_app.IsConnected())
+		while (IsConnected())
 		{
 			CheckEvents();
 			Update();
@@ -32,14 +49,14 @@ void Game::DoGameLoop()
 
 void Game::Update()
 {
-	m_app.Update(m_gameContext, m_view);
+	m_gameContext.Update(m_data, m_view, m_ipClient);
+	ClearVectors();
 }
 
-void Game::Draw()
+void Game::ClearVectors()
 {
-	m_window.clear(WINDOW_COLOR);
-	m_gameContext.Draw(m_window);
-}	
+	m_data.Clear();
+}
 
 void Game::CheckEvents()
 {
@@ -86,16 +103,16 @@ void Game::CheckMovement(const sf::Event & event, bool isPressed)
 	switch (event.key.code)
 	{
 	case sf::Keyboard::A:
-		m_app.SendKeyMap(65, isPressed);
+		SendKeyMap(65, isPressed);
 		break;
 	case sf::Keyboard::D:
-		m_app.SendKeyMap(68, isPressed);
+		SendKeyMap(68, isPressed);
 		break;
 	case sf::Keyboard::W:
-		m_app.SendKeyMap(87, isPressed);
+		SendKeyMap(87, isPressed);
 		break;
 	case sf::Keyboard::S:
-		m_app.SendKeyMap(83, isPressed);
+		SendKeyMap(83, isPressed);
 		break;
 	}
 }
@@ -105,16 +122,101 @@ void Game::CheckDirection(const sf::Event & event, bool isPressed)
 	switch (event.key.code)
 	{
 	case sf::Keyboard::Up:
-		m_app.SendKeyMap(38, isPressed);
+		SendKeyMap(38, isPressed);
 		break;
 	case sf::Keyboard::Down:
-		m_app.SendKeyMap(40, isPressed);
+		SendKeyMap(40, isPressed);
 		break;
 	case sf::Keyboard::Left:
-		m_app.SendKeyMap(37, isPressed);
+		SendKeyMap(37, isPressed);
 		break;
 	case sf::Keyboard::Right:
-		m_app.SendKeyMap(39, isPressed);
+		SendKeyMap(39, isPressed);
 		break;
 	}
+}
+
+bool Game::IsConnected() const
+{
+	return m_socketMaster.IsConnected();
+}
+
+void Game::Draw()
+{
+	m_window.clear(WINDOW_COLOR);
+	m_gameContext.Draw(m_window);
+}
+
+void Game::ProcessInitMessage(const std::string & path)
+{
+	std::cout << path << std::endl;
+	auto data = json::parse(path);
+	for (auto & element : data["blocks"])
+	{
+		Block block;
+		block.position = sf::Vector2f(float(element["x"]), float(element["y"]));
+		m_data.m_vectorBlocks.push_back(block);
+	}
+
+	for (auto& element : data["players"])
+	{
+		Shooter player;
+		player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
+		player.health = element["health"];
+		player.direction = element["direction"].get<std::string>();
+		//player.nickname = element["nickname"].get<std::string>();
+		player.nickname = "";
+		player.playerId = element["playerId"].get<std::string>();
+		m_data.m_vectorPlayers.push_back(player);
+	}
+
+	for (auto& element : data["bullets"])
+	{
+		Bullet bullet;
+		bullet.position = sf::Vector2f(float(element["x"]), float(element["y"]));
+		m_data.m_vectorBullets.push_back(bullet);
+	}
+
+	m_ipClient = data["id"].get<std::string>();
+}
+
+void Game::ProcessUpdateData(const std::string & path)
+{
+	auto data = json::parse(path);
+	for (auto & element : data["bullets"])
+	{
+		Bullet bullet;
+		bullet.position = sf::Vector2f(float(element["x"]), float(element["y"]));
+		m_data.m_vectorBullets.push_back(bullet);;
+	}
+
+	if (m_data.m_vectorPlayers.empty())
+	{
+
+		for (auto & element : data["playersForDraw"])
+		{
+			Shooter player;
+			player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
+			player.health = element["health"];
+			std::cout << player.position.x << " " << player.position.y << std::endl;
+			player.direction = element["direction"].get<std::string>();
+			//player.nickname = element["nickname"].get<std::string>();
+			player.nickname = "";
+			player.playerId = element["playerId"].get<std::string>();
+			m_data.m_vectorPlayers.push_back(player);
+		}
+	}
+
+	for (auto & element : data["playersForTable"])
+	{
+		(void)&element;
+	}
+}
+
+void Game::SendKeyMap(const unsigned & keyCode, const bool & isPressed)
+{
+	json message;
+	message["key"] = keyCode;
+	message["isPressed"] = isPressed;
+	m_socketMaster.Emit("keyMap", message.dump());
 }

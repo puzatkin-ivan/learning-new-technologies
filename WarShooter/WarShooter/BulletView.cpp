@@ -1,24 +1,24 @@
 #include "stdafx.h"
-#include "Bullet.h"
+#include "BulletView.h"
 
-Bullet::Bullet(CAssets & assets)
+BulletView::BulletView(CAssets & assets)
 	:m_assets(assets)
 {
 	m_body.setPosition(BULLET_POSITION);
 	SetTexture(m_assets.BLOCK_TEXTURE);
 }
 
-void Bullet::Update(float dt)
+void BulletView::Update(float dt)
 {
 	(void)&dt;
 }
 
-void Bullet::Draw(sf::RenderWindow & window)
+void BulletView::Draw(sf::RenderWindow & window)
 {
 	window.draw(m_body);
 }
 
-void Bullet::SetTexture(sf::Texture & texture)
+void BulletView::SetTexture(sf::Texture & texture)
 {
 	m_body.setTextureRect(sf::IntRect(0, 0, int(texture.getSize().x), int(texture.getSize().y)));
 	m_body.setTexture(texture);

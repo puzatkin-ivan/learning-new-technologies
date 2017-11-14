@@ -1,16 +1,9 @@
 #pragma once
-#include "sheet.h"
 
-class Bullet
+struct Bullet
 {
 public:
-	Bullet(CAssets & assets);
-
-	void Update(float dt);
-	void Draw(sf::RenderWindow & window);
+	sf::Vector2f position;
 
 private:
-	void SetTexture(sf::Texture & texture);
-	CAssets m_assets;
-	sf::Sprite m_body;
 };

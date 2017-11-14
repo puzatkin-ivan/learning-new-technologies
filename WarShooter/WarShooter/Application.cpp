@@ -24,11 +24,6 @@ Application::Application()
 	});
 }
 
-void Application::Update(GameContext & gameContext, sf::View & view)
-{
-	gameContext.Update(m_data, view, m_ipClient);
-	ClearVectors();
-}
 
 void Application::ClearVectors()
 {
