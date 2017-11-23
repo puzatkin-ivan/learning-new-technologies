@@ -23,5 +23,5 @@ private:
 	int m_health;
 	CAssets m_assets;
 	sf::Sprite m_body;
-	std::string m_direction = "no_direction";
+	std::string m_direction;
 };

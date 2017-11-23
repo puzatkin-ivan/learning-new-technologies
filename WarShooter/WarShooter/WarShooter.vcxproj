@@ -76,7 +76,7 @@
     <LibraryPath>W:\!sdk\SocketIO\x86\Release;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(LIB_PATH)socket.io-client-cpp/lib/websocketpp;$(LIB_PATH)socket.io-client-cpp/src/internal;$(LIB_PATH)socket.io-client-cpp/lib/rapidjson/include;$(LIB_PATH)boost;$(LIB_PATH)socket.io-client-cpp/src;$(LIB_PATH)SFMLx64/include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
+    <IncludePath>$(LIB_PATH)SocketIO\x64\Release;$(LIB_PATH)boost;$(LIB_PATH)socket.io-client-cpp/src;$(LIB_PATH)SFMLx64/include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -90,8 +90,11 @@
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;libboost_random-vc141-mt-sgd-1_65_1.lib;libboost_regex-vc141-mt-sgd-1_65_1.lib;libboost_serialization-vc141-mt-sgd-1_65_1.lib;libboost_program_options-vc141-mt-sgd-1_65_1.lib;libboost_signals-vc141-mt-sgd-1_65_1.lib;libboost_system-vc141-mt-sgd-1_65_1.lib;libboost_test_exec_monitor-vc141-mt-sgd-1_65_1.lib;socketio.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /E /I "$(LIB_PATHx86)SFMLx86\bin\$(Configuration)" "$(TargetDir)"
-xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"</Command>
+      <Command>xcopy /Y /E /I "$(LIB_PATHx86)SFML\bin\$(Configuration)" "$(TargetDir)"
+xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"
+xcopy /Y /E /I "$(ProjectDir)fonts" "$(TargetDir)fonts"
+xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -102,8 +105,11 @@ xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"</Command>
     </Link>
     <PostBuildEvent />
     <PostBuildEvent>
-      <Command>xcopy /Y /E /I "$(LIB_PATH)SFMLx64\bin\$(Configuration)" "$(TargetDir)"
-xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"</Command>
+      <Command>xcopy /Y /E /I "$(LIB_PATH)SFML\bin\$(Configuration)" "$(TargetDir)"
+xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"
+xcopy /Y /E /I "$(ProjectDir)fonts" "$(TargetDir)fonts"
+xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
+</Command>
     </PostBuildEvent>
     <ClCompile>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -117,6 +123,8 @@ xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"</Command>
       <PreprocessorDefinitions>SFML_DYNAMIC;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <Optimization>Full</Optimization>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -124,8 +132,11 @@ xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"</Command>
       <AdditionalDependencies>sfml-main.lib;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;libboost_random-vc141-mt-s-1_65_1.lib;libboost_regex-vc141-mt-s-1_65_1.lib;libboost_serialization-vc141-mt-s-1_65_1.lib;libboost_program_options-vc141-mt-s-1_65_1.lib;libboost_signals-vc141-mt-s-1_65_1.lib;libboost_system-vc141-mt-s-1_65_1.lib;libboost_test_exec_monitor-vc141-mt-s-1_65_1.lib;socketio.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /E /I "$(LIB_PATHx86)SFMLx86\bin\$(Configuration)" "$(TargetDir)"
-xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"</Command>
+      <Command>xcopy /Y /E /I "$(LIB_PATHx86)SFML\bin\$(Configuration)" "$(TargetDir)"
+xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"
+xcopy /Y /E /I "$(ProjectDir)fonts" "$(TargetDir)fonts"
+xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -142,8 +153,12 @@ xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"</Command>
       <AdditionalDependencies>libboost_random-vc141-mt-1_65_1.lib;libboost_regex-vc141-mt-1_65_1.lib;libboost_serialization-vc141-mt-1_65_1.lib;libboost_program_options-vc141-mt-1_65_1.lib;libboost_signals-vc141-mt-1_65_1.lib;libboost_system-vc141-mt-1_65_1.lib;libboost_test_exec_monitor-vc141-mt-1_65_1.lib;sfml-main.lib;sfml-graphics.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy /Y /E /I "$(LIB_PATH)SFMLx64\bin\$(Configuration)" "$(TargetDir)"
-xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"</Command>
+      <Command>xcopy /Y /E /I "$(LIB_PATH)SFML\bin\$(Configuration)" "$(TargetDir)"
+xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"
+xcopy /Y /E /I "$(ProjectDir)fonts" "$(TargetDir)fonts"
+xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
+
+</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

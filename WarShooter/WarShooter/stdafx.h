@@ -8,7 +8,7 @@
 
 #pragma warning (push, 3)
 
-#include "libs\json.hpp"
+#include <json.hpp>
 #include <SFML\Graphics.hpp>
 
 #pragma warning (pop)

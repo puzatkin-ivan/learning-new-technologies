@@ -15,8 +15,12 @@ public:
 	void Draw(sf::RenderWindow & window);
 
 private:
-	CAssets m_assets;
+	void SetView(const std::unique_ptr<ShooterView> & player, sf::View & view);
+	void UpdateBlocks(const std::vector<Block> & vectorBlocks);
+	void UpdateBullets(const std::vector<Bullet> & vectorBullets);
+	void UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::View & view, const std::string & ip);
 
+	CAssets m_assets;
 	sf::Sprite m_background;
 	std::vector<std::unique_ptr<BulletView>> m_bullets;
 	std::vector<std::unique_ptr<BlockView>> m_blocks;

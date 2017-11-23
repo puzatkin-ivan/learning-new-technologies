@@ -16,10 +16,11 @@ private:
 	void CheckKeyboardEvent(const sf::Event & event);
 	void CheckKeyPressed(const sf::Event & event);
 	void CheckKeyReleased(const sf::Event & event);
+	void CheckInputText(const sf::Event & event);
 	void CheckMovement(const sf::Event & event, bool isPressed);
 	void CheckDirection(const sf::Event & event, bool isPressed);
 
-	void SendKeyMap(const unsigned & keyCode, const bool & isPressed);
+	void SendKeyMap(const CodeKey & keyCode, const bool & isPressed);
 	bool IsConnected() const;
 	void ProcessInitMessage(const std::string & path);
 	void ProcessUpdateData(const std::string & path); 
@@ -28,9 +29,12 @@ private:
 	void Update();
 	void Draw();
 	
+	sf::Sprite m_menuBackground;
 	sf::RenderWindow m_window;
 	sf::View m_view;
-	sf::Clock m_clock;
+	sf::Text m_text;
+	std::string m_stringWithText;
+
 	CAssets m_assets;
 	KeyMap m_keyMap;
 	GameContext m_gameContext;

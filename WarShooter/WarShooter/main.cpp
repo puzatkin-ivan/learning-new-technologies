@@ -5,5 +5,4 @@ int main()
 {
 	Game game;
 	game.DoGameLoop();
-	return 0;
 }

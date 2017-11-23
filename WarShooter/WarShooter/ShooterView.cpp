@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "ShooterView.h"
+#include <iostream>
 
 const auto NO_DIRECTION_MOVE = 0.f;
 const auto SPEED = 200.f;
@@ -44,7 +45,7 @@ sf::Vector2f ShooterView::GetSize() const
 
 void ShooterView::SetParameters(const Shooter & playerOfServer)
 {
-	m_body.setPosition(playerOfServer.position);
+	m_body.setPosition(playerOfServer.position - (0.5f * sf::Vector2f(m_assets.PLAYER_TEXTURE.getSize())));
 	m_direction = playerOfServer.direction;
 	m_health = playerOfServer.health;
 	m_ip = playerOfServer.playerId;

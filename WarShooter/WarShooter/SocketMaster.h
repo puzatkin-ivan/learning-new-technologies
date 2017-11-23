@@ -21,6 +21,11 @@ public:
 		});
 	}
 
+	~SocketMaster()
+	{
+		m_client.sync_close();
+	}
+
 	void SetHandler(const std::string & key, std::function<void(sio::event & e)> && handler)
 	{
 		m_client.socket()->on(key, handler);
@@ -39,11 +44,6 @@ public:
 	bool IsConnected() const
 	{
 		return m_client.opened();
-	}
-
-	~SocketMaster()
-	{
-		m_client.close();
 	}
 
 private:

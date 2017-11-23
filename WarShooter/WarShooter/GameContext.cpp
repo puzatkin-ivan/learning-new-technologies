@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "GameContext.h"
+#include <iostream>
 
 GameContext::GameContext(CAssets & assets)
 	:m_assets(assets)
@@ -11,35 +12,78 @@ GameContext::GameContext(CAssets & assets)
 
 void GameContext::Update(const DataOfServer & data, sf::View & view, const std::string & ip)
 {
+	UpdateBlocks(data.m_vectorBlocks);
+	UpdateBullets(data.m_vectorBullets);
+	UpdatePlayers(data.m_vectorPlayers, view, ip);
+}
+
+void GameContext::UpdateBlocks(const std::vector<Block> & vectorBlocks)
+{
 	if (m_blocks.empty())
 	{
-		for (auto & block : data.m_vectorBlocks)
+		for (auto & block : vectorBlocks)
 		{
-			m_blocks.push_back(std::make_unique<BlockView>(m_assets, block.position));
+			m_blocks.push_back(std::make_unique<BlockView>(m_assets, block.getPosition()));
 		}
 	}
+}
 
+void GameContext::UpdateBullets(const std::vector<Bullet> & vectorBullets)
+{
 	if (m_bullets.empty())
 	{
-		for (auto & bullet : data.m_vectorBullets)
+		for (auto & bullet : vectorBullets)
 		{
-			(void)&bullet;
-			m_bullets.push_back(std::make_unique<BulletView>(m_assets/*, bullet.position*/));
+			auto itemBullet = std::make_unique<BulletView>(m_assets, bullet.getPosition());
+			m_bullets.push_back(std::move(itemBullet));
 		}
 	}
+	else
+	{
+		size_t index = 0;
+		for (auto & bullet : vectorBullets)
+		{
+			if (index < m_bullets.size())
+			{
+				m_bullets[index]->SetPosition(bullet.getPosition());
+				m_bullets[index]->SetIsDraw(true);
+				++index;
+			}
+			else
+			{
+				auto itemBullet = std::make_unique<BulletView>(m_assets, bullet.getPosition());
+				m_bullets.push_back(std::move(itemBullet));
+			}
+		}
+		if (index < m_bullets.size())
+		{
+			for (index; index < m_bullets.size(); ++index)
+			{
+				m_bullets[index]->SetIsDraw(false);
+			}
+		}
+	}
+}
 
+void GameContext::SetView(const std::unique_ptr<ShooterView> & player, sf::View & view)
+{
+	const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();
+	view.setCenter(playerPosition);
+
+	const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
+	m_background.setPosition(newPositionBackground);
+}
+
+void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::View & view, const std::string & ip)
+{
 	if (m_players.empty())
 	{
-		for (auto & playerObject : data.m_vectorPlayers)
+		for (auto & playerObject : vectorPlayers)
 		{
-			auto player = std::make_unique<ShooterView>(m_assets, playerObject);
+			auto player = std::make_unique<ShooterView>(m_assets, playerObject);			
 			if (player->GetIp() == ip)
 			{
-				const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();
-				view.setCenter(playerPosition);
-
-				const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
-				m_background.setPosition(newPositionBackground);
+				SetView(player, view);
 			}
 			m_players.push_back(std::move(player));
 		}
@@ -47,18 +91,14 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 	else
 	{
 		size_t index = 0;
-		for (auto & playerObject : data.m_vectorPlayers)
+		for (auto & playerObject : vectorPlayers)
 		{
-			if (index <= m_players.size() - 1)
+			if (index < m_players.size())
 			{
 				m_players[index]->SetParameters(playerObject);
 				if (m_players[index]->GetIp() == ip)
 				{
-					const sf::Vector2f playerPosition = m_players[index]->GetPosition() + 0.5f * m_players[index]->GetSize();
-					view.setCenter(playerPosition);
-
-					const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
-					m_background.setPosition(newPositionBackground);
+					SetView(m_players[index], view);
 				}
 
 				index++;
@@ -66,14 +106,6 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 			else
 			{
 				auto player = std::make_unique<ShooterView>(m_assets, playerObject);
-				if (player->GetIp() == ip)
-				{
-					const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();
-					view.setCenter(playerPosition);
-
-					const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
-					m_background.setPosition(newPositionBackground);
-				}
 				m_players.push_back(std::move(player));
 			}
 		}
@@ -83,13 +115,16 @@ void GameContext::Update(const DataOfServer & data, sf::View & view, const std::
 void GameContext::Draw(sf::RenderWindow & window)
 {
 	window.draw(m_background);
+	for (auto & bullet : m_bullets)
+	{
+		if (bullet->GetIsDraw())
+		{
+			bullet->Draw(window);
+		}
+	}
 	for (auto & block : m_blocks)
 	{
 		block->Draw(window);
-	}
-	for (auto & bullet : m_bullets)
-	{
-		bullet->Draw(window);
 	}
 	for (auto & player : m_players)
 	{

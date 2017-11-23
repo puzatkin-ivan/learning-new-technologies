@@ -8,5 +8,6 @@ public:
 	std::string direction;
 	std::string nickname;
 	std::string playerId;
+
 private:
 };
