@@ -20,7 +20,7 @@ void BulletView::Draw(sf::RenderWindow & window)
 	window.draw(m_body);
 }
 
-void BulletView::SetIsDraw(const bool & isDraw)
+void BulletView::SetIsDraw(bool isDraw)
 {
 	m_isDraw = isDraw;
 }

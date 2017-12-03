@@ -15,4 +15,5 @@ public:
 
 private:
 	sf::Vector2f m_position;
+	bool m_isDraw;
 };

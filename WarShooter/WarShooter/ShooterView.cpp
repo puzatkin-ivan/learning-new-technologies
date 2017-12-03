@@ -10,6 +10,7 @@ ShooterView::ShooterView(CAssets & assets, const Shooter & playerOfServer)
 {
 	SetParameters(playerOfServer);
 	SetTexture(m_assets.PLAYER_TEXTURE);
+	m_isDraw = true;
 }
 
 void ShooterView::SetTexture(const sf::Texture & texture)
@@ -25,7 +26,43 @@ void ShooterView::Draw(sf::RenderWindow & window)
 
 void ShooterView::Update()
 {
-	
+	if (m_direction == "direction_right")
+	{
+		m_body.setRotation(90.f);
+		const auto offset = sf::Vector2f(float(m_body.getTexture()->getSize().x), 0.f);
+		m_body.setPosition(m_body.getPosition() + offset);
+	}
+	else if (m_direction == "direction_left")
+	{
+		m_body.setRotation(-90.f);
+		const auto offset = sf::Vector2f(0.f, float(m_body.getTexture()->getSize().y));
+		m_body.setPosition(m_body.getPosition() + offset);
+	}
+	else if (m_direction == "direction_up")
+	{
+		m_body.setRotation(0.f);
+	}
+	else if (m_direction == "direction_down")
+	{
+		m_body.setRotation(180.f);
+		const auto offset = sf::Vector2f(m_body.getTexture()->getSize());
+		m_body.setPosition(m_body.getPosition() + offset);
+	}
+}
+
+bool ShooterView::GetIsDead() const
+{
+	return m_health == 0;
+}
+
+bool ShooterView::GetIsDraw() const
+{
+	return m_isDraw;
+}
+
+void ShooterView::SetIsDraw(bool isDraw)
+{
+	m_isDraw = isDraw;
 }
 
 sf::Vector2f ShooterView::GetPosition() const

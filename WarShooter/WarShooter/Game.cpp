@@ -14,16 +14,19 @@ Game::Game()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), "WarShooter 2.0", sf::Style::Close)
 	,m_gameContext(m_assets)
 	,m_socketMaster(PORT)
+	,m_audioPlayer("sounds/")
+	,m_startGameScene(m_window, m_assets, m_audioPlayer)
+	,m_gameScene(m_window, m_gameContext, m_socketMaster, m_audioPlayer)
+	,m_pauseScene(m_window, m_assets)
+	,m_gameoverScene(m_window, m_gameContext, m_assets)
 {
 	m_socketMaster.Emit("nickname", "Ghost");
 	m_socketMaster.SetHandler("new_player", [&](sio::event & e) {
-		ProcessInitMessage(e.get_message()->get_string());
+		m_gameContext.ProcessInitMessage(e.get_message()->get_string());
 	});
-
 	m_socketMaster.SetHandler("update_data", [&](sio::event & e) {
-		ProcessUpdateData(e.get_message()->get_string());
+		m_gameContext.ProcessUpdateData(e.get_message()->get_string());
 	});
-
 	m_menuBackground.setTextureRect(sf::IntRect(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y));
 	m_menuBackground.setTexture(m_assets.MENU_BACKGROUND_TEXTURE);
 
@@ -37,13 +40,33 @@ Game::Game()
 	m_text.setFont(m_assets.ARIAL_FONT);
 	m_text.setCharacterSize(30);
 	m_stringWithText = "";
+
+	m_audioPlayer.SetVolume(100);
 }
 
 void Game::DoGameLoop()
 {
+	SceneInfo info = SceneInfo(SceneType::StartScene);
 	while (m_window.isOpen())
 	{
-		if (IsConnected())
+		const auto deltaTime = m_clock.getElapsedTime().asSeconds();
+
+		switch (info.nextSceneType)
+		{
+		case SceneType::StartScene:
+			info = m_startGameScene.Advance(deltaTime, m_socketMaster.IsConnected());
+			break;
+		case SceneType::GameScene:
+			info = m_gameScene.Advance(deltaTime);
+			break;
+		case SceneType::PauseScene:
+			info = m_pauseScene.Advance(deltaTime);
+			break;
+		case SceneType::GameOverScene:
+			info = m_gameoverScene.Advance(deltaTime);
+			break;
+		}
+		/*if (IsConnected())
 		{
 			CheckEvents();
 			Update();
@@ -60,19 +83,13 @@ void Game::DoGameLoop()
 			m_window.draw(m_menuBackground);
 			m_window.draw(m_text);
 			m_window.display();
-		}
+		}*/
 	}
 }
 
 void Game::Update()
 {
-	m_gameContext.Update(m_data, m_view, m_ipClient);
-	ClearVectors();
-}
-
-void Game::ClearVectors()
-{
-	m_data.Clear();
+	m_gameContext.Update(m_view, m_ipClient);
 }
 
 void Game::CheckEvents()
@@ -80,10 +97,9 @@ void Game::CheckEvents()
 	sf::Event event;
 	if (m_window.pollEvent(event))
 	{
-		CheckKeyboardEvent(event);
-
 		CheckInputText(event);
-
+		CheckKeyboardEvent(event);
+		
 		if (event.type == sf::Event::Closed)
 		{
 			m_window.close();
@@ -128,6 +144,7 @@ void Game::CheckKeyPressed(const sf::Event & event)
 		const auto isPressed = true;
 		CheckMovement(event, isPressed);
 		CheckDirection(event, isPressed);
+		CheckSpecialKey(event);
 	}
 }
 
@@ -179,6 +196,40 @@ void Game::CheckDirection(const sf::Event & event, bool isPressed)
 	}
 }
 
+
+void Game::CheckSpecialKey(const sf::Event & event)
+{
+	switch (event.key.code)
+	{
+	case sf::Keyboard::K:
+		ChangeStatusAudioPlayer();
+		break;
+	case sf::Keyboard::J:
+		m_audioPlayer.PlayNextTrack();
+		break;
+	case sf::Keyboard::L:
+		m_audioPlayer.PlayPrevTrack();
+		break;
+	case sf::Keyboard::Tab:
+		break;
+	case sf::Keyboard::Escape:
+		//m_nextSceneType = SceneType::PauseScene;
+		break;
+	}
+}
+
+void Game::ChangeStatusAudioPlayer()
+{
+	if (m_audioPlayer.IsPaused())
+	{
+		m_audioPlayer.Resume();
+	}
+	else
+	{
+		m_audioPlayer.Pause();
+	}
+}
+
 bool Game::IsConnected() const
 {
 	return m_socketMaster.IsConnected();
@@ -188,68 +239,6 @@ void Game::Draw()
 {
 	m_window.clear(WINDOW_COLOR);
 	m_gameContext.Draw(m_window);
-}
-
-void Game::ProcessInitMessage(const std::string & path)
-{
-	auto data = json::parse(path);
-	for (auto & element : data["blocks"])
-	{
-		Block block;
-		block.setPosition(sf::Vector2f(float(element["x"]), float(element["y"])));
-		m_data.m_vectorBlocks.push_back(block);
-	}
-
-	for (auto & element : data["players"])
-	{
-		Shooter player;
-		player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
-		player.health = element["health"];
-		player.direction = element["direction"].get<std::string>();
-		player.nickname = "";
-		player.playerId = element["playerId"].get<std::string>();
-		m_data.m_vectorPlayers.push_back(player);
-	}
-
-	for (auto & element : data["bullets"])
-	{
-		Bullet bullet;
-		bullet.setPosition(sf::Vector2f(float(element["x"]), float(element["y"])));
-		m_data.m_vectorBullets.push_back(bullet);
-	}
-
-	m_ipClient = data["id"].get<std::string>();
-}
-
-void Game::ProcessUpdateData(const std::string & path)
-{
-	auto data = json::parse(path);
-	m_data.m_vectorBullets.clear();
-	for (auto & element : data["bullets"])
-	{
-		Bullet bullet;
-		bullet.setPosition(sf::Vector2f(float(element["x"]), float(element["y"])));
-		m_data.m_vectorBullets.push_back(bullet);;
-	}
-
-	if (m_data.m_vectorPlayers.empty())
-	{
-		for (auto & element : data["playersForDraw"])
-		{
-			Shooter player;
-			player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
-			player.health = element["health"];
-			player.direction = element["direction"].get<std::string>();
-			player.nickname = element["nickname"].get<std::string>();
-			player.playerId = element["playerId"].get<std::string>();
-			m_data.m_vectorPlayers.push_back(player);
-		}
-	}
-
-	for (auto & element : data["playersForTable"])
-	{
-		(void)&element;
-	}
 }
 
 void Game::SendKeyMap(const CodeKey & keyCode, const bool & isPressed)

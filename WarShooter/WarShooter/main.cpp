@@ -3,6 +3,13 @@
 
 int main()
 {
-	Game game;
-	game.DoGameLoop();
+	try
+	{
+		Game game;
+		game.DoGameLoop();
+	}
+	catch (const std::exception & ex)
+	{
+		std::cerr << "NOTE: " << ex.what() << std::endl;
+	}
 }

@@ -15,7 +15,6 @@ public:
 	SocketMaster(const std::string & port)
 	{
 		m_client.connect(port);
-
 		m_client.socket()->on_error([&](const sio::message::ptr & msg) {
 			std::cerr << "ERROR: " << std::endl << msg->get_string() << std::endl;
 		});
@@ -39,6 +38,11 @@ public:
 	void Emit(const std::string & key, const std::string & msg)
 	{
 		m_client.socket()->emit(key, msg);
+	}
+
+	std::string GetSessionId() const
+	{
+		return std::string(m_client.get_sessionid());
 	}
 
 	bool IsConnected() const

@@ -9,7 +9,7 @@ public:
 	void Update(float dt);
 	void Draw(sf::RenderWindow & window);
 	void SetPosition(const sf::Vector2f & position);
-	void SetIsDraw(const bool & isDraw);
+	void SetIsDraw(bool isDraw);
 	bool GetIsDraw() const;
 
 private:
