@@ -7,7 +7,7 @@ using json = nlohmann::json;
 
 namespace
 {
-	static const auto PORT = "https://192.168.21.54:3000";
+	static const auto PORT = "http://192.168.21.54:3000";
 }
 
 Game::Game()
