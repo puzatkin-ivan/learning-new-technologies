@@ -4,6 +4,10 @@
 const sf::Vector2u WINDOW_SIZE = { 1500, 850 };
 const sf::Vector2f TEXT_POSITION = { 50, 400 };
 const unsigned FRAME_LIMIT = 60;
+const sf::Vector2f TABLE_POSITION = { 150.f, 150.f };
+const sf::Vector2f TABLE_SIZE = { 1200.f, 500.f };
+const sf::Vector2f LINE_TABLE_POSITION = { 150.f, 250.f };
+const sf::Vector2f LINE_TABLE_SIZE = { 1200.f, 10.f };
 
 struct KeyMap
 {
@@ -23,6 +27,7 @@ enum class CodeKey
 	A = 65,
 	D = 68,
 	S = 83,
+	R = 82,
 	ArrowUp = 38,
 	ArrowDown = 40,
 	ArrowLeft = 37,

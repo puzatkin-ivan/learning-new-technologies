@@ -4,9 +4,10 @@
 
 const std::string DEFALUT_INPUT_STRING = "Enter Your Nickname";
 
-StartGameScene::StartGameScene(sf::RenderWindow & window, CAssets & assets, CAudioPlayer & audioPlayer)
+StartGameScene::StartGameScene(sf::RenderWindow & window, CAssets & assets, SocketMaster & socketMaster, CAudioPlayer & audioPlayer)
 	:m_window(window)
 	,m_assets(assets)
+	,m_socketMaster(socketMaster)
 	,m_audioPlayer(audioPlayer)
 {
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
@@ -14,24 +15,29 @@ StartGameScene::StartGameScene(sf::RenderWindow & window, CAssets & assets, CAud
 	m_background.setTextureRect(sf::IntRect(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y));
 	m_background.setTexture(m_assets.MENU_BACKGROUND_TEXTURE);
 
-	m_stringWithText = DEFALUT_INPUT_STRING;
+	m_textNickname = DEFALUT_INPUT_STRING;
 
-	m_text.setFont(m_assets.ARIAL_FONT);
-	m_text.setString(m_stringWithText);
-	m_text.setPosition(TEXT_POSITION);
-	m_text.setCharacterSize(30);
+	m_nickname.setFont(m_assets.ARIAL_FONT);
+	m_nickname.setString(m_textNickname);
+	m_nickname.setPosition(TEXT_POSITION);
+	m_nickname.setCharacterSize(30);
 
+	m_message.setFont(m_assets.ARIAL_FONT);
+	m_message.setCharacterSize(14);
+	m_message.setPosition({ 100.f, 200.f });
+	m_message.setFillColor(sf::Color::Red);
 
-	m_title.setFont(m_assets.ARIAL_FONT);
-	m_title.setPosition({ 100.f, 100.f });
-	m_title.setFillColor(sf::Color::Yellow);
-	m_title.setCharacterSize(50);
-	m_title.setString("Start Menu Game");
+	m_title.setFont(m_assets.CRETE_ROUND_FONT);
+	m_title.setString("WarShooter 2.0");;
+	m_title.setPosition({ 0.f, 250.f });
+	m_title.setFillColor(sf::Color::White);
+	m_title.setCharacterSize(75);
 }
 
 SceneInfo StartGameScene::Advance(float dt, bool isConnected)
 {
 	m_nextSceneType = SceneType::StartScene;
+	m_isNextScene = false;
 	CheckEvents();
 	Update(dt, isConnected);
 	m_window.setView(m_view);
@@ -67,24 +73,27 @@ void StartGameScene::CheckInputText(const sf::Event & event)
 		{
 			if (codeKey == int(CodeKey::BackSpace))
 			{
-				if (!m_stringWithText.empty() && m_stringWithText != DEFALUT_INPUT_STRING)
+				if (!m_textNickname.empty() && m_textNickname != DEFALUT_INPUT_STRING)
 				{
-					m_stringWithText.pop_back();
+					m_textNickname.pop_back();
 				}
 				else
 				{
-					m_stringWithText = "";
+					m_textNickname = "";
 				}
 			}
-			else
+			else if (codeKey != 10 && codeKey != 13)
 			{
-				if (m_stringWithText == DEFALUT_INPUT_STRING)
+				if (m_textNickname == DEFALUT_INPUT_STRING)
 				{
-					m_stringWithText = "";
+					m_textNickname = static_cast<char>(codeKey);
 				}
-				m_stringWithText += static_cast<char>(codeKey);
+				else
+				{
+					m_textNickname += static_cast<char>(codeKey);
+				}
 			}
-			m_text.setString(m_stringWithText);
+			m_nickname.setString(m_textNickname);
 		}
 	}
 }
@@ -95,7 +104,7 @@ void StartGameScene::CheckSpecialKeys(const sf::Event & event)
 	{
 		switch (event.key.code)
 		{
-		case sf::Keyboard::F5:
+		case sf::Keyboard::Return:
 			m_isNextScene = true;
 			break;
 		case sf::Keyboard::F10:
@@ -129,6 +138,18 @@ void StartGameScene::Update(float dt, bool isConnected)
 	if (isConnected && m_isNextScene && isNoEmptyStringNickname())
 	{
 		m_nextSceneType = SceneType::GameScene;
+		m_socketMaster.Emit("nickname", m_textNickname);
+	}
+	else if (m_isNextScene)
+	{
+		if (!isConnected)
+		{
+			m_message.setString("No Connection to the Server");
+		}
+		else
+		{
+			m_message.setString("No Entered Nickname");
+		}
 	}
 }
 
@@ -136,11 +157,17 @@ void StartGameScene::Draw()
 {
 	m_window.clear(sf::Color::White);
 	m_window.draw(m_background);
-	m_window.draw(m_text);
+	m_window.draw(m_nickname);
 	m_window.draw(m_title);
+	m_window.draw(m_message);
 }
 
 bool StartGameScene::isNoEmptyStringNickname() const
 {
-	return (!m_stringWithText.empty() && m_stringWithText != DEFALUT_INPUT_STRING);
+	return (!m_textNickname.empty() && m_textNickname != DEFALUT_INPUT_STRING);
+}
+
+std::string StartGameScene::GetNickname() const
+{
+	return m_textNickname;
 }

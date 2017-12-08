@@ -2,7 +2,7 @@
 
 #include "DataOfServer.h"
 
-void DataOfServer::Clear() // optimize
+void DataOfServer::Clear()
 {
 	m_vectorBlocks.clear();
 	m_vectorBullets.clear();

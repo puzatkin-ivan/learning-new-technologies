@@ -11,32 +11,11 @@ PauseScene::PauseScene(sf::RenderWindow & window, CAssets & assets)
 	m_background.setTextureRect(sf::IntRect(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y));
 	m_background.setTexture(m_assets.MENU_BACKGROUND_TEXTURE); 
 	
-	m_title.setFont(m_assets.ARIAL_FONT);
+	m_title.setFont(m_assets.CRETE_ROUND_FONT);
 	m_title.setPosition({ 100.f, 100.f });
-	m_title.setFillColor(sf::Color::Yellow);
+	m_title.setFillColor(sf::Color::White);
 	m_title.setCharacterSize(50);
 	m_title.setString("Pause Game");
-}
-
-void PauseScene::CheckSpecialKey(const sf::Event & event)
-{
-	switch (event.key.code)
-	{
-	case sf::Keyboard::K:
-		ChangeStatusAudioPlayer();
-		break;
-	case sf::Keyboard::J:
-		m_audioPlayer.PlayNextTrack();
-		break;
-	case sf::Keyboard::L:
-		m_audioPlayer.PlayPrevTrack();
-		break;
-	case sf::Keyboard::Tab:
-		break;
-	case sf::Keyboard::Q:  //Escape:
-		m_nextSceneType = SceneType::GameScene;
-		break;
-	}
 }
 
 SceneInfo PauseScene::Advance(float dt)
@@ -56,10 +35,7 @@ void PauseScene::CheckEvents()
 	sf::Event event;
 	if (m_window.pollEvent(event))
 	{
-		if (event.type == sf::Event::KeyReleased)
-		{
-			CheckSpecialKey(event);
-		}
+		CheckSpecialKey(event);
 
 		if (event.type == sf::Event::Closed)
 		{
@@ -89,5 +65,29 @@ void PauseScene::ChangeStatusAudioPlayer()
 	else
 	{
 		m_audioPlayer.Pause();
+	}
+}
+
+void PauseScene::CheckSpecialKey(const sf::Event & event)
+{
+	if (event.type == sf::Event::KeyReleased)
+	{
+		switch (event.key.code)
+		{
+		case sf::Keyboard::K:
+			ChangeStatusAudioPlayer();
+			break;
+		case sf::Keyboard::J:
+			m_audioPlayer.PlayNextTrack();
+			break;
+		case sf::Keyboard::L:
+			m_audioPlayer.PlayPrevTrack();
+			break;
+		case sf::Keyboard::Tab:
+			break;
+		case sf::Keyboard::Escape:
+			m_nextSceneType = SceneType::GameScene;
+			break;
+		}
 	}
 }

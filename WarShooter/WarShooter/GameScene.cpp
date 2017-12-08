@@ -15,9 +15,10 @@ GameScene::GameScene(sf::RenderWindow & window, GameContext & gameContext, Socke
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
 
-
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 	m_audioPlayer.SetVolume(100);
+
+	m_isDrawTable = false;
 }
 
 SceneInfo GameScene::Advance(float dt)
@@ -45,7 +46,7 @@ void GameScene::Update(float deltaTime)
 void GameScene::Draw()
 {
 	m_window.clear(WINDOW_COLOR);
-	m_gameContext.Draw(m_window);
+	m_gameContext.Draw(m_window, m_isDrawTable);
 }
 
 void GameScene::CheckEvents()
@@ -76,6 +77,10 @@ void GameScene::CheckKeyPressed(const sf::Event & event)
 		const auto isPressed = true;
 		CheckMovement(event, isPressed);
 		CheckDirection(event, isPressed);
+		if (event.key.code == sf::Keyboard::Tab)
+		{
+			m_isDrawTable = isPressed;
+		}
 	}
 }
 
@@ -86,7 +91,11 @@ void GameScene::CheckKeyReleased(const sf::Event & event)
 		const auto isReleased = false;
 		CheckMovement(event, isReleased);
 		CheckDirection(event, isReleased);
-		CheckSpecialKey(event);
+		CheckSpecialKey(event, isReleased);
+		if (event.key.code == sf::Keyboard::Tab)
+		{
+			m_isDrawTable = isReleased;
+		}
 	}
 }
 
@@ -128,7 +137,7 @@ void GameScene::CheckDirection(const sf::Event & event, bool isPressed)
 	}
 }
 
-void GameScene::SendKeyMap(const CodeKey & keyCode, const bool & isPressed)
+void GameScene::SendKeyMap(const CodeKey & keyCode, bool isPressed)
 {
 	json message;
 	message["key"] = keyCode;
@@ -136,13 +145,10 @@ void GameScene::SendKeyMap(const CodeKey & keyCode, const bool & isPressed)
 	m_socketMaster.Emit("keyMap", message.dump());
 }
 
-void GameScene::CheckSpecialKey(const sf::Event & event)
+void GameScene::CheckSpecialKey(const sf::Event & event, bool isPressed)
 {
 	switch (event.key.code)
 	{
-	case sf::Keyboard::End:
-		m_nextSceneType = SceneType::GameOverScene;
-		break;
 	case sf::Keyboard::F10:
 		ChangeStatusAudioPlayer();
 		break;
@@ -152,12 +158,12 @@ void GameScene::CheckSpecialKey(const sf::Event & event)
 	case sf::Keyboard::F11:
 		m_audioPlayer.PlayPrevTrack();
 		break;
-	case sf::Keyboard::Tab:
-		break;
-	case sf::Keyboard::Q://Escape:
+	case sf::Keyboard::Escape:
 		m_nextSceneType = SceneType::PauseScene;
 		break;
 	}
+
+	(void)&isPressed;
 }
 
 void GameScene::ChangeStatusAudioPlayer()

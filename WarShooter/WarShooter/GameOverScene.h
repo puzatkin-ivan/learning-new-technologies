@@ -2,31 +2,33 @@
 #include "Assets.h"
 #include "sheet.h"
 #include "GameContext.h"
+#include "SocketMaster.h"
 #include <AudioPlayer.h>
 
 class GameOverScene
 {
 public:
-	GameOverScene(sf::RenderWindow & window, GameContext & gameContext, CAssets & assets);
+	GameOverScene(sf::RenderWindow & window, GameContext & gameContext, SocketMaster & socketMaster, CAssets & assets, CAudioPlayer & audioPlayer);
 
-	SceneInfo Advance(float dt);
+	SceneInfo Advance(float dt, const std::string & ip);
 private:
 	void CheckEvents();
 	void CheckSpecialKeys(const sf::Event & event);
 	void ChangeTypeScene();
 	void ChangeStatusAudioPlayer();
+	void SendKey(const CodeKey & keyCode);
 
 	void Draw();
-	void Update(float dt);
+	void Update(float dt, const std::string & ip);
 
 	sf::RenderWindow & m_window;
 	sf::View m_view;
 	sf::Sprite m_background;
 	sf::Text m_title;
-
+	SocketMaster & m_socketMaster;
 	CAssets & m_assets;
 	GameContext & m_gameContext;
-	CAudioPlayer m_audioPlayer;
+	CAudioPlayer & m_audioPlayer;
 
 	SceneType m_nextSceneType;
 };

@@ -7,6 +7,7 @@ using json = nlohmann::json;
 
 GameContext::GameContext(CAssets & assets)
 	:m_assets(assets)
+	,m_table(assets)
 {
 	m_background.setTextureRect(sf::IntRect(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y));
 	m_background.setTexture(m_assets.BACKGROUND_TEXTURE);
@@ -17,6 +18,7 @@ void GameContext::Update(sf::View & view, const std::string & ip)
 	UpdateBlocks(m_data.m_vectorBlocks);
 	UpdateBullets(m_data.m_vectorBullets);
 	UpdatePlayers(m_data.m_vectorPlayers, view, ip);
+	m_table.Update(m_listPlayers, view.getCenter(), ip);
 }
 
 bool GameContext::isClientDead() const
@@ -55,6 +57,7 @@ void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::
 				const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
 				m_background.setPosition(newPositionBackground);
 				isDeadClient = player->GetIsDead();
+				m_table.SetPosition(playerPosition);
 			}
 			player->Update();
 			m_players.push_back(std::move(player));
@@ -100,7 +103,7 @@ void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::
 	}
 }
 
-void GameContext::Draw(sf::RenderWindow & window)
+void GameContext::Draw(sf::RenderWindow & window, bool isDrawTable)
 {
 	window.draw(m_background);
 	for (auto & bullet : m_bullets)
@@ -120,6 +123,11 @@ void GameContext::Draw(sf::RenderWindow & window)
 		{
 			player->Draw(window);
 		}
+	}
+
+	if (isDrawTable)
+	{
+		m_table.Draw(window);
 	}
 }
 
@@ -241,8 +249,44 @@ void GameContext::ProcessUpdateData(const std::string & path)
 		}
 	}
 
-	for (auto & element : data["playersForTable"])
+	if (m_listPlayers.empty())
 	{
-		(void)&element;
+		for (auto & element : data["playersForTable"])
+		{
+			PlayerTable newPlayer;
+			InitPlayerTable(element, newPlayer);
+			m_listPlayers.push_back(newPlayer);
+		}
 	}
+	else
+	{
+		size_t index = 0;
+		for (auto & element : data["playersForTable"])
+		{
+			if (index < m_listPlayers.size())
+			{
+				auto & player = m_listPlayers[index];
+				InitPlayerTable(element, player);
+
+			}
+			else
+			{
+				PlayerTable newPlayer;
+				InitPlayerTable(element, newPlayer);
+				m_listPlayers.push_back(newPlayer);
+			}
+
+			++index;
+		}
+	}
+}
+
+void GameContext::InitPlayerTable(nlohmann::basic_json<> & path, PlayerTable & newPlayer)
+{
+	newPlayer.playerId = path["playerId"].get<std::string>();
+	newPlayer.nickname = path["nickname"].get<std::string>();
+	newPlayer.isDead = path["isDead"].get<bool>();
+	newPlayer.killCount = path["killCount"].get<int>();
+	newPlayer.score = path["score"].get<int>();
+	newPlayer.deathCount = path["deathCount"].get<int>();
 }

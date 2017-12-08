@@ -11,6 +11,7 @@ CAssets::CAssets()
 	AddImage(WINDOW_ICON, "images/icon.png");
 
 	AddFont(ARIAL_FONT, "fonts/arial.ttf");
+	AddFont(CRETE_ROUND_FONT, "fonts/BreeSerif.ttf");
 }
 
 CAssets::~CAssets()

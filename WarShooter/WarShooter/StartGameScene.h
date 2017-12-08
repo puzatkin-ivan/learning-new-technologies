@@ -1,15 +1,18 @@
 #pragma once
 #include "Assets.h"
 #include "sheet.h"
+#include "SocketMaster.h"
 #include <AudioPlayer.h>
 
 class StartGameScene
 {
 public:
 	StartGameScene() = delete;
-	StartGameScene(sf::RenderWindow & window, CAssets & assets, CAudioPlayer & audioPlayer);
+	StartGameScene(sf::RenderWindow & window, CAssets & assets, SocketMaster & socketMaster, CAudioPlayer & audioPlayer);
 
 	SceneInfo Advance(float dt, bool isConnected);
+	std::string GetNickname() const;
+
 private:
 	void CheckEvents();
 	void CheckInputText(const sf::Event & event);
@@ -23,13 +26,17 @@ private:
 	sf::RenderWindow & m_window;
 	sf::View m_view;
 	CAssets & m_assets;
+	SocketMaster & m_socketMaster;
+	CAudioPlayer & m_audioPlayer;
+	
 	sf::Sprite m_background;
 
-	CAudioPlayer & m_audioPlayer;
-	sf::Text m_text;
+	sf::Text m_nickname;
 	sf::Text m_title;
+	sf::Text m_message;
 
-	std::string m_stringWithText;
 	SceneType m_nextSceneType;
 	bool  m_isNextScene = false;
+	std::string m_stringWithMessage;
+	std::string m_textNickname;
 };

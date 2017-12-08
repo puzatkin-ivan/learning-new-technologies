@@ -3,6 +3,7 @@
 #include "SocketMaster.h"
 #include <AudioPlayer.h>
 #include "Assets.h"
+#include "Table.h"
 
 class GameScene
 {
@@ -18,10 +19,10 @@ private:
 	void CheckKeyReleased(const sf::Event & event);
 	void CheckMovement(const sf::Event & event, bool isPressed);
 	void CheckDirection(const sf::Event & event, bool isPressed);
-	void CheckSpecialKey(const sf::Event & event);
+	void CheckSpecialKey(const sf::Event & event, bool isPressed);
 	void ChangeStatusAudioPlayer();
 
-	void SendKeyMap(const CodeKey & keyCode, const bool & isPressed);
+	void SendKeyMap(const CodeKey & keyCode, bool isPressed);
 	void ProcessUpdateData(const std::string & path);
 
 	void Update(float deltaTime);
@@ -37,4 +38,6 @@ private:
 	DataOfServer m_data;
 
 	SceneType m_nextSceneType;
+	
+	bool m_isDrawTable;
 };
