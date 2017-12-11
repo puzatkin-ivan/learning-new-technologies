@@ -1,14 +1,17 @@
 #pragma once
+
+#include <AudioPlayer.h>
 #include "GameContext.h"
 #include "SocketMaster.h"
-#include <AudioPlayer.h>
 #include "Assets.h"
 #include "Table.h"
 
 class GameScene
 {
 public:
+	GameScene() = delete;
 	GameScene(sf::RenderWindow & window, GameContext & gameContext, SocketMaster & socketMaster, CAudioPlayer & audioPlayer);
+	~GameScene() = default;
 
 	SceneInfo Advance(float dt);
 
@@ -23,7 +26,6 @@ private:
 	void ChangeStatusAudioPlayer();
 
 	void SendKeyMap(const CodeKey & keyCode, bool isPressed);
-	void ProcessUpdateData(const std::string & path);
 
 	void Update(float deltaTime);
 	void Draw();

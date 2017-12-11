@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Assets.h"
 #include "sheet.h"
 #include "GameContext.h"
@@ -8,7 +9,9 @@
 class GameOverScene
 {
 public:
-	GameOverScene(sf::RenderWindow & window, GameContext & gameContext, SocketMaster & socketMaster, CAssets & assets, CAudioPlayer & audioPlayer);
+	GameOverScene() = delete;
+	GameOverScene(sf::RenderWindow & window, GameContext & gameContext, SocketMaster & socketMaster, SAssets & assets, CAudioPlayer & audioPlayer);
+	~GameOverScene() = default;
 
 	SceneInfo Advance(float dt, const std::string & ip);
 private:
@@ -26,7 +29,7 @@ private:
 	sf::Sprite m_background;
 	sf::Text m_title;
 	SocketMaster & m_socketMaster;
-	CAssets & m_assets;
+	SAssets & m_assets;
 	GameContext & m_gameContext;
 	CAudioPlayer & m_audioPlayer;
 

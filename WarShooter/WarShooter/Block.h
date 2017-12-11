@@ -3,15 +3,9 @@
 struct Block
 {
 public:
-	sf::Vector2f getPosition() const
-	{
-		return m_position;
-	}
+	sf::Vector2f getPosition() const;
 
-	void setPosition(const sf::Vector2f & position)
-	{
-		m_position = position;
-	}
+	void setPosition(const sf::Vector2f & position);
 
 private:
 	sf::Vector2f m_position;

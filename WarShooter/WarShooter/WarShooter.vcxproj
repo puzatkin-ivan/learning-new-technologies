@@ -168,7 +168,6 @@ xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
     <ClInclude Include="Assets.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockView.h" />
-    <ClInclude Include="Bullet.h" />
     <ClInclude Include="BulletView.h" />
     <ClInclude Include="DataOfServer.h" />
     <ClInclude Include="Game.h" />
@@ -177,6 +176,7 @@ xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="PauseScene.h" />
     <ClInclude Include="PlayerTable.h" />
+    <ClInclude Include="PlayerTableView.h" />
     <ClInclude Include="sheet.h" />
     <ClInclude Include="Shooter.h" />
     <ClInclude Include="ShooterView.h" />
@@ -188,6 +188,7 @@ xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Assets.cpp" />
+    <ClCompile Include="Block.cpp" />
     <ClCompile Include="BlockView.cpp" />
     <ClCompile Include="BulletView.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -195,8 +196,11 @@ xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
     <ClCompile Include="GameOverScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="PauseScene.cpp" />
+    <ClCompile Include="PlayerTable.cpp" />
+    <ClCompile Include="PlayerTableView.cpp" />
     <ClCompile Include="ShooterView.cpp" />
     <ClCompile Include="DataOfServer.cpp" />
+    <ClCompile Include="SocketMaster.cpp" />
     <ClCompile Include="StartGameScene.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

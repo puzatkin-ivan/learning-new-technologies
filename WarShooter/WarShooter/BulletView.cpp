@@ -1,10 +1,10 @@
 #include "stdafx.h"
 #include "BulletView.h"
 
-BulletView::BulletView(CAssets & assets, const sf::Vector2f & position)
+BulletView::BulletView(SAssets & assets, const sf::Vector2f & position)
 	:m_assets(assets)
 {
-	m_body.setPosition(position - (0.5f * sf::Vector2f(m_assets.BULLET_TEXTURE.getSize())));
+	m_body.setPosition(position - 0.5f * sf::Vector2f(m_assets.BULLET_TEXTURE.getSize()));
 	SetTexture(m_assets.BULLET_TEXTURE);
 
 	m_isDraw = true;
@@ -15,12 +15,15 @@ void BulletView::Update(float dt)
 	(void)&dt;
 }
 
-void BulletView::Draw(sf::RenderWindow & window)
+void BulletView::Draw(sf::RenderWindow & window) const
 {
-	window.draw(m_body);
+	if (m_isDraw)
+	{
+		window.draw(m_body);
+	}
 }
 
-void BulletView::SetIsDraw(bool isDraw)
+void BulletView::SetOpportunityDrawing(bool isDraw)
 {
 	m_isDraw = isDraw;
 }
@@ -38,5 +41,5 @@ void BulletView::SetTexture(sf::Texture & texture)
 
 void BulletView::SetPosition(const sf::Vector2f & position)
 {
-	m_body.setPosition(position - (0.5f * sf::Vector2f(m_assets.BULLET_TEXTURE.getSize())));
+	m_body.setPosition(position - 0.5f * sf::Vector2f(m_assets.BULLET_TEXTURE.getSize()));
 }

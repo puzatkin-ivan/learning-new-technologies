@@ -1,11 +1,26 @@
 #include "stdafx.h"
-#include "ShooterView.h"
+
 #include <iostream>
+#include "ShooterView.h"
 
-const auto NO_DIRECTION_MOVE = 0.f;
-const auto SPEED = 200.f;
+namespace
+{
 
-ShooterView::ShooterView(CAssets & assets, const Shooter & playerOfServer)
+static const auto NO_DIRECTION_MOVE = 0.f;
+
+static const auto SPEED = 200.f;
+
+static const auto Up = "direction_up";
+
+static const auto Down = "direction_down";
+
+static const auto Left = "direction_left";
+
+static const auto Right = "direction_right";
+
+}
+
+ShooterView::ShooterView(SAssets & assets, const Shooter & playerOfServer)
 	:m_assets(assets)
 {
 	SetParameters(playerOfServer);
@@ -19,30 +34,33 @@ void ShooterView::SetTexture(const sf::Texture & texture)
 	m_body.setTexture(texture);
 }
 
-void ShooterView::Draw(sf::RenderWindow & window)
+void ShooterView::Draw(sf::RenderWindow & window) const
 {
-	window.draw(m_body);
+	if (m_isDraw)
+	{
+		window.draw(m_body);
+	}
 }
 
 void ShooterView::Update()
 {
-	if (m_direction == "direction_right")
+	if (m_direction == Right)
 	{
 		m_body.setRotation(90.f);
 		const auto offset = sf::Vector2f(float(m_body.getTexture()->getSize().x), 0.f);
 		m_body.setPosition(m_body.getPosition() + offset);
 	}
-	else if (m_direction == "direction_left")
+	else if (m_direction == Left)
 	{
 		m_body.setRotation(-90.f);
 		const auto offset = sf::Vector2f(0.f, float(m_body.getTexture()->getSize().y));
 		m_body.setPosition(m_body.getPosition() + offset);
 	}
-	else if (m_direction == "direction_up")
+	else if (m_direction == Up)
 	{
 		m_body.setRotation(0.f);
 	}
-	else if (m_direction == "direction_down")
+	else if (m_direction == Down)
 	{
 		m_body.setRotation(180.f);
 		const auto offset = sf::Vector2f(m_body.getTexture()->getSize());
@@ -60,7 +78,7 @@ bool ShooterView::GetIsDraw() const
 	return m_isDraw;
 }
 
-void ShooterView::SetIsDraw(bool isDraw)
+void ShooterView::SetOpportunityDrawing(bool isDraw)
 {
 	m_isDraw = isDraw;
 }
@@ -82,7 +100,7 @@ sf::Vector2f ShooterView::GetSize() const
 
 void ShooterView::SetParameters(const Shooter & playerOfServer)
 {
-	m_body.setPosition(playerOfServer.position - (0.5f * sf::Vector2f(m_assets.PLAYER_TEXTURE.getSize())));
+	m_body.setPosition(playerOfServer.position - 0.5f * sf::Vector2f(m_assets.PLAYER_TEXTURE.getSize()));
 	m_direction = playerOfServer.direction;
 	m_health = playerOfServer.health;
 	m_ip = playerOfServer.playerId;

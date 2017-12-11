@@ -1,11 +1,10 @@
 #include "stdafx.h"
 
 #include "GameContext.h"
-#include <iostream>
 
 using json = nlohmann::json;
 
-GameContext::GameContext(CAssets & assets)
+GameContext::GameContext(SAssets & assets)
 	:m_assets(assets)
 	,m_table(assets)
 {
@@ -16,14 +15,13 @@ GameContext::GameContext(CAssets & assets)
 void GameContext::Update(sf::View & view, const std::string & ip)
 {
 	UpdateBlocks(m_data.m_vectorBlocks);
-	UpdateBullets(m_data.m_vectorBullets);
 	UpdatePlayers(m_data.m_vectorPlayers, view, ip);
 	m_table.Update(m_listPlayers, view.getCenter(), ip);
 }
 
 bool GameContext::isClientDead() const
 {
-	return isDeadClient;
+	return m_isDeadClient;
 }
 
 void GameContext::UpdateBlocks(const std::vector<Block> & vectorBlocks)
@@ -37,92 +35,70 @@ void GameContext::UpdateBlocks(const std::vector<Block> & vectorBlocks)
 	}
 }
 
-void GameContext::UpdateBullets(const std::vector<Bullet> & vectorBullets)
-{
-	(void)&vectorBullets;
-}
-
 void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::View & view, const std::string & ip)
 {
-	if (m_players.empty())
+	size_t index = 0;
+	for (auto & playerObject : vectorPlayers)
 	{
-		for (auto & playerObject : vectorPlayers)
+		if (index < m_players.size())
 		{
-			auto player = std::make_unique<ShooterView>(m_assets, playerObject);			
-			if (player->GetIp() == ip)
-			{
-				const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();
-				view.setCenter(playerPosition);
-
-				const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
-				m_background.setPosition(newPositionBackground);
-				isDeadClient = player->GetIsDead();
-				m_table.SetPosition(playerPosition);
-			}
-			player->Update();
-			m_players.push_back(std::move(player));
-		}
-	}
-	else
-	{
-		size_t index = 0;
-		for (auto & playerObject : vectorPlayers)
-		{
-			if (index < m_players.size())
+			if (playerObject.isDraw)
 			{
 				m_players[index]->SetParameters(playerObject);
-				if (m_players[index]->GetIp() == ip)
-				{
-					const sf::Vector2f playerPosition = m_players[index]->GetPosition() + 0.5f * m_players[index]->GetSize();
-					view.setCenter(playerPosition);
-
-					const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
-					m_background.setPosition(newPositionBackground);
-					isDeadClient = m_players[index]->GetIsDead();
-				}
+				SetCenterView(view, m_players[index], ip);
 				m_players[index]->Update();
-				m_players[index]->SetIsDraw(true);
-
-				++index;
+				m_players[index]->SetOpportunityDrawing(true);
 			}
 			else
 			{
-				auto player = std::make_unique<ShooterView>(m_assets, playerObject);
-				player->Update();
-				m_players.push_back(std::move(player));
+				m_players[index]->SetOpportunityDrawing(false);
 			}
+		}
+		else
+		{
+			auto player = std::make_unique<ShooterView>(m_assets, playerObject);
+			SetCenterView(view, player, ip);
+			player->Update();
+			m_players.push_back(std::move(player));
 		}
 
-		if (index < m_players.size())
-		{
-			for (index; index < m_players.size(); ++index)
-			{
-				m_players[index]->SetIsDraw(false);
-			}
-		}
+		++index;
+	}
+	
+	for (index; index < m_players.size(); ++index)
+	{
+		m_players[index]->SetOpportunityDrawing(false);
 	}
 }
 
-void GameContext::Draw(sf::RenderWindow & window, bool isDrawTable)
+void GameContext::SetCenterView(sf::View & view, const std::unique_ptr<ShooterView> & player, const std::string & ip)
+{
+	if (player->GetIp() == ip)
+	{
+		const sf::Vector2f playerPosition = player->GetPosition() + 0.5f * player->GetSize();
+		view.setCenter(playerPosition);
+
+		const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
+		m_background.setPosition(newPositionBackground);
+
+		m_isDeadClient = player->GetIsDead();
+	}
+}
+
+void GameContext::Draw(sf::RenderWindow & window, bool isDrawTable) const
 {
 	window.draw(m_background);
-	for (auto & bullet : m_bullets)
+	for (const auto & bullet : m_bullets)
 	{
-		if (bullet->GetIsDraw())
-		{
-			bullet->Draw(window);
-		}
+		bullet->Draw(window);
 	}
-	for (auto & block : m_blocks)
+	for (const auto & block : m_blocks)
 	{
 		block->Draw(window);
 	}
-	for (auto & player : m_players)
+	for (const auto & player : m_players)
 	{
-		if (player->GetIsDraw())
-		{
 			player->Draw(window);
-		}
 	}
 
 	if (isDrawTable)
@@ -135,158 +111,149 @@ void GameContext::Draw(sf::RenderWindow & window, bool isDrawTable)
 void GameContext::ProcessInitMessage(const std::string & path)
 {
 	auto data = json::parse(path);
-	for (auto & element : data["blocks"])
+
+	for (auto & element : data[ARRAY_BLOCKS])
 	{
 		Block block;
-		block.setPosition(sf::Vector2f(float(element["x"]), float(element["y"])));
+		block.setPosition(sf::Vector2f(float(element[X]), float(element[Y])));
 		m_data.m_vectorBlocks.push_back(block);
 	}
 	
-	m_data.m_vectorPlayers.clear();
-	for (auto & element : data["players"])
+	for (auto & element : data[ARRAY_PLAYERS])
 	{
 		Shooter player;
-		player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
-		player.health = element["health"];
-		player.direction = element["direction"].get<std::string>();
-		player.nickname = "";
-		player.playerId = element["playerId"].get<std::string>();
+		InitParametersPlayer(element, player);
 		m_data.m_vectorPlayers.push_back(player);
 	}
 
-	for (auto & element : data["bullets"])
+	for (auto & element : data[ARRAY_BULLETS])
 	{
-		auto x = float(element["x"]);
-		auto y = float(element["y"]);
+		auto x = float(element[X]);
+		auto y = float(element[Y]);
 		auto position = sf::Vector2f(x, y);
 		auto bullet = std::make_unique<BulletView>(m_assets, position);
 		m_bullets.push_back(std::move(bullet));
 	}
 }
 
+void GameContext::InitParametersPlayer(const nlohmann::basic_json<> & path, Shooter & player)
+{
+	
+	player.position = sf::Vector2f(float(path[X]), float(path[Y]));
+	player.health = path[HEALTH];
+	player.direction = path[DIRECTION].get<std::string>();
+	player.nickname = !path[NICKNAME].get<std::string>().empty() ? path[NICKNAME].get<std::string>() : "";
+	player.playerId = path[PLAYER_ID].get<std::string>();
+}
+
 void GameContext::ProcessUpdateData(const std::string & path)
 {
 	auto data = json::parse(path);
-	if (m_bullets.empty())
+	
+	UpdateParametersBullets(data);
+	UpdateParametersPlayers(data);
+	UpdateParametersTable(data);
+}
+
+void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
+{
+	size_t index = 0;
+	for (auto & element : data[ARRAY_BULLETS])
 	{
-		for (auto & element : data["bullets"])
-		{
-			auto x = float(element["x"]);
-			auto y = float(element["y"]);
-			auto position = sf::Vector2f(x, y);
-			auto bullet = std::make_unique<BulletView>(m_assets, position);
-			m_bullets.push_back(std::move(bullet));
-		}
-	}
-	else 
-	{
-		size_t index = 0;
-		for (auto & element : data["bullets"])
-		{
-			auto x = float(element["x"]);
-			auto y = float(element["y"]);
-			auto position = sf::Vector2f(x, y);
-			if (index < m_bullets.size())
-			{
-				m_bullets[index]->SetPosition(position);
-				m_bullets[index]->SetIsDraw(true);
-				++index;
-			}
-			else
-			{
-				auto bullet = std::make_unique<BulletView>(m_assets, position);
-				bullet->SetIsDraw(true);
-				m_bullets.push_back(std::move(bullet));
-			}
-		}
+		auto position = sf::Vector2f(float(element[X]), float(element[Y]));
+
 		if (index < m_bullets.size())
 		{
-			for (index; index <= m_bullets.size() - 1; ++index)
-			{
-				m_bullets[index]->SetIsDraw(false);
-			}
+			m_bullets[index]->SetPosition(position);
+			m_bullets[index]->SetOpportunityDrawing(true);
 		}
+		else
+		{
+			auto bullet = std::make_unique<BulletView>(m_assets, position);
+			bullet->SetOpportunityDrawing(true);
+			m_bullets.push_back(std::move(bullet));
+		}
+
+		++index;
 	}
 
-	if (m_data.m_vectorPlayers.empty())
+	for (index; index < m_bullets.size(); ++index)
 	{
-		for (auto & element : data["playersForDraw"])
+		m_bullets[index]->SetOpportunityDrawing(false);
+	}
+}
+
+void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
+{
+	size_t index = 0;
+	for (auto & element : data[ARRAY_PLAYERS_FOR_DRAW])
+	{
+		if (index < m_data.m_vectorPlayers.size())
+		{
+			auto & player = m_data.m_vectorPlayers[index];
+			InitPlayerDraw(element, player);
+		}
+		else if (!m_data.m_vectorPlayers.empty())
 		{
 			Shooter player;
-			player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
-			player.health = element["health"];
-			player.direction = element["direction"].get<std::string>();
-			player.nickname = "";
-			player.playerId = element["playerId"].get<std::string>();
+			InitPlayerDraw(element, player);
 			m_data.m_vectorPlayers.push_back(player);
 		}
-	}
-	else
-	{
-		size_t index = 0;
-		for (auto & element : data["playersForDraw"])
-		{
-			if (index < m_data.m_vectorPlayers.size())
-			{
-				auto & player = m_data.m_vectorPlayers[index];
-				player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
-				player.health = element["health"];
-				player.direction = element["direction"].get<std::string>();
-				player.nickname = "";
-				player.playerId = element["playerId"].get<std::string>();
-				++index;
-			}
-			else
-			{
-				Shooter player;
-				player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
-				player.health = element["health"];
-				player.direction = element["direction"].get<std::string>();
-				player.nickname = "";
-				player.playerId = element["playerId"].get<std::string>();
-				m_data.m_vectorPlayers.push_back(player);
-			}
-		}
-	}
 
-	if (m_listPlayers.empty())
+		++index;
+	}
+	for (index; index < m_data.m_vectorPlayers.size(); ++index)
 	{
-		for (auto & element : data["playersForTable"])
+		 m_data.m_vectorPlayers[index].isDraw = false;
+	}
+}
+
+void GameContext::InitPlayerDraw(const nlohmann::basic_json<> & path, Shooter & player)
+{
+
+	player.position = sf::Vector2f(float(path[X]), float(path[Y]));
+	player.health = path[HEALTH];
+	player.direction = path[DIRECTION].get<std::string>();
+	player.nickname = path[NICKNAME].get<std::string>();
+	player.playerId = path[PLAYER_ID].get<std::string>();
+	player.isDraw = true;
+}
+
+void GameContext::UpdateParametersTable(const nlohmann::basic_json<> & data)
+{
+	size_t index = 0;
+	for (auto & element : data[ARRAY_PLAYERS_FOR_TABLE])
+	{
+		if (index < m_listPlayers.size())
+		{
+			auto & player = m_listPlayers[index];
+			InitPlayerTable(element, player);
+
+		}
+		else 
 		{
 			PlayerTable newPlayer;
 			InitPlayerTable(element, newPlayer);
 			m_listPlayers.push_back(newPlayer);
 		}
+
+		++index;
 	}
-	else
+
+
+	for (index; index < m_listPlayers.size(); ++index)
 	{
-		size_t index = 0;
-		for (auto & element : data["playersForTable"])
-		{
-			if (index < m_listPlayers.size())
-			{
-				auto & player = m_listPlayers[index];
-				InitPlayerTable(element, player);
-
-			}
-			else
-			{
-				PlayerTable newPlayer;
-				InitPlayerTable(element, newPlayer);
-				m_listPlayers.push_back(newPlayer);
-			}
-
-			++index;
-		}
+		m_listPlayers[index].isDraw = false;
 	}
 }
 
-void GameContext::InitPlayerTable(nlohmann::basic_json<> & path, PlayerTable & newPlayer)
+void GameContext::InitPlayerTable(const nlohmann::basic_json<> & path, PlayerTable & player)
 {
-	newPlayer.playerId = path["playerId"].get<std::string>();
-	newPlayer.nickname = path["nickname"].get<std::string>();
-	newPlayer.isDead = path["isDead"].get<bool>();
-	newPlayer.killCount = path["killCount"].get<int>();
-	newPlayer.score = path["score"].get<int>();
-	newPlayer.deathCount = path["deathCount"].get<int>();
+	player.playerId = path[PLAYER_ID].get<std::string>();
+	player.nickname = path[NICKNAME].get<std::string>();
+	player.isDead = path[IS_DEAD].get<bool>();
+	player.killCount = path[KILL_COUNT].get<int>();
+	player.score = path[SCORE].get<int>();
+	player.deathCount = path[DEATH_COUNT].get<int>();
+	player.isDraw = true;
 }

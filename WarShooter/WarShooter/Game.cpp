@@ -1,15 +1,22 @@
 #include "stdafx.h"
-#include "Game.h"
 
-const sf::Color WINDOW_COLOR = sf::Color::White;
-const sf::String WINDOW_TITLE = "WarShooter 2.0";
-const std::string FOLDER_WITH_MUSIC = "sounds/";
+#include "Game.h"
 
 using json = nlohmann::json;
 
 namespace
 {
-	static const auto PORT = "http://127.0.0.1:3000";
+
+static const auto PORT = "http://127.0.0.1:3000";
+
+static const sf::Color WINDOW_COLOR = sf::Color::White;
+
+static const sf::String WINDOW_TITLE = "WarShooter 2.0";
+
+static const std::string FOLDER_WITH_MUSIC = "sounds/";
+
+static const unsigned MAX_VOLUME = 100;
+
 }
 
 Game::Game()
@@ -19,15 +26,11 @@ Game::Game()
 	,m_audioPlayer(FOLDER_WITH_MUSIC)
 	,m_startGameScene(m_window, m_assets, m_socketMaster, m_audioPlayer)
 	,m_gameScene(m_window, m_gameContext, m_socketMaster, m_audioPlayer)
-	,m_pauseScene(m_window, m_assets)
+	,m_pauseScene(m_window, m_assets, m_audioPlayer)
 	,m_gameoverScene(m_window, m_gameContext, m_socketMaster, m_assets, m_audioPlayer)
 {
-	m_socketMaster.SetHandler("new_player", [&](sio::event & e) {
-		m_gameContext.ProcessInitMessage(e.get_message()->get_string());
-	});
-	m_socketMaster.SetHandler("update_data", [&](sio::event & e) {
-		m_gameContext.ProcessUpdateData(e.get_message()->get_string());
-	});
+	m_socketMaster.SetHandler("new_player", std::bind(&Game::onInitData, this, std::placeholders::_1));
+	m_socketMaster.SetHandler("update_data", std::bind(&Game::onUpdateData, this, std::placeholders::_1));
 
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
@@ -35,8 +38,7 @@ Game::Game()
 	const auto icon = m_assets.WINDOW_ICON;
 	m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	
-	m_audioPlayer.Pause();
-	m_audioPlayer.SetVolume(100);
+	m_audioPlayer.SetVolume(MAX_VOLUME);
 }
 
 Game::~Game()
@@ -67,4 +69,16 @@ void Game::DoGameLoop()
 			break;
 		}
 	}
+}
+
+void Game::onInitData(sio::event & event)
+{
+	auto data = event.get_message()->get_string();
+	m_gameContext.ProcessInitMessage(data);
+}
+
+void Game::onUpdateData(sio::event & event)
+{
+	auto data = event.get_message()->get_string();
+	m_gameContext.ProcessUpdateData(data);
 }

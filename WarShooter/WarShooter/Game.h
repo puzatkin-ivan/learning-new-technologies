@@ -21,12 +21,16 @@ public:
 	void DoGameLoop();
 
 private:	
+	void onInitData(sio::event & event);
+	void onUpdateData(sio::event & event);
+
 	sf::RenderWindow m_window;
 
-	CAssets m_assets;
+	SAssets m_assets;
 	SocketMaster m_socketMaster;
 	GameContext m_gameContext;
 	CAudioPlayer m_audioPlayer;
+
 	StartGameScene m_startGameScene;
 	GameScene m_gameScene;
 	PauseScene m_pauseScene;

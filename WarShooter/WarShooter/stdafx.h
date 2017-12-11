@@ -4,6 +4,7 @@
 #include <functional>
 
 #include <memory>
+#include <iostream>
 #include <Windows.h>
 
 #pragma warning (push, 3)

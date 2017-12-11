@@ -1,17 +1,20 @@
 #pragma once
+
 #include "sheet.h"
 
 class BlockView
 {
 public:
-	BlockView(CAssets & assets, const sf::Vector2f & position);
-	
+	BlockView() = delete;
+	BlockView(SAssets & assets, const sf::Vector2f & position);
+	~BlockView() = default;
+
 	void Update(float dt);
-	void Draw(sf::RenderWindow & window);
+	void Draw(sf::RenderWindow & window) const;
 
 private:
 	void SetTexture(sf::Texture & texture);
 
-	CAssets m_assets;
+	SAssets m_assets;
 	sf::Sprite m_body;
 };

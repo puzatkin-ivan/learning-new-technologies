@@ -6,7 +6,9 @@
 class PauseScene
 {
 public:
-	PauseScene(sf::RenderWindow & window, CAssets & assets);
+	PauseScene() = delete;
+	PauseScene(sf::RenderWindow & window, SAssets & assets, CAudioPlayer & audioPlayer);
+	~PauseScene() = default;
 
 	SceneInfo Advance(float dt);
 
@@ -23,8 +25,8 @@ private:
 	sf::Sprite m_background;
 	sf::Text m_title;
 
-	CAssets & m_assets;
-	CAudioPlayer m_audioPlayer;
+	SAssets & m_assets;
+	CAudioPlayer & m_audioPlayer;
 
 	SceneType m_nextSceneType;
 };

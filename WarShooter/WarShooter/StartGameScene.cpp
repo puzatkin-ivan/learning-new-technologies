@@ -2,9 +2,33 @@
 
 #include "StartGameScene.h"
 
-const std::string DEFALUT_INPUT_STRING = "Enter Your Nickname";
 
-StartGameScene::StartGameScene(sf::RenderWindow & window, CAssets & assets, SocketMaster & socketMaster, CAudioPlayer & audioPlayer)
+namespace
+{
+
+static const std::string DEFALUT_INPUT_STRING = "Enter Your Nickname";
+
+static const auto POSITION_MESSAGE = sf::Vector2f({ 100.f, 200.f });
+
+static const auto COLOR_MESSAGE = sf::Color::Red;
+
+static const unsigned CHARACTER_SIZE_MESSAGE = 14;
+
+static const unsigned CHARACTER_SIZE_NICKNAME = 30;
+
+static const auto TEXT_TITLE = "WarShooter 2.0";
+
+static const auto POSITION_TITLE = sf::Vector2f({ 0.f, 250.f });
+
+static const auto COLOR_TITLE = sf::Color::White;
+
+static const auto CHARACTER_SIZE_TITLE = 75;
+
+static const unsigned MAX_VALUE_RANGE_CHARACTERS = 128;
+
+}
+
+StartGameScene::StartGameScene(sf::RenderWindow & window, SAssets & assets, SocketMaster & socketMaster, CAudioPlayer & audioPlayer)
 	:m_window(window)
 	,m_assets(assets)
 	,m_socketMaster(socketMaster)
@@ -20,18 +44,20 @@ StartGameScene::StartGameScene(sf::RenderWindow & window, CAssets & assets, Sock
 	m_nickname.setFont(m_assets.ARIAL_FONT);
 	m_nickname.setString(m_textNickname);
 	m_nickname.setPosition(TEXT_POSITION);
-	m_nickname.setCharacterSize(30);
+	m_nickname.setCharacterSize(CHARACTER_SIZE_NICKNAME);
 
 	m_message.setFont(m_assets.ARIAL_FONT);
-	m_message.setCharacterSize(14);
-	m_message.setPosition({ 100.f, 200.f });
-	m_message.setFillColor(sf::Color::Red);
+	m_message.setCharacterSize(CHARACTER_SIZE_MESSAGE);
+	m_message.setPosition(POSITION_MESSAGE);
+	m_message.setFillColor(COLOR_MESSAGE);
 
 	m_title.setFont(m_assets.CRETE_ROUND_FONT);
-	m_title.setString("WarShooter 2.0");;
-	m_title.setPosition({ 0.f, 250.f });
-	m_title.setFillColor(sf::Color::White);
-	m_title.setCharacterSize(75);
+	m_title.setString(TEXT_TITLE);;
+	m_title.setPosition(POSITION_TITLE);
+	m_title.setFillColor(COLOR_TITLE);
+	m_title.setCharacterSize(CHARACTER_SIZE_TITLE);
+
+	m_nextSceneType = SceneType::StartScene;
 }
 
 SceneInfo StartGameScene::Advance(float dt, bool isConnected)
@@ -59,7 +85,6 @@ void StartGameScene::CheckEvents()
 		if (event.type == sf::Event::Closed)
 		{
 			m_window.close();
-			_exit(0);
 		}
 	}
 }
@@ -69,7 +94,7 @@ void StartGameScene::CheckInputText(const sf::Event & event)
 	if (event.type == sf::Event::TextEntered)
 	{
 		const auto codeKey = event.text.unicode;
-		if (codeKey < 128)
+		if (codeKey < MAX_VALUE_RANGE_CHARACTERS)
 		{
 			if (codeKey == int(CodeKey::BackSpace))
 			{
@@ -82,7 +107,7 @@ void StartGameScene::CheckInputText(const sf::Event & event)
 					m_textNickname = "";
 				}
 			}
-			else if (codeKey != 10 && codeKey != 13)
+			else if (codeKey != int(CodeKey::Enter) && codeKey != int(CodeKey::Ctrl_Enter))
 			{
 				if (m_textNickname == DEFALUT_INPUT_STRING)
 				{
@@ -122,20 +147,13 @@ void StartGameScene::CheckSpecialKeys(const sf::Event & event)
 
 void StartGameScene::ChangeStatusAudioPlayer()
 {
-	if (m_audioPlayer.IsPaused())
-	{
-		m_audioPlayer.Resume();
-	}
-	else
-	{
-		m_audioPlayer.Pause();
-	}
+	m_audioPlayer.IsPaused() ? m_audioPlayer.Resume() : m_audioPlayer.Pause();
 }
 
 void StartGameScene::Update(float dt, bool isConnected)
 {
 	(void)&dt;
-	if (isConnected && m_isNextScene && isNoEmptyStringNickname())
+	if (isConnected && m_isNextScene && isNicknameStringEmpty())
 	{
 		m_nextSceneType = SceneType::GameScene;
 		m_socketMaster.Emit("nickname", m_textNickname);
@@ -162,9 +180,9 @@ void StartGameScene::Draw()
 	m_window.draw(m_message);
 }
 
-bool StartGameScene::isNoEmptyStringNickname() const
+bool StartGameScene::isNicknameStringEmpty() const
 {
-	return (!m_textNickname.empty() && m_textNickname != DEFALUT_INPUT_STRING);
+	return (!m_textNickname.empty()) && (m_textNickname != DEFALUT_INPUT_STRING);
 }
 
 std::string StartGameScene::GetNickname() const

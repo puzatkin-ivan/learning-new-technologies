@@ -1,7 +1,8 @@
 #include "stdafx.h"
+
 #include "Assets.h"
 
-CAssets::CAssets()
+SAssets::SAssets()
 {
 	AddRepeatedTexture(BACKGROUND_TEXTURE, "images/background.jpg");
 	AddRepeatedTexture(MENU_BACKGROUND_TEXTURE, "images/menu_background.jpg");
@@ -14,11 +15,7 @@ CAssets::CAssets()
 	AddFont(CRETE_ROUND_FONT, "fonts/BreeSerif.ttf");
 }
 
-CAssets::~CAssets()
-{
-}
-
-void CAssets::AddTexture(sf::Texture & texture, const std::string & path)
+void SAssets::AddTexture(sf::Texture & texture, const std::string & path)
 {
 	if (!texture.loadFromFile(path))
 	{
@@ -30,13 +27,13 @@ void CAssets::AddTexture(sf::Texture & texture, const std::string & path)
 	texture.setRepeated(false);
 }
 
-void CAssets::AddRepeatedTexture(sf::Texture & texture, const std::string & path)
+void SAssets::AddRepeatedTexture(sf::Texture & texture, const std::string & path)
 {
 	AddTexture(texture, path);
 	texture.setRepeated(true);
 }
 
-void CAssets::AddImage(sf::Image & image, const std::string & path)
+void SAssets::AddImage(sf::Image & image, const std::string & path)
 {
 	if (!image.loadFromFile(path))
 	{
@@ -45,7 +42,7 @@ void CAssets::AddImage(sf::Image & image, const std::string & path)
 	}
 }
 
-void CAssets::AddFont(sf::Font & font, std::string string)
+void SAssets::AddFont(sf::Font & font, const std::string & string)
 {
 	if (!font.loadFromFile(string))
 	{

@@ -1,8 +1,9 @@
 #include "stdafx.h"
+
 #include "sheet.h"
 #include "BlockView.h"
 
-BlockView::BlockView(CAssets & assets, const sf::Vector2f & position)
+BlockView::BlockView(SAssets & assets, const sf::Vector2f & position)
 	:m_assets(assets)
 {
 	m_body.setPosition(position);
@@ -20,7 +21,7 @@ void BlockView::Update(float dt)
 	(void)&dt;
 }
 
-void BlockView::Draw(sf::RenderWindow & window)
+void BlockView::Draw(sf::RenderWindow & window) const
 {
 	window.draw(m_body);
 }

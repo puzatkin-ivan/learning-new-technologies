@@ -4,18 +4,20 @@
 class BulletView
 {
 public:
-	BulletView(CAssets & assets, const sf::Vector2f & position);
+	BulletView() = delete;
+	BulletView(SAssets & assets, const sf::Vector2f & position);
+	~BulletView() = default;
 
 	void Update(float dt);
-	void Draw(sf::RenderWindow & window);
+	void Draw(sf::RenderWindow & window) const;
 	void SetPosition(const sf::Vector2f & position);
-	void SetIsDraw(bool isDraw);
+	void SetOpportunityDrawing(bool isDraw);
 	bool GetIsDraw() const;
 
 private:
 	void SetTexture(sf::Texture & texture);
 
-	CAssets m_assets;
+	SAssets m_assets;
 	sf::Sprite m_body;
 	bool m_isDraw;
 };

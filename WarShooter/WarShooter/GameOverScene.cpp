@@ -1,9 +1,25 @@
 #include "stdafx.h"
 
 #include "GameOverScene.h"
+
 using json = nlohmann::json;
 
-GameOverScene::GameOverScene(sf::RenderWindow & window, GameContext & gameContext, SocketMaster & socketMaster, CAssets & assets, CAudioPlayer & audioPlayer)
+namespace
+{
+
+static const sf::Vector2f POSITION_TITLE = { 100.f, 100.f };
+
+static const auto COLOR_TITLE = sf::Color::White;
+
+static const auto CONTENT_TITLE = "GameOver";
+
+static const unsigned CHARACTER_SIZE = 50;
+
+static const auto WINDOW_COLOR = sf::Color::White;
+
+}
+
+GameOverScene::GameOverScene(sf::RenderWindow & window, GameContext & gameContext, SocketMaster & socketMaster, SAssets & assets, CAudioPlayer & audioPlayer)
 	:m_window(window)
 	,m_gameContext(gameContext)
 	,m_socketMaster(socketMaster)
@@ -16,10 +32,12 @@ GameOverScene::GameOverScene(sf::RenderWindow & window, GameContext & gameContex
 	m_background.setTexture(m_assets.MENU_BACKGROUND_TEXTURE);
 	
 	m_title.setFont(m_assets.CRETE_ROUND_FONT);
-	m_title.setPosition({ 100.f, 100.f });
-	m_title.setFillColor(sf::Color::White);
-	m_title.setCharacterSize(50);
-	m_title.setString("GameOver");
+	m_title.setPosition(POSITION_TITLE);
+	m_title.setFillColor(COLOR_TITLE);
+	m_title.setCharacterSize(CHARACTER_SIZE);
+	m_title.setString(CONTENT_TITLE);
+
+	m_nextSceneType = SceneType::GameOverScene;
 }
 
 SceneInfo GameOverScene::Advance(float dt, const std::string & ip)
@@ -45,7 +63,6 @@ void GameOverScene::CheckEvents()
 		if (event.type == sf::Event::Closed)
 		{
 			m_window.close();
-			_exit(0);
 		}
 	}
 }
@@ -105,7 +122,7 @@ void GameOverScene::Update(float dt, const std::string & ip)
 
 void GameOverScene::Draw()
 {
-	m_window.clear(sf::Color::White);
+	m_window.clear(WINDOW_COLOR);
 	m_window.draw(m_background);
 	m_window.draw(m_title);
 }
@@ -114,7 +131,7 @@ void GameOverScene::Draw()
 void GameOverScene::SendKey(const CodeKey & keyCode)
 {
 	json message;
-	message["key"] = keyCode;
-	message["isPressed"] = true;
-	m_socketMaster.Emit("keyMap", message.dump());
+	message[MESSAGE_KEY] = keyCode;
+	message[MESSAGE_KEY_PRESSED] = true;
+	m_socketMaster.Emit(MESSAGE_KEY_MAP, message.dump());
 }

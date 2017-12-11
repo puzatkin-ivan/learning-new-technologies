@@ -1,10 +1,26 @@
 #include "stdafx.h"
+
 #include "PauseScene.h"
 
-PauseScene::PauseScene(sf::RenderWindow & window, CAssets & assets)
+namespace
+{
+
+static const sf::Vector2f POSITION_TITLE = { 100.f, 100.f };
+
+static const auto COLOR_TITLE = sf::Color::White;
+
+static const auto CONTENT_TITLE = "Pause Game";
+
+static const unsigned CHARACTER_SIZE = 50;
+
+static const auto WINDOW_COLOR = sf::Color::White;
+
+}
+
+PauseScene::PauseScene(sf::RenderWindow & window, SAssets & assets, CAudioPlayer & audioPlayer)
 	:m_assets(assets)
-	, m_window(window)
-	, m_audioPlayer("sounds/")
+	,m_window(window)
+	,m_audioPlayer(audioPlayer)
 {
 	m_nextSceneType = SceneType::PauseScene;
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
@@ -12,10 +28,10 @@ PauseScene::PauseScene(sf::RenderWindow & window, CAssets & assets)
 	m_background.setTexture(m_assets.MENU_BACKGROUND_TEXTURE); 
 	
 	m_title.setFont(m_assets.CRETE_ROUND_FONT);
-	m_title.setPosition({ 100.f, 100.f });
-	m_title.setFillColor(sf::Color::White);
-	m_title.setCharacterSize(50);
-	m_title.setString("Pause Game");
+	m_title.setPosition(POSITION_TITLE);
+	m_title.setFillColor(COLOR_TITLE);
+	m_title.setCharacterSize(CHARACTER_SIZE);
+	m_title.setString(CONTENT_TITLE);
 }
 
 SceneInfo PauseScene::Advance(float dt)
@@ -51,21 +67,14 @@ void PauseScene::Update(float dt)
 
 void PauseScene::Draw()
 {
-	m_window.clear(sf::Color::White);
+	m_window.clear(WINDOW_COLOR);
 	m_window.draw(m_background);
 	m_window.draw(m_title);
 }
 
 void PauseScene::ChangeStatusAudioPlayer()
 {
-	if (m_audioPlayer.IsPaused())
-	{
-		m_audioPlayer.Resume();
-	}
-	else
-	{
-		m_audioPlayer.Pause();
-	}
+	m_audioPlayer.IsPaused() ? m_audioPlayer.Resume() : m_audioPlayer.Pause();
 }
 
 void PauseScene::CheckSpecialKey(const sf::Event & event)

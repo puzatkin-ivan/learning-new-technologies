@@ -1,16 +1,16 @@
 #pragma once
 
-struct CAssets
+struct SAssets
 {
 public:
-	CAssets();
-	~CAssets();
+	SAssets();
+	~SAssets() = default;
 
 	void AddTexture(sf::Texture & texture, const std::string & path);
 	void AddRepeatedTexture(sf::Texture & texture, const std::string & path);
 	void AddImage(sf::Image & image, const std::string & path);
 
-	void AddFont(sf::Font & font, std::string string);
+	void AddFont(sf::Font & font, const std::string & string);
 
 	sf::Texture BACKGROUND_TEXTURE;
 	sf::Texture PLAYER_TEXTURE;

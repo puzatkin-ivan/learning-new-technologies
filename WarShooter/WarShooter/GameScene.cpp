@@ -2,8 +2,14 @@
 
 #include "GameScene.h"
 
-const sf::Color WINDOW_COLOR = sf::Color::White;
 using json = nlohmann::json;
+
+namespace
+{
+
+static const sf::Color WINDOW_COLOR = sf::Color::White;
+
+}
 
 GameScene::GameScene(sf::RenderWindow & window, GameContext & gameContext, SocketMaster & socketMaster, CAudioPlayer & audioPlayer)
 	:m_window(window)
@@ -16,7 +22,6 @@ GameScene::GameScene(sf::RenderWindow & window, GameContext & gameContext, Socke
 	m_window.setFramerateLimit(FRAME_LIMIT);
 
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
-	m_audioPlayer.SetVolume(100);
 
 	m_isDrawTable = false;
 }
@@ -35,12 +40,13 @@ SceneInfo GameScene::Advance(float dt)
 
 void GameScene::Update(float deltaTime)
 {
+	(void)&deltaTime;
+
 	m_gameContext.Update(m_view, m_socketMaster.GetSessionId());
 	if (m_gameContext.isClientDead())
 	{
 		m_nextSceneType = SceneType::GameOverScene;
 	}
-	(void)&deltaTime;
 }
 
 void GameScene::Draw()
@@ -59,7 +65,6 @@ void GameScene::CheckEvents()
 		if (event.type == sf::Event::Closed)
 		{
 			m_window.close();
-			_exit(0);
 		}
 	}
 }
@@ -147,6 +152,8 @@ void GameScene::SendKeyMap(const CodeKey & keyCode, bool isPressed)
 
 void GameScene::CheckSpecialKey(const sf::Event & event, bool isPressed)
 {
+	(void)&isPressed;
+
 	switch (event.key.code)
 	{
 	case sf::Keyboard::F10:
@@ -162,49 +169,9 @@ void GameScene::CheckSpecialKey(const sf::Event & event, bool isPressed)
 		m_nextSceneType = SceneType::PauseScene;
 		break;
 	}
-
-	(void)&isPressed;
 }
 
 void GameScene::ChangeStatusAudioPlayer()
 {
-	if (m_audioPlayer.IsPaused())
-	{
-		m_audioPlayer.Resume();
-	}
-	else
-	{
-		m_audioPlayer.Pause();
-	}
-}
-
-
-void GameScene::ProcessUpdateData(const std::string & path)
-{
-	auto data = json::parse(path);
-	for (auto & element : data["bullets"])
-	{
-		Bullet bullet;
-		bullet.setPosition(sf::Vector2f(float(element["x"]), float(element["y"])));
-		m_data.m_vectorBullets.push_back(bullet);
-	}
-
-	if (m_data.m_vectorPlayers.empty())
-	{
-		for (auto & element : data["playersForDraw"])
-		{
-			Shooter player;
-			player.position = sf::Vector2f(float(element["x"]), float(element["y"]));
-			player.health = element["health"];
-			player.direction = element["direction"].get<std::string>();
-			player.nickname = "";
-			player.playerId = element["playerId"].get<std::string>();
-			m_data.m_vectorPlayers.push_back(player);
-		}
-	}
-
-	for (auto & element : data["playersForTable"])
-	{
-		(void)&element;
-	}
+	m_audioPlayer.IsPaused() ? m_audioPlayer.Resume() : m_audioPlayer.Pause();
 }

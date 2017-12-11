@@ -9,5 +9,6 @@ public:
 	int score;
 	bool isDead;
 	std::string nickname;
+	bool isDraw;
 private:
 };

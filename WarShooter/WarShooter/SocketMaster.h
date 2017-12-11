@@ -12,43 +12,17 @@ class SocketMaster
 {
 public:
 	SocketMaster() = delete;
-	SocketMaster(const std::string & port)
-	{
-		m_client.connect(port);
-		m_client.socket()->on_error([&](const sio::message::ptr & msg) {
-			std::cerr << "ERROR: " << std::endl << msg->get_string() << std::endl;
-		});
-	}
+	SocketMaster(const std::string & port);
 
-	~SocketMaster()
-	{
-		m_client.sync_close();
-	}
+	~SocketMaster();
 
-	void SetHandler(const std::string & key, std::function<void(sio::event & e)> && handler)
-	{
-		m_client.socket()->on(key, handler);
-	}
+	void SetHandler(const std::string & key, std::function<void(sio::event & e)> && handler);
 
-	void Emit(const std::string & key)
-	{
-		m_client.socket()->emit(key);
-	}
+	void Emit(const std::string & key);
+	void Emit(const std::string & key, const std::string & msg);
 
-	void Emit(const std::string & key, const std::string & msg)
-	{
-		m_client.socket()->emit(key, msg);
-	}
-
-	std::string GetSessionId() const
-	{
-		return std::string(m_client.get_sessionid());
-	}
-
-	bool IsConnected() const
-	{
-		return m_client.opened();
-	}
+	std::string GetSessionId() const;
+	bool IsConnected() const;
 
 private:
 	sio::client m_client;
