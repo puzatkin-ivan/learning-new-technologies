@@ -109,16 +109,16 @@ void GameScene::CheckMovement(const sf::Event & event, bool isPressed)
 	switch (event.key.code)
 	{
 	case sf::Keyboard::A:
-		SendKeyMap(CodeKey::A, isPressed);
+		SendKeyMap(ASCIICodeKey::A, isPressed);
 		break;
 	case sf::Keyboard::D:
-		SendKeyMap(CodeKey::D, isPressed);
+		SendKeyMap(ASCIICodeKey::D, isPressed);
 		break;
 	case sf::Keyboard::W:
-		SendKeyMap(CodeKey::W, isPressed);
+		SendKeyMap(ASCIICodeKey::W, isPressed);
 		break;
 	case sf::Keyboard::S:
-		SendKeyMap(CodeKey::S, isPressed);
+		SendKeyMap(ASCIICodeKey::S, isPressed);
 		break;
 	}
 }
@@ -128,26 +128,26 @@ void GameScene::CheckDirection(const sf::Event & event, bool isPressed)
 	switch (event.key.code)
 	{
 	case sf::Keyboard::Up:
-		SendKeyMap(CodeKey::ArrowUp, isPressed);
+		SendKeyMap(ASCIICodeKey::ArrowUp, isPressed);
 		break;
 	case sf::Keyboard::Down:
-		SendKeyMap(CodeKey::ArrowDown, isPressed);
+		SendKeyMap(ASCIICodeKey::ArrowDown, isPressed);
 		break;
 	case sf::Keyboard::Left:
-		SendKeyMap(CodeKey::ArrowLeft, isPressed);
+		SendKeyMap(ASCIICodeKey::ArrowLeft, isPressed);
 		break;
 	case sf::Keyboard::Right:
-		SendKeyMap(CodeKey::ArrowRight, isPressed);
+		SendKeyMap(ASCIICodeKey::ArrowRight, isPressed);
 		break;
 	}
 }
 
-void GameScene::SendKeyMap(const CodeKey & keyCode, bool isPressed)
+void GameScene::SendKeyMap(const ASCIICodeKey & keyCode, bool isPressed)
 {
 	json message;
-	message["key"] = keyCode;
-	message["isPressed"] = isPressed;
-	m_socketMaster.Emit("keyMap", message.dump());
+	message[MESSAGE_KEY] = keyCode;
+	message[MESSAGE_KEY_PRESSED] = isPressed;
+	m_socketMaster.Emit(MESSAGE_KEY_MAP, message.dump());
 }
 
 void GameScene::CheckSpecialKey(const sf::Event & event, bool isPressed)
@@ -157,7 +157,7 @@ void GameScene::CheckSpecialKey(const sf::Event & event, bool isPressed)
 	switch (event.key.code)
 	{
 	case sf::Keyboard::F10:
-		ChangeStatusAudioPlayer();
+		ChangeBehaviorAudioPlayer();
 		break;
 	case sf::Keyboard::F9:
 		m_audioPlayer.PlayNextTrack();
@@ -171,7 +171,7 @@ void GameScene::CheckSpecialKey(const sf::Event & event, bool isPressed)
 	}
 }
 
-void GameScene::ChangeStatusAudioPlayer()
+void GameScene::ChangeBehaviorAudioPlayer()
 {
 	m_audioPlayer.IsPaused() ? m_audioPlayer.Resume() : m_audioPlayer.Pause();
 }

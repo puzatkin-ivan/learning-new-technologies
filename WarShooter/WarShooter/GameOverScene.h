@@ -1,10 +1,10 @@
 #pragma once
 
+#include <AudioPlayer.h>
+
 #include "Assets.h"
-#include "sheet.h"
 #include "GameContext.h"
 #include "SocketMaster.h"
-#include <AudioPlayer.h>
 
 class GameOverScene
 {
@@ -14,12 +14,13 @@ public:
 	~GameOverScene() = default;
 
 	SceneInfo Advance(float dt, const std::string & ip);
+
 private:
 	void CheckEvents();
 	void CheckSpecialKeys(const sf::Event & event);
 	void ChangeTypeScene();
-	void ChangeStatusAudioPlayer();
-	void SendKey(const CodeKey & keyCode);
+	void ChangeBehaviorAudioPlayer();
+	void SendKey(const ASCIICodeKey & keyCode);
 
 	void Draw();
 	void Update(float dt, const std::string & ip);

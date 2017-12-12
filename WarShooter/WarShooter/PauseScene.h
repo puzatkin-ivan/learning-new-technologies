@@ -15,7 +15,7 @@ public:
 private:
 	void CheckEvents();
 	void CheckSpecialKey(const sf::Event & event);
-	void ChangeStatusAudioPlayer();
+	void ChangeBehaviorAudioPlayer();
 
 	void Draw();
 	void Update(float dt);

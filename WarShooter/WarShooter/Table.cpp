@@ -40,19 +40,19 @@ Table::Table(SAssets & assets)
 	m_line.setFillColor(LINE_COLOR);
 
 	m_titlePlayers.setString(TEXT_TITLE_NAME);
-	m_titlePlayers.setFont(m_assets.CRETE_ROUND_FONT);
+	m_titlePlayers.setFont(m_assets.BREE_SERIF_FONT);
 	m_titlePlayers.setCharacterSize(CHARACTER_SIZE);
 
 	m_titleStatus.setString(TEXT_TITLE_STATUS);
-	m_titleStatus.setFont(m_assets.CRETE_ROUND_FONT);
+	m_titleStatus.setFont(m_assets.BREE_SERIF_FONT);
 	m_titleStatus.setCharacterSize(CHARACTER_SIZE);
 
 	m_titleScore.setString(TEXT_TITLE_SCORE);
-	m_titleScore.setFont(m_assets.CRETE_ROUND_FONT);
+	m_titleScore.setFont(m_assets.BREE_SERIF_FONT);
 	m_titleScore.setCharacterSize(CHARACTER_SIZE);
 
 	m_titleDead.setString(TEXT_TITLE_DEAD);
-	m_titleDead.setFont(m_assets.CRETE_ROUND_FONT);
+	m_titleDead.setFont(m_assets.BREE_SERIF_FONT);
 	m_titleDead.setCharacterSize(CHARACTER_SIZE);
 }
 
@@ -72,7 +72,6 @@ void Table::Update(std::vector<PlayerTable> & listPlayer, const sf::Vector2f & v
 			{
 				m_vectorPlayers[index]->SetOpportunityDrawing(false);
 			}
-			
 		}
 		else
 		{
@@ -106,7 +105,7 @@ void Table::Draw(sf::RenderWindow & window) const
 	window.draw(m_titleScore);
 	window.draw(m_titleDead);
 
-	for (const auto &player : m_vectorPlayers)
+	for (const auto & player : m_vectorPlayers)
 	{
 		player->Draw(window);
 	}

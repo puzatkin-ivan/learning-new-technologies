@@ -31,7 +31,7 @@ GameOverScene::GameOverScene(sf::RenderWindow & window, GameContext & gameContex
 	m_background.setTextureRect(sf::IntRect(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y));
 	m_background.setTexture(m_assets.MENU_BACKGROUND_TEXTURE);
 	
-	m_title.setFont(m_assets.CRETE_ROUND_FONT);
+	m_title.setFont(m_assets.BREE_SERIF_FONT);
 	m_title.setPosition(POSITION_TITLE);
 	m_title.setFillColor(COLOR_TITLE);
 	m_title.setCharacterSize(CHARACTER_SIZE);
@@ -77,7 +77,7 @@ void GameOverScene::CheckSpecialKeys(const sf::Event & event)
 			ChangeTypeScene();
 			break;
 		case sf::Keyboard::F10:
-			ChangeStatusAudioPlayer();
+			ChangeBehaviorAudioPlayer();
 			break;
 		case sf::Keyboard::F9:
 			m_audioPlayer.PlayNextTrack();
@@ -97,11 +97,11 @@ void GameOverScene::ChangeTypeScene()
 	}
 	else
 	{
-		SendKey(CodeKey::R);
+		SendKey(ASCIICodeKey::R);
 	}
 }
 
-void GameOverScene::ChangeStatusAudioPlayer()
+void GameOverScene::ChangeBehaviorAudioPlayer()
 {
 	if (m_audioPlayer.IsPaused())
 	{
@@ -128,7 +128,7 @@ void GameOverScene::Draw()
 }
 
 
-void GameOverScene::SendKey(const CodeKey & keyCode)
+void GameOverScene::SendKey(const ASCIICodeKey & keyCode)
 {
 	json message;
 	message[MESSAGE_KEY] = keyCode;

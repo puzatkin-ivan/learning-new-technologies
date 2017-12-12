@@ -19,7 +19,7 @@ private:
 	void CheckEvents();
 	void CheckInputText(const sf::Event & event);
 	void CheckSpecialKeys(const sf::Event & event);
-	void ChangeStatusAudioPlayer();
+	void ChangeBehaviorAudioPlayer();
 	void Update(float dt, bool isConnected);
 	void Draw();
 

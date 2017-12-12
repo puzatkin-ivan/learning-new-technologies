@@ -21,7 +21,7 @@ public:
 	void ProcessInitMessage(const std::string & path);
 	void ProcessUpdateData(const std::string & path);
 	void Update(sf::View & view, const std::string & ip);
-	void Draw(sf::RenderWindow & window, bool isDrawTable) const;
+	void Draw(sf::RenderWindow & window, bool isOpportunityDrawingTable) const;
 	
 private:
 	void UpdateBlocks(const std::vector<Block> & vectorBlocks);

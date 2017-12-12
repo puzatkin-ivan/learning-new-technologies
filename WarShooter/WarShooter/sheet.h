@@ -1,8 +1,9 @@
 #pragma once
 
-#include "Assets.h"
 #include <iostream>
 #include <string>
+
+#include "Assets.h"
 
 const sf::Vector2u WINDOW_SIZE = { 1500, 850 };
 const sf::Vector2f TEXT_POSITION = { 50, 400 };
@@ -45,7 +46,7 @@ struct KeyMap
 	bool isPressedArrowRight = false;
 };
 
-enum class CodeKey
+enum class ASCIICodeKey
 {
 	W = 87,
 	A = 65,

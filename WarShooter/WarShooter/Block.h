@@ -3,11 +3,8 @@
 struct Block
 {
 public:
-	sf::Vector2f getPosition() const;
-
-	void setPosition(const sf::Vector2f & position);
+	sf::Vector2f position;
+	bool isDraw;
 
 private:
-	sf::Vector2f m_position;
-	bool m_isDraw;
 };

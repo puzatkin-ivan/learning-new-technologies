@@ -21,6 +21,7 @@ public:
 	sf::Image WINDOW_ICON;
 
 	sf::Font ARIAL_FONT;
-	sf::Font CRETE_ROUND_FONT;
+	sf::Font BREE_SERIF_FONT;
+
 private:
 };

@@ -21,8 +21,8 @@ public:
 	void DoGameLoop();
 
 private:	
-	void onInitData(sio::event & event);
-	void onUpdateData(sio::event & event);
+	void onInitData(const sio::event & event);
+	void onUpdateData(const sio::event & event);
 
 	sf::RenderWindow m_window;
 

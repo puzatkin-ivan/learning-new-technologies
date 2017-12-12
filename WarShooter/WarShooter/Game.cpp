@@ -17,6 +17,10 @@ static const std::string FOLDER_WITH_MUSIC = "sounds/";
 
 static const unsigned MAX_VOLUME = 100;
 
+static const auto MESSAGE_NEW_PLAYER = "new_player";
+
+static const auto MESSAGE_UPDATE_DATA = "update_data";
+
 }
 
 Game::Game()
@@ -29,8 +33,8 @@ Game::Game()
 	,m_pauseScene(m_window, m_assets, m_audioPlayer)
 	,m_gameoverScene(m_window, m_gameContext, m_socketMaster, m_assets, m_audioPlayer)
 {
-	m_socketMaster.SetHandler("new_player", std::bind(&Game::onInitData, this, std::placeholders::_1));
-	m_socketMaster.SetHandler("update_data", std::bind(&Game::onUpdateData, this, std::placeholders::_1));
+	m_socketMaster.SetHandler(MESSAGE_NEW_PLAYER, std::bind(&Game::onInitData, this, std::placeholders::_1));
+	m_socketMaster.SetHandler(MESSAGE_UPDATE_DATA, std::bind(&Game::onUpdateData, this, std::placeholders::_1));
 
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
@@ -71,14 +75,14 @@ void Game::DoGameLoop()
 	}
 }
 
-void Game::onInitData(sio::event & event)
+void Game::onInitData(const sio::event & event)
 {
-	auto data = event.get_message()->get_string();
+	const auto data = event.get_message()->get_string();
 	m_gameContext.ProcessInitMessage(data);
 }
 
-void Game::onUpdateData(sio::event & event)
+void Game::onUpdateData(const sio::event & event)
 {
-	auto data = event.get_message()->get_string();
+	const auto data = event.get_message()->get_string();
 	m_gameContext.ProcessUpdateData(data);
 }

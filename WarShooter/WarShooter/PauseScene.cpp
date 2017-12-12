@@ -27,7 +27,7 @@ PauseScene::PauseScene(sf::RenderWindow & window, SAssets & assets, CAudioPlayer
 	m_background.setTextureRect(sf::IntRect(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y));
 	m_background.setTexture(m_assets.MENU_BACKGROUND_TEXTURE); 
 	
-	m_title.setFont(m_assets.CRETE_ROUND_FONT);
+	m_title.setFont(m_assets.BREE_SERIF_FONT);
 	m_title.setPosition(POSITION_TITLE);
 	m_title.setFillColor(COLOR_TITLE);
 	m_title.setCharacterSize(CHARACTER_SIZE);
@@ -72,7 +72,7 @@ void PauseScene::Draw()
 	m_window.draw(m_title);
 }
 
-void PauseScene::ChangeStatusAudioPlayer()
+void PauseScene::ChangeBehaviorAudioPlayer()
 {
 	m_audioPlayer.IsPaused() ? m_audioPlayer.Resume() : m_audioPlayer.Pause();
 }
@@ -83,13 +83,13 @@ void PauseScene::CheckSpecialKey(const sf::Event & event)
 	{
 		switch (event.key.code)
 		{
-		case sf::Keyboard::K:
-			ChangeStatusAudioPlayer();
+		case sf::Keyboard::F10:
+			ChangeBehaviorAudioPlayer();
 			break;
-		case sf::Keyboard::J:
+		case sf::Keyboard::F11:
 			m_audioPlayer.PlayNextTrack();
 			break;
-		case sf::Keyboard::L:
+		case sf::Keyboard::F9:
 			m_audioPlayer.PlayPrevTrack();
 			break;
 		case sf::Keyboard::Tab:

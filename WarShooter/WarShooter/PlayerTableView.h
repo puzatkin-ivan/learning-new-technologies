@@ -13,10 +13,10 @@ public:
 	void SetContent(const PlayerTable & player, size_t index, const std::string & ip);
 	void SetPositionX(const sf::Vector2f & positon);
 	void SetPositionY(const sf::Vector2f & positionY);
-
 	void SetOpportunityDrawing(bool isDraw);
 
 	void Draw(sf::RenderWindow & window) const;
+
 private:
 	SAssets & m_assets;
 	sf::Text m_name;
@@ -24,6 +24,6 @@ private:
 	sf::Text m_killCount;
 	sf::Text m_deathCount;
 
-	bool m_isDraw;
+	bool m_isOpportunityDrawing;
 };
 

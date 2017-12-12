@@ -30,7 +30,7 @@ void GameContext::UpdateBlocks(const std::vector<Block> & vectorBlocks)
 	{
 		for (auto & block : vectorBlocks)
 		{
-			m_blocks.push_back(std::make_unique<BlockView>(m_assets, block.getPosition()));
+			m_blocks.push_back(std::make_unique<BlockView>(m_assets, block.position));
 		}
 	}
 }
@@ -81,11 +81,11 @@ void GameContext::SetCenterView(sf::View & view, const std::unique_ptr<ShooterVi
 		const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
 		m_background.setPosition(newPositionBackground);
 
-		m_isDeadClient = player->GetIsDead();
+		m_isDeadClient = player->GetInformationAboutHealth();
 	}
 }
 
-void GameContext::Draw(sf::RenderWindow & window, bool isDrawTable) const
+void GameContext::Draw(sf::RenderWindow & window, bool isOpportunityDrawingTable) const
 {
 	window.draw(m_background);
 	for (const auto & bullet : m_bullets)
@@ -101,7 +101,7 @@ void GameContext::Draw(sf::RenderWindow & window, bool isDrawTable) const
 			player->Draw(window);
 	}
 
-	if (isDrawTable)
+	if (isOpportunityDrawingTable)
 	{
 		m_table.Draw(window);
 	}
@@ -110,27 +110,25 @@ void GameContext::Draw(sf::RenderWindow & window, bool isDrawTable) const
 
 void GameContext::ProcessInitMessage(const std::string & path)
 {
-	auto data = json::parse(path);
+	const auto data = json::parse(path);
 
-	for (auto & element : data[ARRAY_BLOCKS])
+	for (const auto & element : data[ARRAY_BLOCKS])
 	{
 		Block block;
-		block.setPosition(sf::Vector2f(float(element[X]), float(element[Y])));
+		block.position = sf::Vector2f(float(element[X]), float(element[Y]));
 		m_data.m_vectorBlocks.push_back(block);
 	}
 	
-	for (auto & element : data[ARRAY_PLAYERS])
+	for (const auto & element : data[ARRAY_PLAYERS])
 	{
 		Shooter player;
 		InitParametersPlayer(element, player);
 		m_data.m_vectorPlayers.push_back(player);
 	}
 
-	for (auto & element : data[ARRAY_BULLETS])
+	for (const auto & element : data[ARRAY_BULLETS])
 	{
-		auto x = float(element[X]);
-		auto y = float(element[Y]);
-		auto position = sf::Vector2f(x, y);
+		const auto position = sf::Vector2f(float(element[X]), float(element[Y]));
 		auto bullet = std::make_unique<BulletView>(m_assets, position);
 		m_bullets.push_back(std::move(bullet));
 	}
@@ -138,7 +136,6 @@ void GameContext::ProcessInitMessage(const std::string & path)
 
 void GameContext::InitParametersPlayer(const nlohmann::basic_json<> & path, Shooter & player)
 {
-	
 	player.position = sf::Vector2f(float(path[X]), float(path[Y]));
 	player.health = path[HEALTH];
 	player.direction = path[DIRECTION].get<std::string>();
@@ -148,7 +145,7 @@ void GameContext::InitParametersPlayer(const nlohmann::basic_json<> & path, Shoo
 
 void GameContext::ProcessUpdateData(const std::string & path)
 {
-	auto data = json::parse(path);
+	const auto data = json::parse(path);
 	
 	UpdateParametersBullets(data);
 	UpdateParametersPlayers(data);
@@ -158,9 +155,9 @@ void GameContext::ProcessUpdateData(const std::string & path)
 void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
 {
 	size_t index = 0;
-	for (auto & element : data[ARRAY_BULLETS])
+	for (const auto & element : data[ARRAY_BULLETS])
 	{
-		auto position = sf::Vector2f(float(element[X]), float(element[Y]));
+		const auto position = sf::Vector2f(float(element[X]), float(element[Y]));
 
 		if (index < m_bullets.size())
 		{
@@ -186,7 +183,7 @@ void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
 void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
 {
 	size_t index = 0;
-	for (auto & element : data[ARRAY_PLAYERS_FOR_DRAW])
+	for (const auto & element : data[ARRAY_PLAYERS_FOR_DRAW])
 	{
 		if (index < m_data.m_vectorPlayers.size())
 		{
@@ -202,6 +199,7 @@ void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
 
 		++index;
 	}
+
 	for (index; index < m_data.m_vectorPlayers.size(); ++index)
 	{
 		 m_data.m_vectorPlayers[index].isDraw = false;
@@ -210,7 +208,6 @@ void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
 
 void GameContext::InitPlayerDraw(const nlohmann::basic_json<> & path, Shooter & player)
 {
-
 	player.position = sf::Vector2f(float(path[X]), float(path[Y]));
 	player.health = path[HEALTH];
 	player.direction = path[DIRECTION].get<std::string>();
@@ -222,13 +219,12 @@ void GameContext::InitPlayerDraw(const nlohmann::basic_json<> & path, Shooter & 
 void GameContext::UpdateParametersTable(const nlohmann::basic_json<> & data)
 {
 	size_t index = 0;
-	for (auto & element : data[ARRAY_PLAYERS_FOR_TABLE])
+	for (const auto & element : data[ARRAY_PLAYERS_FOR_TABLE])
 	{
 		if (index < m_listPlayers.size())
 		{
 			auto & player = m_listPlayers[index];
 			InitPlayerTable(element, player);
-
 		}
 		else 
 		{
@@ -239,7 +235,6 @@ void GameContext::UpdateParametersTable(const nlohmann::basic_json<> & data)
 
 		++index;
 	}
-
 
 	for (index; index < m_listPlayers.size(); ++index)
 	{
@@ -253,7 +248,6 @@ void GameContext::InitPlayerTable(const nlohmann::basic_json<> & path, PlayerTab
 	player.nickname = path[NICKNAME].get<std::string>();
 	player.isDead = path[IS_DEAD].get<bool>();
 	player.killCount = path[KILL_COUNT].get<int>();
-	player.score = path[SCORE].get<int>();
 	player.deathCount = path[DEATH_COUNT].get<int>();
 	player.isDraw = true;
 }

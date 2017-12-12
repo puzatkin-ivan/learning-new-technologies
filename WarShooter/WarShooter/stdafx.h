@@ -2,7 +2,6 @@
 
 #include "targetver.h"
 #include <functional>
-
 #include <memory>
 #include <iostream>
 #include <Windows.h>

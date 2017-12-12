@@ -23,9 +23,9 @@ private:
 	void CheckMovement(const sf::Event & event, bool isPressed);
 	void CheckDirection(const sf::Event & event, bool isPressed);
 	void CheckSpecialKey(const sf::Event & event, bool isPressed);
-	void ChangeStatusAudioPlayer();
+	void ChangeBehaviorAudioPlayer();
 
-	void SendKeyMap(const CodeKey & keyCode, bool isPressed);
+	void SendKeyMap(const ASCIICodeKey & keyCode, bool isPressed);
 
 	void Update(float deltaTime);
 	void Draw();

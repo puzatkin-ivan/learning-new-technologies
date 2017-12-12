@@ -39,4 +39,3 @@ bool SocketMaster::IsConnected() const
 {
 	return m_client.opened();
 }
-

@@ -1,6 +1,5 @@
 #include "stdafx.h"
 
-#include <iostream>
 #include "ShooterView.h"
 
 namespace
@@ -68,14 +67,9 @@ void ShooterView::Update()
 	}
 }
 
-bool ShooterView::GetIsDead() const
+bool ShooterView::GetInformationAboutHealth() const
 {
 	return m_health == 0;
-}
-
-bool ShooterView::GetIsDraw() const
-{
-	return m_isDraw;
 }
 
 void ShooterView::SetOpportunityDrawing(bool isDraw)

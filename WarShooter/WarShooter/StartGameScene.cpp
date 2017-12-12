@@ -2,7 +2,6 @@
 
 #include "StartGameScene.h"
 
-
 namespace
 {
 
@@ -25,6 +24,10 @@ static const auto COLOR_TITLE = sf::Color::White;
 static const auto CHARACTER_SIZE_TITLE = 75;
 
 static const unsigned MAX_VALUE_RANGE_CHARACTERS = 128;
+
+static const auto MESSAGE_NO_COONECTION_SERVER = "No Connection to the Server";
+
+static const auto MESSAGE_NO_NICKNAME = "No Entered Nickname";
 
 }
 
@@ -51,7 +54,7 @@ StartGameScene::StartGameScene(sf::RenderWindow & window, SAssets & assets, Sock
 	m_message.setPosition(POSITION_MESSAGE);
 	m_message.setFillColor(COLOR_MESSAGE);
 
-	m_title.setFont(m_assets.CRETE_ROUND_FONT);
+	m_title.setFont(m_assets.BREE_SERIF_FONT);
 	m_title.setString(TEXT_TITLE);;
 	m_title.setPosition(POSITION_TITLE);
 	m_title.setFillColor(COLOR_TITLE);
@@ -96,7 +99,7 @@ void StartGameScene::CheckInputText(const sf::Event & event)
 		const auto codeKey = event.text.unicode;
 		if (codeKey < MAX_VALUE_RANGE_CHARACTERS)
 		{
-			if (codeKey == int(CodeKey::BackSpace))
+			if (codeKey == int(ASCIICodeKey::BackSpace))
 			{
 				if (!m_textNickname.empty() && m_textNickname != DEFALUT_INPUT_STRING)
 				{
@@ -104,10 +107,10 @@ void StartGameScene::CheckInputText(const sf::Event & event)
 				}
 				else
 				{
-					m_textNickname = "";
+					m_textNickname.clear();
 				}
 			}
-			else if (codeKey != int(CodeKey::Enter) && codeKey != int(CodeKey::Ctrl_Enter))
+			else if (codeKey != int(ASCIICodeKey::Enter) && codeKey != int(ASCIICodeKey::Ctrl_Enter))
 			{
 				if (m_textNickname == DEFALUT_INPUT_STRING)
 				{
@@ -133,7 +136,7 @@ void StartGameScene::CheckSpecialKeys(const sf::Event & event)
 			m_isNextScene = true;
 			break;
 		case sf::Keyboard::F10:
-			ChangeStatusAudioPlayer();
+			ChangeBehaviorAudioPlayer();
 			break;
 		case sf::Keyboard::F9:
 			m_audioPlayer.PlayNextTrack();
@@ -145,7 +148,7 @@ void StartGameScene::CheckSpecialKeys(const sf::Event & event)
 	}
 }
 
-void StartGameScene::ChangeStatusAudioPlayer()
+void StartGameScene::ChangeBehaviorAudioPlayer()
 {
 	m_audioPlayer.IsPaused() ? m_audioPlayer.Resume() : m_audioPlayer.Pause();
 }
@@ -156,17 +159,17 @@ void StartGameScene::Update(float dt, bool isConnected)
 	if (isConnected && m_isNextScene && isNicknameStringEmpty())
 	{
 		m_nextSceneType = SceneType::GameScene;
-		m_socketMaster.Emit("nickname", m_textNickname);
+		m_socketMaster.Emit(NICKNAME, m_textNickname);
 	}
 	else if (m_isNextScene)
 	{
 		if (!isConnected)
 		{
-			m_message.setString("No Connection to the Server");
+			m_message.setString(MESSAGE_NO_COONECTION_SERVER);
 		}
 		else
 		{
-			m_message.setString("No Entered Nickname");
+			m_message.setString(MESSAGE_NO_NICKNAME);
 		}
 	}
 }
@@ -182,7 +185,7 @@ void StartGameScene::Draw()
 
 bool StartGameScene::isNicknameStringEmpty() const
 {
-	return (!m_textNickname.empty()) && (m_textNickname != DEFALUT_INPUT_STRING);
+	return (!m_textNickname.empty() && (m_textNickname != DEFALUT_INPUT_STRING));
 }
 
 std::string StartGameScene::GetNickname() const

@@ -17,9 +17,8 @@ public:
 	sf::Vector2f GetPosition() const;
 	std::string GetIp() const;
 	sf::Vector2f GetSize() const;
-	bool GetIsDead() const;
+	bool GetInformationAboutHealth() const;
 	void SetOpportunityDrawing(bool isDraw);
-	bool GetIsDraw() const;
 
 private:
 	void SetTexture(const sf::Texture & texture);
