@@ -24,7 +24,7 @@ ShooterView::ShooterView(SAssets & assets, const Shooter & playerOfServer)
 {
 	SetParameters(playerOfServer);
 	SetTexture(m_assets.PLAYER_TEXTURE);
-	m_isDraw = true;
+	m_isDrawble = true;
 }
 
 void ShooterView::SetTexture(const sf::Texture & texture)
@@ -35,7 +35,7 @@ void ShooterView::SetTexture(const sf::Texture & texture)
 
 void ShooterView::Draw(sf::RenderWindow & window) const
 {
-	if (m_isDraw)
+	if (m_isDrawble)
 	{
 		window.draw(m_body);
 	}
@@ -72,9 +72,9 @@ bool ShooterView::GetInformationAboutHealth() const
 	return m_health == 0;
 }
 
-void ShooterView::SetOpportunityDrawing(bool isDraw)
+void ShooterView::SetOpportunityDrawble(bool isDrawble)
 {
-	m_isDraw = isDraw;
+	m_isDrawble = isDrawble;
 }
 
 sf::Vector2f ShooterView::GetPosition() const

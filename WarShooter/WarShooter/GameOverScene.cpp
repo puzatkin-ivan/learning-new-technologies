@@ -77,7 +77,7 @@ void GameOverScene::CheckSpecialKeys(const sf::Event & event)
 			ChangeTypeScene();
 			break;
 		case sf::Keyboard::F10:
-			ChangeBehaviorAudioPlayer();
+			ResumePauseAudio();
 			break;
 		case sf::Keyboard::F9:
 			m_audioPlayer.PlayNextTrack();
@@ -101,7 +101,7 @@ void GameOverScene::ChangeTypeScene()
 	}
 }
 
-void GameOverScene::ChangeBehaviorAudioPlayer()
+void GameOverScene::ResumePauseAudio()
 {
 	if (m_audioPlayer.IsPaused())
 	{

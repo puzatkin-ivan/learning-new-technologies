@@ -1,10 +1,5 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-
-#include "Assets.h"
-
 const sf::Vector2u WINDOW_SIZE = { 1500, 850 };
 const sf::Vector2f TEXT_POSITION = { 50, 400 };
 const unsigned FRAME_LIMIT = 60;
@@ -28,7 +23,6 @@ const std::string SCORE = "score";
 const std::string KILL_COUNT = "killCount";
 const std::string DEATH_COUNT = "deathCount";
 const std::string IS_DEAD = "isDead";
-
 const std::string MESSAGE_KEY = "key";
 const std::string MESSAGE_KEY_MAP = "keyMap";
 const std::string MESSAGE_KEY_PRESSED = "isPressed";

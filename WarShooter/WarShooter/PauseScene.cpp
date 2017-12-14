@@ -72,7 +72,7 @@ void PauseScene::Draw()
 	m_window.draw(m_title);
 }
 
-void PauseScene::ChangeBehaviorAudioPlayer()
+void PauseScene::ResumePauseAudio()
 {
 	m_audioPlayer.IsPaused() ? m_audioPlayer.Resume() : m_audioPlayer.Pause();
 }
@@ -84,7 +84,7 @@ void PauseScene::CheckSpecialKey(const sf::Event & event)
 		switch (event.key.code)
 		{
 		case sf::Keyboard::F10:
-			ChangeBehaviorAudioPlayer();
+			ResumePauseAudio();
 			break;
 		case sf::Keyboard::F11:
 			m_audioPlayer.PlayNextTrack();

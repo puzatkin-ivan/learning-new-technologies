@@ -23,7 +23,7 @@ GameScene::GameScene(sf::RenderWindow & window, GameContext & gameContext, Socke
 
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 
-	m_isDrawTable = false;
+	m_isOpportunityDrawbleTable = false;
 }
 
 SceneInfo GameScene::Advance(float dt)
@@ -52,7 +52,7 @@ void GameScene::Update(float deltaTime)
 void GameScene::Draw()
 {
 	m_window.clear(WINDOW_COLOR);
-	m_gameContext.Draw(m_window, m_isDrawTable);
+	m_gameContext.Draw(m_window, m_isOpportunityDrawbleTable);
 }
 
 void GameScene::CheckEvents()
@@ -84,7 +84,7 @@ void GameScene::CheckKeyPressed(const sf::Event & event)
 		CheckDirection(event, isPressed);
 		if (event.key.code == sf::Keyboard::Tab)
 		{
-			m_isDrawTable = isPressed;
+			m_isOpportunityDrawbleTable = isPressed;
 		}
 	}
 }
@@ -99,7 +99,7 @@ void GameScene::CheckKeyReleased(const sf::Event & event)
 		CheckSpecialKey(event, isReleased);
 		if (event.key.code == sf::Keyboard::Tab)
 		{
-			m_isDrawTable = isReleased;
+			m_isOpportunityDrawbleTable = isReleased;
 		}
 	}
 }
@@ -157,7 +157,7 @@ void GameScene::CheckSpecialKey(const sf::Event & event, bool isPressed)
 	switch (event.key.code)
 	{
 	case sf::Keyboard::F10:
-		ChangeBehaviorAudioPlayer();
+		ResumePauseAudio();
 		break;
 	case sf::Keyboard::F9:
 		m_audioPlayer.PlayNextTrack();
@@ -171,7 +171,7 @@ void GameScene::CheckSpecialKey(const sf::Event & event, bool isPressed)
 	}
 }
 
-void GameScene::ChangeBehaviorAudioPlayer()
+void GameScene::ResumePauseAudio()
 {
 	m_audioPlayer.IsPaused() ? m_audioPlayer.Resume() : m_audioPlayer.Pause();
 }

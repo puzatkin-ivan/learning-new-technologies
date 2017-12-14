@@ -5,35 +5,23 @@
 namespace
 {
 
-static const auto PATH_TO_BACKGROUND = "images/background.jpg";
+static const std::string IMG_PATH = "images/";
 
-static const auto PATH_TO_MENU_BACKGROUND = "images/menu_background.jpg";
-
-static const auto PATH_TO_PLAYER_TEXTURE = "images/player.png";
-
-static const auto PATH_TO_BLOCK_TEXTURE = "images/block.png";
-
-static const auto PATH_TO_BULLET_TEXTRURE = "images/bullet.png";
-
-static const auto PATH_TO_WINDOW_ICON = "images/icon.png";
-
-static const auto PATH_TO_ARIAL_FONT = "fonts/arial.ttf";
-
-static const auto PATH_TO_BREE_SERIF_FONT = "fonts/BreeSerif.ttf";
+static const std::string PATH_FONTS = "fonts/";
 
 }
 
 SAssets::SAssets()
 {
-	AddRepeatedTexture(BACKGROUND_TEXTURE, PATH_TO_BACKGROUND);
-	AddRepeatedTexture(MENU_BACKGROUND_TEXTURE, PATH_TO_MENU_BACKGROUND);
-	AddTexture(PLAYER_TEXTURE, PATH_TO_PLAYER_TEXTURE);
-	AddTexture(BLOCK_TEXTURE, PATH_TO_BLOCK_TEXTURE);
-	AddTexture(BULLET_TEXTURE, PATH_TO_BULLET_TEXTRURE);
-	AddImage(WINDOW_ICON, PATH_TO_WINDOW_ICON);
+	AddRepeatedTexture(BACKGROUND_TEXTURE, IMG_PATH + "background.jpg");
+	AddRepeatedTexture(MENU_BACKGROUND_TEXTURE, IMG_PATH + "menu_background.jpg");
+	AddTexture(PLAYER_TEXTURE, IMG_PATH + "player.png");
+	AddTexture(BLOCK_TEXTURE, IMG_PATH + "block.png");
+	AddTexture(BULLET_TEXTURE, IMG_PATH + "bullet.png");
+	AddImage(WINDOW_ICON, IMG_PATH + "icon.png");
 
-	AddFont(ARIAL_FONT, PATH_TO_ARIAL_FONT);
-	AddFont(BREE_SERIF_FONT, PATH_TO_BREE_SERIF_FONT);
+	AddFont(ARIAL_FONT, PATH_FONTS + "arial.ttf");
+	AddFont(BREE_SERIF_FONT, PATH_FONTS + "BreeSerif.ttf");
 }
 
 void SAssets::AddTexture(sf::Texture & texture, const std::string & path)

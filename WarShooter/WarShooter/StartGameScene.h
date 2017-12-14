@@ -1,6 +1,7 @@
 #pragma once
 
 #include <AudioPlayer.h>
+
 #include "Assets.h"
 #include "sheet.h"
 #include "SocketMaster.h"
@@ -19,7 +20,7 @@ private:
 	void CheckEvents();
 	void CheckInputText(const sf::Event & event);
 	void CheckSpecialKeys(const sf::Event & event);
-	void ChangeBehaviorAudioPlayer();
+	void ResumePauseAudio();
 	void Update(float dt, bool isConnected);
 	void Draw();
 

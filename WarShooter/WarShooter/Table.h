@@ -1,6 +1,7 @@
 #pragma once
 
 #include <SFML\Graphics.hpp>
+
 #include "Assets.h"
 #include "PlayerTable.h"
 #include "PlayerTableView.h"
@@ -22,10 +23,6 @@ private:
 	SAssets & m_assets;
 
 	std::vector<std::unique_ptr<CPlayerTableView>> m_vectorPlayers;
-	std::vector<sf::Text> m_columnPlayers;
-	std::vector<sf::Text> m_columnStatus;
-	std::vector<sf::Text> m_columnScore;
-	std::vector<sf::Text> m_columnDead;
 
 	sf::RectangleShape m_background;
 	sf::RectangleShape m_line;

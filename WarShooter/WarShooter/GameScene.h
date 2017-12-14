@@ -1,6 +1,7 @@
 #pragma once
 
 #include <AudioPlayer.h>
+
 #include "GameContext.h"
 #include "SocketMaster.h"
 #include "Assets.h"
@@ -23,7 +24,7 @@ private:
 	void CheckMovement(const sf::Event & event, bool isPressed);
 	void CheckDirection(const sf::Event & event, bool isPressed);
 	void CheckSpecialKey(const sf::Event & event, bool isPressed);
-	void ChangeBehaviorAudioPlayer();
+	void ResumePauseAudio();
 
 	void SendKeyMap(const ASCIICodeKey & keyCode, bool isPressed);
 
@@ -41,5 +42,5 @@ private:
 
 	SceneType m_nextSceneType;
 	
-	bool m_isDrawTable;
+	bool m_isOpportunityDrawbleTable;
 };

@@ -18,7 +18,7 @@ public:
 	std::string GetIp() const;
 	sf::Vector2f GetSize() const;
 	bool GetInformationAboutHealth() const;
-	void SetOpportunityDrawing(bool isDraw);
+	void SetOpportunityDrawble(bool isDrawble);
 
 private:
 	void SetTexture(const sf::Texture & texture);
@@ -29,5 +29,5 @@ private:
 	SAssets m_assets;
 	sf::Sprite m_body;
 	std::string m_direction;
-	bool m_isDraw;
+	bool m_isDrawble;
 };

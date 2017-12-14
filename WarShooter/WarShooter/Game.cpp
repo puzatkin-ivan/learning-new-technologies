@@ -13,7 +13,7 @@ static const sf::Color WINDOW_COLOR = sf::Color::White;
 
 static const sf::String WINDOW_TITLE = "WarShooter 2.0";
 
-static const std::string FOLDER_WITH_MUSIC = "sounds/";
+static const std::string MUSIC_PATH = "sounds/";
 
 static const unsigned MAX_VOLUME = 100;
 
@@ -27,7 +27,7 @@ Game::Game()
 	:m_window(sf::VideoMode(WINDOW_SIZE.x, WINDOW_SIZE.y), WINDOW_TITLE, sf::Style::Close)
 	,m_gameContext(m_assets)
 	,m_socketMaster(PORT)
-	,m_audioPlayer(FOLDER_WITH_MUSIC)
+	,m_audioPlayer(MUSIC_PATH)
 	,m_startGameScene(m_window, m_assets, m_socketMaster, m_audioPlayer)
 	,m_gameScene(m_window, m_gameContext, m_socketMaster, m_audioPlayer)
 	,m_pauseScene(m_window, m_assets, m_audioPlayer)

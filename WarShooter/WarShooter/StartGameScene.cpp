@@ -136,7 +136,7 @@ void StartGameScene::CheckSpecialKeys(const sf::Event & event)
 			m_isNextScene = true;
 			break;
 		case sf::Keyboard::F10:
-			ChangeBehaviorAudioPlayer();
+			ResumePauseAudio();
 			break;
 		case sf::Keyboard::F9:
 			m_audioPlayer.PlayNextTrack();
@@ -148,7 +148,7 @@ void StartGameScene::CheckSpecialKeys(const sf::Event & event)
 	}
 }
 
-void StartGameScene::ChangeBehaviorAudioPlayer()
+void StartGameScene::ResumePauseAudio()
 {
 	m_audioPlayer.IsPaused() ? m_audioPlayer.Resume() : m_audioPlayer.Pause();
 }

@@ -13,7 +13,7 @@ public:
 	void SetContent(const PlayerTable & player, size_t index, const std::string & ip);
 	void SetPositionX(const sf::Vector2f & positon);
 	void SetPositionY(const sf::Vector2f & positionY);
-	void SetOpportunityDrawing(bool isDraw);
+	void SetOpportunityDrawble(bool isDrawble);
 
 	void Draw(sf::RenderWindow & window) const;
 

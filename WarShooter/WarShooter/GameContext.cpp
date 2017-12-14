@@ -42,16 +42,16 @@ void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::
 	{
 		if (index < m_players.size())
 		{
-			if (playerObject.isDraw)
+			if (playerObject.isDrawble)
 			{
 				m_players[index]->SetParameters(playerObject);
 				SetCenterView(view, m_players[index], ip);
 				m_players[index]->Update();
-				m_players[index]->SetOpportunityDrawing(true);
+				m_players[index]->SetOpportunityDrawble(true);
 			}
 			else
 			{
-				m_players[index]->SetOpportunityDrawing(false);
+				m_players[index]->SetOpportunityDrawble(false);
 			}
 		}
 		else
@@ -67,7 +67,7 @@ void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::
 	
 	for (index; index < m_players.size(); ++index)
 	{
-		m_players[index]->SetOpportunityDrawing(false);
+		m_players[index]->SetOpportunityDrawble(false);
 	}
 }
 
@@ -85,7 +85,7 @@ void GameContext::SetCenterView(sf::View & view, const std::unique_ptr<ShooterVi
 	}
 }
 
-void GameContext::Draw(sf::RenderWindow & window, bool isOpportunityDrawingTable) const
+void GameContext::Draw(sf::RenderWindow & window, bool isOpportunityDrawbleTable) const
 {
 	window.draw(m_background);
 	for (const auto & bullet : m_bullets)
@@ -101,7 +101,7 @@ void GameContext::Draw(sf::RenderWindow & window, bool isOpportunityDrawingTable
 			player->Draw(window);
 	}
 
-	if (isOpportunityDrawingTable)
+	if (isOpportunityDrawbleTable)
 	{
 		m_table.Draw(window);
 	}
@@ -162,12 +162,12 @@ void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
 		if (index < m_bullets.size())
 		{
 			m_bullets[index]->SetPosition(position);
-			m_bullets[index]->SetOpportunityDrawing(true);
+			m_bullets[index]->SetOpportunityDrawble(true);
 		}
 		else
 		{
 			auto bullet = std::make_unique<BulletView>(m_assets, position);
-			bullet->SetOpportunityDrawing(true);
+			bullet->SetOpportunityDrawble(true);
 			m_bullets.push_back(std::move(bullet));
 		}
 
@@ -176,7 +176,7 @@ void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
 
 	for (index; index < m_bullets.size(); ++index)
 	{
-		m_bullets[index]->SetOpportunityDrawing(false);
+		m_bullets[index]->SetOpportunityDrawble(false);
 	}
 }
 
@@ -202,18 +202,18 @@ void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
 
 	for (index; index < m_data.m_vectorPlayers.size(); ++index)
 	{
-		 m_data.m_vectorPlayers[index].isDraw = false;
+		 m_data.m_vectorPlayers[index].isDrawble = false;
 	}
 }
 
 void GameContext::InitPlayerDraw(const nlohmann::basic_json<> & path, Shooter & player)
 {
 	player.position = sf::Vector2f(float(path[X]), float(path[Y]));
-	player.health = path[HEALTH];
+	player.health = path[HEALTH].get<unsigned>();
 	player.direction = path[DIRECTION].get<std::string>();
 	player.nickname = path[NICKNAME].get<std::string>();
 	player.playerId = path[PLAYER_ID].get<std::string>();
-	player.isDraw = true;
+	player.isDrawble = true;
 }
 
 void GameContext::UpdateParametersTable(const nlohmann::basic_json<> & data)
@@ -238,7 +238,7 @@ void GameContext::UpdateParametersTable(const nlohmann::basic_json<> & data)
 
 	for (index; index < m_listPlayers.size(); ++index)
 	{
-		m_listPlayers[index].isDraw = false;
+		m_listPlayers[index].isDrawble = false;
 	}
 }
 
@@ -249,5 +249,5 @@ void GameContext::InitPlayerTable(const nlohmann::basic_json<> & path, PlayerTab
 	player.isDead = path[IS_DEAD].get<bool>();
 	player.killCount = path[KILL_COUNT].get<int>();
 	player.deathCount = path[DEATH_COUNT].get<int>();
-	player.isDraw = true;
+	player.isDrawble = true;
 }

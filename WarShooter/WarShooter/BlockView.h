@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Assets.h"
 #include "sheet.h"
 
 class BlockView

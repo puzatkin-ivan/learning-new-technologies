@@ -19,7 +19,7 @@ private:
 	void CheckEvents();
 	void CheckSpecialKeys(const sf::Event & event);
 	void ChangeTypeScene();
-	void ChangeBehaviorAudioPlayer();
+	void ResumePauseAudio();
 	void SendKey(const ASCIICodeKey & keyCode);
 
 	void Draw();

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <AudioPlayer.h>
+
+#include "Assets.h"
 #include "sheet.h"
 
 class PauseScene
@@ -15,7 +17,7 @@ public:
 private:
 	void CheckEvents();
 	void CheckSpecialKey(const sf::Event & event);
-	void ChangeBehaviorAudioPlayer();
+	void ResumePauseAudio();
 
 	void Draw();
 	void Update(float dt);

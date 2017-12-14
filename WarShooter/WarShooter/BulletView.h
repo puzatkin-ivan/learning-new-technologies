@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Assets.h"
 #include "sheet.h"
 
 class BulletView
@@ -12,7 +13,7 @@ public:
 	void Update(float dt);
 	void Draw(sf::RenderWindow & window) const;
 	void SetPosition(const sf::Vector2f & position);
-	void SetOpportunityDrawing(bool isDraw);
+	void SetOpportunityDrawble(bool isDrawble);
 
 private:
 	void SetTexture(sf::Texture & texture);

@@ -8,7 +8,7 @@ public:
 	int deathCount;
 	bool isDead;
 	std::string nickname;
-	bool isDraw;
+	bool isDrawble;
 
 private:
 };

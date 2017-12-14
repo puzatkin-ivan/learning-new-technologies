@@ -24,7 +24,7 @@ void BulletView::Draw(sf::RenderWindow & window) const
 	}
 }
 
-void BulletView::SetOpportunityDrawing(bool isOpportunityDrawing)
+void BulletView::SetOpportunityDrawble(bool isOpportunityDrawing)
 {
 	m_isOpportunityDrawing = isOpportunityDrawing;
 }
