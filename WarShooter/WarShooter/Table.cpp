@@ -70,7 +70,7 @@ void Table::Update(std::vector<PlayerTable> & listPlayer, const sf::Vector2f & v
 			}
 			else
 			{
-				m_vectorPlayers[index]->SetOpportunityDrawble(false);
+				m_vectorPlayers[index]->SetOpportunityDrawing(false);
 			}
 		}
 		else
@@ -93,7 +93,7 @@ void Table::AddPlayerForDraw(const PlayerTable & player, size_t index, const std
 void Table::UpdatePlayer(const PlayerTable & player, size_t index, const std::string & ip)
 {
 	m_vectorPlayers[index]->SetContent(player, index, ip);
-	m_vectorPlayers[index]->SetOpportunityDrawble(true);
+	m_vectorPlayers[index]->SetOpportunityDrawing(true);
 }
 
 void Table::Draw(sf::RenderWindow & window) const

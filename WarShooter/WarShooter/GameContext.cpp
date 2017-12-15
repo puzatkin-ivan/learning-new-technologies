@@ -47,11 +47,11 @@ void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::
 				m_players[index]->SetParameters(playerObject);
 				SetCenterView(view, m_players[index], ip);
 				m_players[index]->Update();
-				m_players[index]->SetOpportunityDrawble(true);
+				m_players[index]->SetOpportunityDrawing(true);
 			}
 			else
 			{
-				m_players[index]->SetOpportunityDrawble(false);
+				m_players[index]->SetOpportunityDrawing(false);
 			}
 		}
 		else
@@ -67,7 +67,7 @@ void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::
 	
 	for (index; index < m_players.size(); ++index)
 	{
-		m_players[index]->SetOpportunityDrawble(false);
+		m_players[index]->SetOpportunityDrawing(false);
 	}
 }
 
@@ -134,15 +134,6 @@ void GameContext::ProcessInitMessage(const std::string & path)
 	}
 }
 
-void GameContext::InitParametersPlayer(const nlohmann::basic_json<> & path, Shooter & player)
-{
-	player.position = sf::Vector2f(float(path[X]), float(path[Y]));
-	player.health = path[HEALTH];
-	player.direction = path[DIRECTION].get<std::string>();
-	player.nickname = !path[NICKNAME].get<std::string>().empty() ? path[NICKNAME].get<std::string>() : "";
-	player.playerId = path[PLAYER_ID].get<std::string>();
-}
-
 void GameContext::ProcessUpdateData(const std::string & path)
 {
 	const auto data = json::parse(path);
@@ -162,12 +153,12 @@ void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
 		if (index < m_bullets.size())
 		{
 			m_bullets[index]->SetPosition(position);
-			m_bullets[index]->SetOpportunityDrawble(true);
+			m_bullets[index]->SetOpportunityDrawing(true);
 		}
 		else
 		{
 			auto bullet = std::make_unique<BulletView>(m_assets, position);
-			bullet->SetOpportunityDrawble(true);
+			bullet->SetOpportunityDrawing(true);
 			m_bullets.push_back(std::move(bullet));
 		}
 
@@ -176,7 +167,7 @@ void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
 
 	for (index; index < m_bullets.size(); ++index)
 	{
-		m_bullets[index]->SetOpportunityDrawble(false);
+		m_bullets[index]->SetOpportunityDrawing(false);
 	}
 }
 
@@ -188,12 +179,12 @@ void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
 		if (index < m_data.m_vectorPlayers.size())
 		{
 			auto & player = m_data.m_vectorPlayers[index];
-			InitPlayerDraw(element, player);
+			InitParametersPlayer(element, player);
 		}
 		else if (!m_data.m_vectorPlayers.empty())
 		{
 			Shooter player;
-			InitPlayerDraw(element, player);
+			InitParametersPlayer(element, player);
 			m_data.m_vectorPlayers.push_back(player);
 		}
 
@@ -206,13 +197,15 @@ void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
 	}
 }
 
-void GameContext::InitPlayerDraw(const nlohmann::basic_json<> & path, Shooter & player)
+void GameContext::InitParametersPlayer(const nlohmann::basic_json<> & path, Shooter & player)
 {
 	player.position = sf::Vector2f(float(path[X]), float(path[Y]));
-	player.health = path[HEALTH].get<unsigned>();
+	player.health = path[HEALTH];
 	player.direction = path[DIRECTION].get<std::string>();
-	player.nickname = path[NICKNAME].get<std::string>();
+	player.nickname = !path[NICKNAME].get<std::string>().empty() ? path[NICKNAME].get<std::string>() : "";
 	player.playerId = path[PLAYER_ID].get<std::string>();
+	player.numberTexture = path[NUMBER_TEXTURE].get<int>();
+	player.isDead = path[IS_DEAD].get<bool>();
 	player.isDrawble = true;
 }
 

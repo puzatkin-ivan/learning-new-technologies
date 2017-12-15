@@ -9,6 +9,8 @@ public:
 	std::string nickname;
 	std::string playerId;
 	bool isDrawble;
+	bool isDead;
+	unsigned numberTexture;
 
 private:
 };

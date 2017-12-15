@@ -15,7 +15,10 @@ SAssets::SAssets()
 {
 	AddRepeatedTexture(BACKGROUND_TEXTURE, IMG_PATH + "background.jpg");
 	AddRepeatedTexture(MENU_BACKGROUND_TEXTURE, IMG_PATH + "menu_background.jpg");
-	AddTexture(PLAYER_TEXTURE, IMG_PATH + "player.png");
+	AddTexture(PLAYER_SWAT_TEXTURE, IMG_PATH + "player.png");
+	AddTexture(PLAYER_KNIGHT_TEXTURE, IMG_PATH + "player2.png");
+	AddTexture(PLAYER_BIKER_TEXTURE, IMG_PATH + "player3.png");
+	AddTexture(PLAYER_HUMAN_TEXTURE, IMG_PATH + "player4.png");
 	AddTexture(BLOCK_TEXTURE, IMG_PATH + "block.png");
 	AddTexture(BULLET_TEXTURE, IMG_PATH + "bullet.png");
 	AddImage(WINDOW_ICON, IMG_PATH + "icon.png");

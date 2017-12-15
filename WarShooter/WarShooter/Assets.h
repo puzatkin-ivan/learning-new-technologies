@@ -13,7 +13,10 @@ public:
 	void AddFont(sf::Font & font, const std::string & string);
 
 	sf::Texture BACKGROUND_TEXTURE;
-	sf::Texture PLAYER_TEXTURE;
+	sf::Texture PLAYER_SWAT_TEXTURE;
+	sf::Texture PLAYER_KNIGHT_TEXTURE;
+	sf::Texture PLAYER_BIKER_TEXTURE;
+	sf::Texture PLAYER_HUMAN_TEXTURE;
 	sf::Texture BLOCK_TEXTURE;
 	sf::Texture BULLET_TEXTURE;
 	sf::Texture MENU_BACKGROUND_TEXTURE;

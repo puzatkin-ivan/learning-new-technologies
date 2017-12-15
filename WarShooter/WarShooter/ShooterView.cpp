@@ -23,13 +23,26 @@ ShooterView::ShooterView(SAssets & assets, const Shooter & playerOfServer)
 	:m_assets(assets)
 {
 	SetParameters(playerOfServer);
-	SetTexture(m_assets.PLAYER_TEXTURE);
+	SetTexture();
 	m_isDrawble = true;
 }
 
-void ShooterView::SetTexture(const sf::Texture & texture)
+void ShooterView::SetTexture()
 {
-	m_body.setTextureRect(sf::IntRect(0, 0, int(texture.getSize().x), int(texture.getSize().y)));
+	sf::Texture & texture = m_assets.PLAYER_HUMAN_TEXTURE;
+	if (m_numberTexture == 1)
+	{
+		texture = m_assets.PLAYER_SWAT_TEXTURE;
+	}
+	else if (m_numberTexture == 2)
+	{
+		texture = m_assets.PLAYER_KNIGHT_TEXTURE;
+	}
+	else if (m_numberTexture == 3)
+	{
+		texture = m_assets.PLAYER_BIKER_TEXTURE;
+	}
+	m_body.setTextureRect(sf::IntRect(0, 0, int(m_assets.PLAYER_SWAT_TEXTURE.getSize().x), int(m_assets.PLAYER_SWAT_TEXTURE.getSize().y)));
 	m_body.setTexture(texture);
 }
 
@@ -69,10 +82,10 @@ void ShooterView::Update()
 
 bool ShooterView::GetInformationAboutHealth() const
 {
-	return m_health == 0;
+	return m_isDead;
 }
 
-void ShooterView::SetOpportunityDrawble(bool isDrawble)
+void ShooterView::SetOpportunityDrawing(bool isDrawble)
 {
 	m_isDrawble = isDrawble;
 }
@@ -94,9 +107,11 @@ sf::Vector2f ShooterView::GetSize() const
 
 void ShooterView::SetParameters(const Shooter & playerOfServer)
 {
-	m_body.setPosition(playerOfServer.position - 0.5f * sf::Vector2f(m_assets.PLAYER_TEXTURE.getSize()));
+	m_body.setPosition(playerOfServer.position - 0.5f * sf::Vector2f(m_assets.PLAYER_SWAT_TEXTURE.getSize()));
 	m_direction = playerOfServer.direction;
 	m_health = playerOfServer.health;
 	m_ip = playerOfServer.playerId;
 	m_nickname = playerOfServer.nickname;
+	m_numberTexture = playerOfServer.numberTexture;
+	m_isDead = playerOfServer.isDead;
 }

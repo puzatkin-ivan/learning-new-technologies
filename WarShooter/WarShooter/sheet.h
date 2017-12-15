@@ -26,7 +26,7 @@ const std::string IS_DEAD = "isDead";
 const std::string MESSAGE_KEY = "key";
 const std::string MESSAGE_KEY_MAP = "keyMap";
 const std::string MESSAGE_KEY_PRESSED = "isPressed";
-
+const std::string NUMBER_TEXTURE = "texture";
 
 struct KeyMap
 {

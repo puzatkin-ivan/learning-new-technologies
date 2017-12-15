@@ -29,10 +29,9 @@ private:
 
 	void UpdateParametersBullets(const nlohmann::basic_json<> & data);
 	void UpdateParametersPlayers(const nlohmann::basic_json<> & data);
-	void InitPlayerDraw(const nlohmann::basic_json<> & path, Shooter & player);
+	void InitParametersPlayer(const nlohmann::basic_json<> & path, Shooter & player);
 	void UpdateParametersTable(const nlohmann::basic_json<> & data);
 
-	void InitParametersPlayer(const nlohmann::basic_json<> & path, Shooter & player);
 	void InitPlayerTable(const nlohmann::basic_json<> & path, PlayerTable & newPlayer);
 	void SetCenterView(sf::View & view, const std::unique_ptr<ShooterView> & player, const std::string & ip);
 

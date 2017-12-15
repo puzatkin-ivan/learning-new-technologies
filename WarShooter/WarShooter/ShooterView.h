@@ -18,10 +18,10 @@ public:
 	std::string GetIp() const;
 	sf::Vector2f GetSize() const;
 	bool GetInformationAboutHealth() const;
-	void SetOpportunityDrawble(bool isDrawble);
+	void SetOpportunityDrawing(bool isDrawble);
 
 private:
-	void SetTexture(const sf::Texture & texture);
+	void SetTexture();
 	
 	std::string m_ip;
 	std::string m_nickname;
@@ -30,4 +30,6 @@ private:
 	sf::Sprite m_body;
 	std::string m_direction;
 	bool m_isDrawble;
+	bool m_isDead;
+	unsigned m_numberTexture;
 };
