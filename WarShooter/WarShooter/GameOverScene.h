@@ -22,7 +22,7 @@ private:
 	void ResumePauseAudio();
 	void SendKey(const ASCIICodeKey & keyCode);
 
-	void Draw();
+	void Draw() const;
 	void Update(float dt, const std::string & ip);
 
 	sf::RenderWindow & m_window;

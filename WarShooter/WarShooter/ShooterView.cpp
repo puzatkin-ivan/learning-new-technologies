@@ -1,5 +1,6 @@
 #include "stdafx.h"
 
+#include <cmath>
 #include "ShooterView.h"
 
 namespace
@@ -17,6 +18,18 @@ static const auto Left = "direction_left";
 
 static const auto Right = "direction_right";
 
+static const auto COLOR_NICKNAME = sf::Color(15, 21, 36);
+
+static const unsigned CHARACTER_SIZE = 30;
+
+static const auto STYLE_TEXT_NICKNAME = sf::Text::Bold;
+
+static const unsigned TEXTURE_NUMBER_ONE = 1;
+
+static const unsigned TEXTURE_NUMBER_TWO = 2;
+
+static const unsigned TEXTURE_NUMBER_THREE = 3;
+
 }
 
 ShooterView::ShooterView(SAssets & assets, const Shooter & playerOfServer)
@@ -25,24 +38,28 @@ ShooterView::ShooterView(SAssets & assets, const Shooter & playerOfServer)
 	SetParameters(playerOfServer);
 	SetTexture();
 	m_isDrawble = true;
+	m_nickname.setCharacterSize(CHARACTER_SIZE);
+	m_nickname.setColor(COLOR_NICKNAME);
+	m_nickname.setFont(m_assets.BREE_SERIF_FONT);
+	m_nickname.setStyle(STYLE_TEXT_NICKNAME);
 }
 
 void ShooterView::SetTexture()
 {
 	sf::Texture & texture = m_assets.PLAYER_HUMAN_TEXTURE;
-	if (m_numberTexture == 1)
+	if (m_numberTexture == TEXTURE_NUMBER_ONE)
 	{
 		texture = m_assets.PLAYER_SWAT_TEXTURE;
 	}
-	else if (m_numberTexture == 2)
+	else if (m_numberTexture == TEXTURE_NUMBER_TWO)
 	{
 		texture = m_assets.PLAYER_KNIGHT_TEXTURE;
 	}
-	else if (m_numberTexture == 3)
+	else if (m_numberTexture == TEXTURE_NUMBER_THREE)
 	{
 		texture = m_assets.PLAYER_BIKER_TEXTURE;
 	}
-	m_body.setTextureRect(sf::IntRect(0, 0, int(m_assets.PLAYER_SWAT_TEXTURE.getSize().x), int(m_assets.PLAYER_SWAT_TEXTURE.getSize().y)));
+	m_body.setTextureRect(sf::IntRect(0, 0, int(texture.getSize().x), int(texture.getSize().y)));
 	m_body.setTexture(texture);
 }
 
@@ -51,6 +68,7 @@ void ShooterView::Draw(sf::RenderWindow & window) const
 	if (m_isDrawble)
 	{
 		window.draw(m_body);
+		window.draw(m_nickname);
 	}
 }
 
@@ -80,12 +98,12 @@ void ShooterView::Update()
 	}
 }
 
-bool ShooterView::GetInformationAboutHealth() const
+bool ShooterView::GetInformationAboutDeath() const
 {
 	return m_isDead;
 }
 
-void ShooterView::SetOpportunityDrawing(bool isDrawble)
+void ShooterView::SetOpportunityDrawable(bool isDrawble)
 {
 	m_isDrawble = isDrawble;
 }
@@ -111,7 +129,20 @@ void ShooterView::SetParameters(const Shooter & playerOfServer)
 	m_direction = playerOfServer.direction;
 	m_health = playerOfServer.health;
 	m_ip = playerOfServer.playerId;
-	m_nickname = playerOfServer.nickname;
+
+	m_nickname.setString(playerOfServer.nickname);
+	const auto averangeWidthCharacter = 15;
+	const float offsetX = std::ceil((averangeWidthCharacter * m_nickname.getString().getSize()) / 2);
+	const auto xText = playerOfServer.position.x - offsetX;
+	const auto offsetY = 35.f;
+	const auto yText = m_body.getPosition().y - offsetY;
+	m_nickname.setPosition(sf::Vector2f(xText, yText));
+	
 	m_numberTexture = playerOfServer.numberTexture;
 	m_isDead = playerOfServer.isDead;
+}
+
+unsigned ShooterView::GetHealth() const
+{
+	return m_health;
 }

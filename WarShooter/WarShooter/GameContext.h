@@ -9,6 +9,7 @@
 #include "DataOfServer.h"
 #include "PlayerTable.h"
 #include "SocketMaster.h"
+#include "HealthPoints.h"
 
 class GameContext
 {
@@ -22,6 +23,8 @@ public:
 	void ProcessUpdateData(const std::string & path);
 	void Update(sf::View & view, const std::string & ip);
 	void Draw(sf::RenderWindow & window, bool isOpportunityDrawingTable) const;
+
+	void Clear();
 	
 private:
 	void UpdateBlocks(const std::vector<Block> & vectorBlocks);
@@ -42,6 +45,7 @@ private:
 	std::vector<std::unique_ptr<BlockView>> m_blocks;
 	std::vector<std::unique_ptr<ShooterView>> m_players;
 	std::vector<PlayerTable> m_listPlayers;
+	CHealthPoints m_healthPoints;
 
 	DataOfServer m_data;
 	bool m_isDeadClient = false;

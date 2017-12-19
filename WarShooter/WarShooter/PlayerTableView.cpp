@@ -84,7 +84,7 @@ void CPlayerTableView::SetPositionY(const sf::Vector2f & position)
 	m_deathCount.setPosition(m_deathCount.getPosition().x, position.y);
 }
 
-void CPlayerTableView::SetOpportunityDrawing(bool isOpportunityDrawing)
+void CPlayerTableView::SetOpportunityDrawable(bool isOpportunityDrawing)
 {
 	m_isOpportunityDrawing = isOpportunityDrawing;
 }

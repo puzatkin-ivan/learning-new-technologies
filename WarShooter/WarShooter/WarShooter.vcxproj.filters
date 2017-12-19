@@ -75,6 +75,9 @@
     <ClInclude Include="Block.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HealthPoints.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -123,6 +126,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="SocketMaster.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthPoints.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -27,6 +27,8 @@ const std::string MESSAGE_KEY = "key";
 const std::string MESSAGE_KEY_MAP = "keyMap";
 const std::string MESSAGE_KEY_PRESSED = "isPressed";
 const std::string NUMBER_TEXTURE = "texture";
+const std::string STATUS_ALIVE = "Alive";
+const std::string STATUS_DEAD = "Dead";
 
 struct KeyMap
 {
@@ -58,6 +60,7 @@ enum class ASCIICodeKey
 
 enum class SceneType
 {
+	ServerClose = -1,
 	StartScene = 0,
 	GameScene,
 	PauseScene,

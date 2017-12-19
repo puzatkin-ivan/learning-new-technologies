@@ -12,6 +12,9 @@ public:
 
 	~SocketMaster();
 
+	void Connect(const std::string & port);
+	void CloseConnect();
+
 	void SetHandler(const std::string & key, std::function<void(sio::event & e)> && handler);
 
 	void Emit(const std::string & key);

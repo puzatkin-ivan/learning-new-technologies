@@ -71,6 +71,9 @@ void Game::DoGameLoop()
 		case SceneType::GameOverScene:
 			info = m_gameoverScene.Advance(deltaTime, m_socketMaster.GetSessionId());
 			break;
+		case SceneType::ServerClose:
+			info = ProcessClosingConnect();
+			break;
 		}
 	}
 }
@@ -85,4 +88,13 @@ void Game::onUpdateData(const sio::event & event)
 {
 	const auto data = event.get_message()->get_string();
 	m_gameContext.ProcessUpdateData(data);
+}
+
+SceneInfo Game::ProcessClosingConnect()
+{
+	m_socketMaster.CloseConnect();
+	m_gameContext.Clear();
+	m_socketMaster.Connect(PORT);
+
+	return SceneInfo(SceneType::StartScene);
 }

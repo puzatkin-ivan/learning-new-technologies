@@ -7,6 +7,7 @@ using json = nlohmann::json;
 GameContext::GameContext(SAssets & assets)
 	:m_assets(assets)
 	,m_table(assets)
+	,m_healthPoints(assets)
 {
 	m_background.setTextureRect(sf::IntRect(0, 0, WINDOW_SIZE.x, WINDOW_SIZE.y));
 	m_background.setTexture(m_assets.BACKGROUND_TEXTURE);
@@ -17,6 +18,7 @@ void GameContext::Update(sf::View & view, const std::string & ip)
 	UpdateBlocks(m_data.m_vectorBlocks);
 	UpdatePlayers(m_data.m_vectorPlayers, view, ip);
 	m_table.Update(m_listPlayers, view.getCenter(), ip);
+	m_healthPoints.SetPosition(view.getCenter());
 }
 
 bool GameContext::isClientDead() const
@@ -47,11 +49,11 @@ void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::
 				m_players[index]->SetParameters(playerObject);
 				SetCenterView(view, m_players[index], ip);
 				m_players[index]->Update();
-				m_players[index]->SetOpportunityDrawing(true);
+				m_players[index]->SetOpportunityDrawable(true);
 			}
 			else
 			{
-				m_players[index]->SetOpportunityDrawing(false);
+				m_players[index]->SetOpportunityDrawable(false);
 			}
 		}
 		else
@@ -67,7 +69,7 @@ void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::
 	
 	for (index; index < m_players.size(); ++index)
 	{
-		m_players[index]->SetOpportunityDrawing(false);
+		m_players[index]->SetOpportunityDrawable(false);
 	}
 }
 
@@ -81,7 +83,9 @@ void GameContext::SetCenterView(sf::View & view, const std::unique_ptr<ShooterVi
 		const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
 		m_background.setPosition(newPositionBackground);
 
-		m_isDeadClient = player->GetInformationAboutHealth();
+		m_isDeadClient = player->GetInformationAboutDeath();
+
+		m_healthPoints.SetHealtsPoints(player->GetHealth());
 	}
 }
 
@@ -98,13 +102,15 @@ void GameContext::Draw(sf::RenderWindow & window, bool isOpportunityDrawbleTable
 	}
 	for (const auto & player : m_players)
 	{
-			player->Draw(window);
+		player->Draw(window);
 	}
 
 	if (isOpportunityDrawbleTable)
 	{
 		m_table.Draw(window);
 	}
+
+	m_healthPoints.Draw(window);
 }
 
 
@@ -153,12 +159,12 @@ void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
 		if (index < m_bullets.size())
 		{
 			m_bullets[index]->SetPosition(position);
-			m_bullets[index]->SetOpportunityDrawing(true);
+			m_bullets[index]->SetOpportunityDrawable(true);
 		}
 		else
 		{
 			auto bullet = std::make_unique<BulletView>(m_assets, position);
-			bullet->SetOpportunityDrawing(true);
+			bullet->SetOpportunityDrawable(true);
 			m_bullets.push_back(std::move(bullet));
 		}
 
@@ -167,7 +173,7 @@ void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
 
 	for (index; index < m_bullets.size(); ++index)
 	{
-		m_bullets[index]->SetOpportunityDrawing(false);
+		m_bullets[index]->SetOpportunityDrawable(false);
 	}
 }
 
@@ -243,4 +249,13 @@ void GameContext::InitPlayerTable(const nlohmann::basic_json<> & path, PlayerTab
 	player.killCount = path[KILL_COUNT].get<int>();
 	player.deathCount = path[DEATH_COUNT].get<int>();
 	player.isDrawble = true;
+}
+
+void GameContext::Clear()
+{
+	m_data.Clear();
+	m_blocks.clear();
+	m_bullets.clear();
+	m_players.clear();
+	m_listPlayers.clear();
 }

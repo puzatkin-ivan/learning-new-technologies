@@ -21,6 +21,8 @@ SAssets::SAssets()
 	AddTexture(PLAYER_HUMAN_TEXTURE, IMG_PATH + "player4.png");
 	AddTexture(BLOCK_TEXTURE, IMG_PATH + "block.png");
 	AddTexture(BULLET_TEXTURE, IMG_PATH + "bullet.png");
+	AddTexture(RED_CROSS, IMG_PATH + "redCross.png");
+
 	AddImage(WINDOW_ICON, IMG_PATH + "icon.png");
 
 	AddFont(ARIAL_FONT, PATH_FONTS + "arial.ttf");

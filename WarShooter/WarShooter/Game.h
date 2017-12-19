@@ -24,6 +24,8 @@ private:
 	void onInitData(const sio::event & event);
 	void onUpdateData(const sio::event & event);
 
+	SceneInfo ProcessClosingConnect();
+
 	sf::RenderWindow m_window;
 
 	SAssets m_assets;

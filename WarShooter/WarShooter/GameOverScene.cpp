@@ -120,13 +120,12 @@ void GameOverScene::Update(float dt, const std::string & ip)
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
 
-void GameOverScene::Draw()
+void GameOverScene::Draw() const
 {
 	m_window.clear(WINDOW_COLOR);
 	m_window.draw(m_background);
 	m_window.draw(m_title);
 }
-
 
 void GameOverScene::SendKey(const ASCIICodeKey & keyCode)
 {

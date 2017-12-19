@@ -29,7 +29,7 @@ private:
 	void SendKeyMap(const ASCIICodeKey & keyCode, bool isPressed);
 
 	void Update(float deltaTime);
-	void Draw();
+	void Draw() const;
 
 	sf::RenderWindow & m_window;
 	GameContext & m_gameContext;
@@ -39,7 +39,7 @@ private:
 	sf::View m_view;
 	KeyMap m_keyMap;
 	DataOfServer m_data;
-
+	
 	SceneType m_nextSceneType;
 	
 	bool m_isOpportunityDrawbleTable;

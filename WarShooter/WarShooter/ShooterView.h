@@ -17,17 +17,19 @@ public:
 	sf::Vector2f GetPosition() const;
 	std::string GetIp() const;
 	sf::Vector2f GetSize() const;
-	bool GetInformationAboutHealth() const;
-	void SetOpportunityDrawing(bool isDrawble);
+	bool GetInformationAboutDeath() const;
+	unsigned GetHealth() const;
+	void SetOpportunityDrawable(bool isDrawble);
 
 private:
 	void SetTexture();
-	
+
+	sf::Sprite m_body;
+
+	sf::Text m_nickname;
 	std::string m_ip;
-	std::string m_nickname;
 	unsigned m_health;
 	SAssets m_assets;
-	sf::Sprite m_body;
 	std::string m_direction;
 	bool m_isDrawble;
 	bool m_isDead;

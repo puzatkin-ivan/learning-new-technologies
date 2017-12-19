@@ -169,6 +169,7 @@ xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
     <ClInclude Include="Block.h" />
     <ClInclude Include="BlockView.h" />
     <ClInclude Include="BulletView.h" />
+    <ClInclude Include="HealthPoints.h" />
     <ClInclude Include="DataOfServer.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameContext.h" />
@@ -190,6 +191,7 @@ xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
     <ClCompile Include="Assets.cpp" />
     <ClCompile Include="BlockView.cpp" />
     <ClCompile Include="BulletView.cpp" />
+    <ClCompile Include="HealthPoints.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameContext.cpp" />
     <ClCompile Include="GameOverScene.cpp" />

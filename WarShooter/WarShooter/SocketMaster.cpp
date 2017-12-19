@@ -15,6 +15,16 @@ SocketMaster::~SocketMaster()
 	m_client.sync_close();
 }
 
+void SocketMaster::Connect(const std::string & port)
+{
+	m_client.connect(port);
+}
+
+void SocketMaster::CloseConnect()
+{
+	m_client.sync_close();
+}
+
 void SocketMaster::SetHandler(const std::string & key, std::function<void(sio::event & e)> && handler)
 {
 	m_client.socket()->on(key, handler);

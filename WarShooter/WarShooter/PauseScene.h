@@ -19,7 +19,7 @@ private:
 	void CheckSpecialKey(const sf::Event & event);
 	void ResumePauseAudio();
 
-	void Draw();
+	void Draw() const;
 	void Update(float dt);
 
 	sf::RenderWindow & m_window;

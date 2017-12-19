@@ -156,7 +156,7 @@ void StartGameScene::ResumePauseAudio()
 void StartGameScene::Update(float dt, bool isConnected)
 {
 	(void)&dt;
-	if (isConnected && m_isNextScene && isNicknameStringEmpty())
+	if (isConnected && m_isNextScene && IsNicknameStringEmpty())
 	{
 		m_nextSceneType = SceneType::GameScene;
 		m_socketMaster.Emit(NICKNAME, m_textNickname);
@@ -174,7 +174,7 @@ void StartGameScene::Update(float dt, bool isConnected)
 	}
 }
 
-void StartGameScene::Draw()
+void StartGameScene::Draw() const
 {
 	m_window.clear(sf::Color::White);
 	m_window.draw(m_background);
@@ -183,7 +183,7 @@ void StartGameScene::Draw()
 	m_window.draw(m_message);
 }
 
-bool StartGameScene::isNicknameStringEmpty() const
+bool StartGameScene::IsNicknameStringEmpty() const
 {
 	return (!m_textNickname.empty() && (m_textNickname != DEFALUT_INPUT_STRING));
 }

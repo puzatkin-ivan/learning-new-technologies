@@ -65,7 +65,7 @@ void PauseScene::Update(float dt)
 	(void)&dt;
 }
 
-void PauseScene::Draw()
+void PauseScene::Draw() const
 {
 	m_window.clear(WINDOW_COLOR);
 	m_window.draw(m_background);

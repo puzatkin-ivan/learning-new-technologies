@@ -20,6 +20,7 @@ public:
 	sf::Texture BLOCK_TEXTURE;
 	sf::Texture BULLET_TEXTURE;
 	sf::Texture MENU_BACKGROUND_TEXTURE;
+	sf::Texture RED_CROSS;
 	
 	sf::Image WINDOW_ICON;
 

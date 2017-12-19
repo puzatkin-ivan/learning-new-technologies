@@ -47,9 +47,13 @@ void GameScene::Update(float deltaTime)
 	{
 		m_nextSceneType = SceneType::GameOverScene;
 	}
+	if (!m_socketMaster.IsConnected())
+	{
+		m_nextSceneType = SceneType::ServerClose;
+	}
 }
 
-void GameScene::Draw()
+void GameScene::Draw() const
 {
 	m_window.clear(WINDOW_COLOR);
 	m_gameContext.Draw(m_window, m_isOpportunityDrawbleTable);
