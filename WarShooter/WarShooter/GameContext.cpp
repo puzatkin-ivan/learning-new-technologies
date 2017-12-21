@@ -83,7 +83,7 @@ void GameContext::SetCenterView(sf::View & view, const std::unique_ptr<ShooterVi
 		const auto newPositionBackground = playerPosition - 0.5f * sf::Vector2f(WINDOW_SIZE);
 		m_background.setPosition(newPositionBackground);
 
-		m_isDeadClient = player->GetInformationAboutDeath();
+		m_isDeadClient = player->GetIsDead();
 
 		m_healthPoints.SetHealtsPoints(player->GetHealth());
 	}

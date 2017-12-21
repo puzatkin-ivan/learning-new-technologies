@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
 #include <cmath>
+
+#include "sheet.h"
 #include "ShooterView.h"
 
 namespace
@@ -24,12 +26,6 @@ static const unsigned CHARACTER_SIZE = 30;
 
 static const auto STYLE_TEXT_NICKNAME = sf::Text::Bold;
 
-static const unsigned TEXTURE_NUMBER_ONE = 1;
-
-static const unsigned TEXTURE_NUMBER_TWO = 2;
-
-static const unsigned TEXTURE_NUMBER_THREE = 3;
-
 }
 
 ShooterView::ShooterView(SAssets & assets, const Shooter & playerOfServer)
@@ -47,15 +43,15 @@ ShooterView::ShooterView(SAssets & assets, const Shooter & playerOfServer)
 void ShooterView::SetTexture()
 {
 	sf::Texture & texture = m_assets.PLAYER_HUMAN_TEXTURE;
-	if (m_numberTexture == TEXTURE_NUMBER_ONE)
+	if (m_numberTexture == int(PlayerTexture::Swat))
 	{
 		texture = m_assets.PLAYER_SWAT_TEXTURE;
 	}
-	else if (m_numberTexture == TEXTURE_NUMBER_TWO)
+	else if (m_numberTexture == int(PlayerTexture::Knight))
 	{
 		texture = m_assets.PLAYER_KNIGHT_TEXTURE;
 	}
-	else if (m_numberTexture == TEXTURE_NUMBER_THREE)
+	else if (m_numberTexture == int(PlayerTexture::Biker))
 	{
 		texture = m_assets.PLAYER_BIKER_TEXTURE;
 	}
@@ -98,7 +94,7 @@ void ShooterView::Update()
 	}
 }
 
-bool ShooterView::GetInformationAboutDeath() const
+bool ShooterView::GetIsDead() const
 {
 	return m_isDead;
 }

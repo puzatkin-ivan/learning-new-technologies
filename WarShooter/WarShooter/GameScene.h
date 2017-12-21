@@ -39,7 +39,7 @@ private:
 	sf::View m_view;
 	KeyMap m_keyMap;
 	DataOfServer m_data;
-	
+
 	SceneType m_nextSceneType;
 	
 	bool m_isOpportunityDrawbleTable;

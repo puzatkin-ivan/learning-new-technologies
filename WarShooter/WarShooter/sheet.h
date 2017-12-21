@@ -67,6 +67,14 @@ enum class SceneType
 	GameOverScene,
 };
 
+enum class PlayerTexture
+{
+	Human = 0,
+	Swat,
+	Knight,
+	Biker,
+};
+
 struct SceneInfo
 {
 public:

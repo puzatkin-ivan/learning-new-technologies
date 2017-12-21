@@ -17,7 +17,7 @@ public:
 	sf::Vector2f GetPosition() const;
 	std::string GetIp() const;
 	sf::Vector2f GetSize() const;
-	bool GetInformationAboutDeath() const;
+	bool GetIsDead() const;
 	unsigned GetHealth() const;
 	void SetOpportunityDrawable(bool isDrawble);
 
