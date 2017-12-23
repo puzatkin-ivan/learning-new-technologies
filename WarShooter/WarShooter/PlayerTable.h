@@ -1,11 +1,13 @@
 #pragma once
 
+#include <string>
+
 struct PlayerTable
 {
 public:
 	std::string playerId;
-	int killCount;
-	int deathCount;
+	unsigned killCount;
+	unsigned deathCount;
 	bool isDead;
 	std::string nickname;
 	bool isDrawble;

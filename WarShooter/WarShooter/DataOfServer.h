@@ -8,8 +8,9 @@ struct DataOfServer
 public:
 	void Clear();
 
-	std::vector<Shooter> m_vectorPlayers;
-	std::vector<Block> m_vectorBlocks;
+	std::vector<Shooter> players;
+	std::vector<Block> blocks;
+	std::vector<Block> marginGameField;
 
 private:
 };

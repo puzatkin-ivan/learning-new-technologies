@@ -20,7 +20,7 @@ static const auto Left = "direction_left";
 
 static const auto Right = "direction_right";
 
-static const auto COLOR_NICKNAME = sf::Color(15, 21, 36);
+static const auto COLOR_NICKNAME = sf::Color({ 15, 21, 36 });
 
 static const unsigned CHARACTER_SIZE = 30;
 
@@ -33,7 +33,7 @@ ShooterView::ShooterView(SAssets & assets, const Shooter & playerOfServer)
 {
 	SetParameters(playerOfServer);
 	SetTexture();
-	m_isDrawble = true;
+	m_isDrawable = true;
 	m_nickname.setCharacterSize(CHARACTER_SIZE);
 	m_nickname.setColor(COLOR_NICKNAME);
 	m_nickname.setFont(m_assets.BREE_SERIF_FONT);
@@ -61,7 +61,7 @@ void ShooterView::SetTexture()
 
 void ShooterView::Draw(sf::RenderWindow & window) const
 {
-	if (m_isDrawble)
+	if (m_isDrawable)
 	{
 		window.draw(m_body);
 		window.draw(m_nickname);
@@ -94,14 +94,14 @@ void ShooterView::Update()
 	}
 }
 
-bool ShooterView::GetIsDead() const
+bool ShooterView::IsDead() const
 {
 	return m_isDead;
 }
 
 void ShooterView::SetOpportunityDrawable(bool isDrawble)
 {
-	m_isDrawble = isDrawble;
+	m_isDrawable = isDrawble;
 }
 
 sf::Vector2f ShooterView::GetPosition() const
@@ -128,7 +128,7 @@ void ShooterView::SetParameters(const Shooter & playerOfServer)
 
 	m_nickname.setString(playerOfServer.nickname);
 	const auto averangeWidthCharacter = 15;
-	const float offsetX = std::ceil((averangeWidthCharacter * m_nickname.getString().getSize()) / 2);
+	const auto  offsetX = float(std::ceil((averangeWidthCharacter * m_nickname.getString().getSize()) / 2));
 	const auto xText = playerOfServer.position.x - offsetX;
 	const auto offsetY = 35.f;
 	const auto yText = m_body.getPosition().y - offsetY;

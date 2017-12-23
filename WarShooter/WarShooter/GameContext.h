@@ -27,7 +27,7 @@ public:
 	void Clear();
 	
 private:
-	void UpdateBlocks(const std::vector<Block> & vectorBlocks);
+	void UpdateBlocks(const std::vector<Block> & vectorBlocks, const std::vector<Block> & marginField);
 	void UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::View & view, const std::string & ip);
 
 	void UpdateParametersBullets(const nlohmann::basic_json<> & data);
@@ -43,10 +43,11 @@ private:
 	sf::Sprite m_background;
 	std::vector<std::unique_ptr<BulletView>> m_bullets;
 	std::vector<std::unique_ptr<BlockView>> m_blocks;
+	std::vector<std::unique_ptr<BlockView>> m_marginField;
 	std::vector<std::unique_ptr<ShooterView>> m_players;
 	std::vector<PlayerTable> m_listPlayers;
 	CHealthPoints m_healthPoints;
 
 	DataOfServer m_data;
-	bool m_isDeadClient = false;
+	bool m_isClientDead;
 };

@@ -1,7 +1,6 @@
 #pragma once
 
 const sf::Vector2u WINDOW_SIZE = { 1500, 850 };
-const sf::Vector2f TEXT_POSITION = { 50, 400 };
 const unsigned FRAME_LIMIT = 60;
 const sf::Vector2f TABLE_POSITION = { 150.f, 150.f };
 const sf::Vector2f TABLE_SIZE = { 1200.f, 500.f };
@@ -11,6 +10,7 @@ const sf::Vector2f LINE_TABLE_SIZE = { 1200.f, 10.f };
 const std::string ARRAY_BULLETS = "bullets";
 const std::string ARRAY_BLOCKS = "blocks";
 const std::string ARRAY_PLAYERS = "players";
+const std::string MARGIN_FIELD = "marginField";
 const std::string ARRAY_PLAYERS_FOR_DRAW = "playersForDraw";
 const std::string ARRAY_PLAYERS_FOR_TABLE = "playersForTable";
 const std::string X = "x";

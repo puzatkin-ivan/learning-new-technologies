@@ -7,17 +7,21 @@ namespace
 
 static const std::string DEFALUT_INPUT_STRING = "Enter Your Nickname";
 
-static const auto POSITION_MESSAGE = sf::Vector2f({ 100.f, 200.f });
+static const auto POSITION_MESSAGE = sf::Vector2f({ 100.f, 450.f });
 
 static const auto COLOR_MESSAGE = sf::Color::Red;
 
-static const unsigned CHARACTER_SIZE_MESSAGE = 14;
+static const unsigned CHARACTER_SIZE_MESSAGE = 18;
 
 static const unsigned CHARACTER_SIZE_NICKNAME = 30;
 
+static const size_t MAX_LENGTH_NICKNAME = 10;
+
 static const auto TEXT_TITLE = "WarShooter 2.0";
 
-static const auto POSITION_TITLE = sf::Vector2f({ 0.f, 250.f });
+static const auto POSITION_TITLE = sf::Vector2f({ 50.f, 250.f });
+
+static const sf::Vector2f POSITION_NICKNAME = { 100.f, 400.f };
 
 static const auto COLOR_TITLE = sf::Color::White;
 
@@ -46,7 +50,7 @@ StartGameScene::StartGameScene(sf::RenderWindow & window, SAssets & assets, Sock
 
 	m_nickname.setFont(m_assets.ARIAL_FONT);
 	m_nickname.setString(m_textNickname);
-	m_nickname.setPosition(TEXT_POSITION);
+	m_nickname.setPosition(POSITION_NICKNAME);
 	m_nickname.setCharacterSize(CHARACTER_SIZE_NICKNAME);
 
 	m_message.setFont(m_assets.ARIAL_FONT);
@@ -116,7 +120,7 @@ void StartGameScene::CheckInputText(const sf::Event & event)
 				{
 					m_textNickname = static_cast<char>(codeKey);
 				}
-				else
+				else if (m_textNickname.size() < MAX_LENGTH_NICKNAME)
 				{
 					m_textNickname += static_cast<char>(codeKey);
 				}

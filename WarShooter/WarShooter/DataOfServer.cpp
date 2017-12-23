@@ -4,6 +4,6 @@
 
 void DataOfServer::Clear()
 {
-	m_vectorBlocks.clear();
-	m_vectorPlayers.clear();
+	blocks.clear();
+	players.clear();
 }

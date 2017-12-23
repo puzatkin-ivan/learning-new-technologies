@@ -17,9 +17,9 @@ public:
 	sf::Vector2f GetPosition() const;
 	std::string GetIp() const;
 	sf::Vector2f GetSize() const;
-	bool GetIsDead() const;
+	bool IsDead() const;
 	unsigned GetHealth() const;
-	void SetOpportunityDrawable(bool isDrawble);
+	void SetOpportunityDrawable(bool isDrawable);
 
 private:
 	void SetTexture();
@@ -31,7 +31,7 @@ private:
 	unsigned m_health;
 	SAssets m_assets;
 	std::string m_direction;
-	bool m_isDrawble;
+	bool m_isDrawable;
 	bool m_isDead;
 	unsigned m_numberTexture;
 };

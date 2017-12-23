@@ -20,9 +20,10 @@ public:
 
 	void DoGameLoop();
 
-private:	
+private:
 	void onInitData(const sio::event & event);
 	void onUpdateData(const sio::event & event);
+	void onSound(const sio::event & event);
 
 	SceneInfo ProcessClosingConnect();
 
@@ -32,6 +33,8 @@ private:
 	SocketMaster m_socketMaster;
 	GameContext m_gameContext;
 	CAudioPlayer m_audioPlayer;
+	CAudioController & m_audioController;
+	CSound m_sound;
 
 	StartGameScene m_startGameScene;
 	GameScene m_gameScene;

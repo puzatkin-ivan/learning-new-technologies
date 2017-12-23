@@ -1,13 +1,14 @@
 #include "stdafx.h"
 
 #include "Game.h"
+#include <AudioController.h>
 
 using json = nlohmann::json;
 
 namespace
 {
 
-static const auto PORT = "http://127.0.0.1:3000";
+static const auto PORT = "http://146.185.243.128:3000";
 
 static const sf::Color WINDOW_COLOR = sf::Color::White;
 
@@ -17,10 +18,13 @@ static const std::string MUSIC_PATH = "sounds/";
 
 static const unsigned MAX_VOLUME = 100;
 
+static const auto PATH_TO_SOUND_FIRE = "sounds/fire.ogg";
+
 static const auto MESSAGE_NEW_PLAYER = "new_player";
 
 static const auto MESSAGE_UPDATE_DATA = "update_data";
 
+static const auto MESSAGE_FIRE = "fire";
 }
 
 Game::Game()
@@ -32,9 +36,12 @@ Game::Game()
 	,m_gameScene(m_window, m_gameContext, m_socketMaster, m_audioPlayer)
 	,m_pauseScene(m_window, m_assets, m_audioPlayer)
 	,m_gameoverScene(m_window, m_gameContext, m_socketMaster, m_assets, m_audioPlayer)
+	,m_audioController(CAudioController::GetInstance())
+	,m_sound(PATH_TO_SOUND_FIRE)
 {
 	m_socketMaster.SetHandler(MESSAGE_NEW_PLAYER, std::bind(&Game::onInitData, this, std::placeholders::_1));
 	m_socketMaster.SetHandler(MESSAGE_UPDATE_DATA, std::bind(&Game::onUpdateData, this, std::placeholders::_1));
+	m_socketMaster.SetHandler(MESSAGE_FIRE, std::bind(&Game::onSound, this, std::placeholders::_1));
 
 	m_window.setVerticalSyncEnabled(true);
 	m_window.setFramerateLimit(FRAME_LIMIT);
@@ -42,7 +49,8 @@ Game::Game()
 	const auto icon = m_assets.WINDOW_ICON;
 	m_window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 	
-	m_audioPlayer.SetVolume(MAX_VOLUME);
+	m_audioPlayer.SetVolume(MAX_VOLUME / 2);
+	m_audioController.SetSoundVolume(MAX_VOLUME);
 }
 
 Game::~Game()
@@ -97,4 +105,10 @@ SceneInfo Game::ProcessClosingConnect()
 	m_socketMaster.Connect(PORT);
 
 	return SceneInfo(SceneType::StartScene);
+}
+
+void Game::onSound(const sio::event & event)
+{
+	(void)&event;
+	m_audioController.PlayAudio(m_sound);
 }
