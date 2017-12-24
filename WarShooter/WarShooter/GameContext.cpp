@@ -4,6 +4,15 @@
 
 using json = nlohmann::json;
 
+namespace
+{
+
+static const size_t AMOUNT_BLOCKS = 240;
+
+static const size_t AMOUNT_MARGIN_BLOCKS = 150;
+
+}
+
 GameContext::GameContext(SAssets & assets)
 	:m_assets(assets)
 	,m_table(assets)
@@ -13,6 +22,8 @@ GameContext::GameContext(SAssets & assets)
 	m_background.setTexture(m_assets.BACKGROUND_TEXTURE);
 
 	m_isClientDead = false;
+	m_blocks.reserve(AMOUNT_BLOCKS);
+	m_marginField.reserve(AMOUNT_MARGIN_BLOCKS);
 }
 
 void GameContext::Update(sf::View & view, const std::string & ip)
