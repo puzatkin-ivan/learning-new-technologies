@@ -27,7 +27,7 @@ public:
 	void Clear();
 	
 private:
-	void UpdateBlocks(const std::vector<Block> & vectorBlocks, const std::vector<Block> & marginField);
+	void UpdateBlocks(const std::vector<Block> & vectorBlocks);
 	void UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::View & view, const std::string & ip);
 
 	void UpdateParametersBullets(const nlohmann::basic_json<> & data);
@@ -38,12 +38,14 @@ private:
 	void InitPlayerTable(const nlohmann::basic_json<> & path, PlayerTable & newPlayer);
 	void SetCenterView(sf::View & view, const std::unique_ptr<ShooterView> & player, const std::string & ip);
 
+	void InitMarginField();
+
 	SAssets m_assets;
 	Table m_table;
 	sf::Sprite m_background;
+	std::vector<sf::RectangleShape> m_marginField;
 	std::vector<std::unique_ptr<BulletView>> m_bullets;
 	std::vector<std::unique_ptr<BlockView>> m_blocks;
-	std::vector<std::unique_ptr<BlockView>> m_marginField;
 	std::vector<std::unique_ptr<ShooterView>> m_players;
 	std::vector<PlayerTable> m_listPlayers;
 	CHealthPoints m_healthPoints;

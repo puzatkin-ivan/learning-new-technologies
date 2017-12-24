@@ -7,9 +7,21 @@ using json = nlohmann::json;
 namespace
 {
 
-static const size_t AMOUNT_BLOCKS = 240;
+static const size_t AMOUNT_BLOCKS = 100;
 
-static const size_t AMOUNT_MARGIN_BLOCKS = 150;
+static const auto POSITION_MARGIN_UP = sf::Vector2f({ -30.f, -30.f });
+
+static const auto POSITION_MARGIN_LEFT = sf::Vector2f({ -30.f, 0.f });
+
+static const auto POSITION_MARGIN_DOWN = sf::Vector2f({ 0.f, 1800.f });
+
+static const auto POSITION_MARGIN_RIGHT = sf::Vector2f({ 4500.f, 0.f });
+
+static const auto COLOR_MARGIN = sf::Color({ 127, 116, 63 });
+
+static const auto SIZE_MARGIN_UP_DOWN = sf::Vector2f({ 4500.f, 30.f });
+
+static const auto SIZE_MARGIN_LEFT_RIGHT = sf::Vector2f({ 30.f, 1830.f });
 
 }
 
@@ -23,12 +35,12 @@ GameContext::GameContext(SAssets & assets)
 
 	m_isClientDead = false;
 	m_blocks.reserve(AMOUNT_BLOCKS);
-	m_marginField.reserve(AMOUNT_MARGIN_BLOCKS);
+	InitMarginField();
 }
 
 void GameContext::Update(sf::View & view, const std::string & ip)
 {
-	UpdateBlocks(m_data.blocks, m_data.marginGameField);
+	UpdateBlocks(m_data.blocks);
 	UpdatePlayers(m_data.players, view, ip);
 	m_table.Update(m_listPlayers, view.getCenter(), ip);
 	m_healthPoints.SetPosition(view.getCenter());
@@ -39,21 +51,13 @@ bool GameContext::isClientDead() const
 	return m_isClientDead;
 }
 
-void GameContext::UpdateBlocks(const std::vector<Block> & vectorBlocks, const std::vector<Block> & marginField)
+void GameContext::UpdateBlocks(const std::vector<Block> & vectorBlocks)
 {
 	if (m_blocks.empty())
 	{
 		for (auto & block : vectorBlocks)
 		{
 			m_blocks.push_back(std::make_unique<BlockView>(m_assets, block.position));
-		}
-	}
-
-	if (m_marginField.empty())
-	{
-		for (auto & block : marginField)
-		{
-			m_marginField.push_back(std::make_unique<BlockView>(m_assets, block.position));
 		}
 	}
 }
@@ -113,15 +117,15 @@ void GameContext::SetCenterView(sf::View & view, const std::unique_ptr<ShooterVi
 void GameContext::Draw(sf::RenderWindow & window, bool isOpportunityDrawbleTable) const
 {
 	window.draw(m_background);
+	for (const auto margin : m_marginField)
+	{
+		window.draw(margin);
+	}
 	for (const auto & bullet : m_bullets)
 	{
 		bullet->Draw(window);
 	}
 	for (const auto & block : m_blocks)
-	{
-		block->Draw(window);
-	}
-	for (const auto & block : m_marginField)
 	{
 		block->Draw(window);
 	}
@@ -155,19 +159,14 @@ void GameContext::ProcessInitMessage(const std::string & path)
 		auto bullet = std::make_unique<BulletView>(m_assets, position);
 		m_bullets.push_back(std::move(bullet));
 	}
+	
+	m_data.blocks.reserve(AMOUNT_BLOCKS);
 
 	for (const auto & element : data[ARRAY_BLOCKS])
 	{
 		Block block;
 		block.position = sf::Vector2f(float(element[X]), float(element[Y]));
 		m_data.blocks.push_back(block);
-	}
-
-	for (const auto & element : data[MARGIN_FIELD])
-	{
-		Block block;
-		block.position = sf::Vector2f(float(element[X]), float(element[Y]));
-		m_data.marginGameField.push_back(block);
 	}
 }
 
@@ -289,4 +288,22 @@ void GameContext::Clear()
 	m_bullets.clear();
 	m_players.clear();
 	m_listPlayers.clear();
+}
+
+void GameContext::InitMarginField()
+{
+	sf::RectangleShape margin(POSITION_MARGIN_UP);
+	margin.setFillColor(COLOR_MARGIN);
+	margin.setSize(SIZE_MARGIN_UP_DOWN);
+	m_marginField.push_back(margin);
+
+	margin.setPosition(POSITION_MARGIN_DOWN);
+	m_marginField.push_back(margin);
+
+	margin.setPosition(POSITION_MARGIN_LEFT);
+	margin.setSize(SIZE_MARGIN_LEFT_RIGHT);
+	m_marginField.push_back(margin);
+
+	margin.setPosition(POSITION_MARGIN_RIGHT);
+	m_marginField.push_back(margin);
 }
