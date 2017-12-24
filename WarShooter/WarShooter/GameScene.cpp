@@ -42,6 +42,7 @@ void GameScene::Update(float deltaTime)
 {
 	(void)&deltaTime;
 
+	m_audioPlayer.Update(deltaTime);
 	m_gameContext.Update(m_view, m_socketMaster.GetSessionId());
 	if (m_gameContext.isClientDead())
 	{

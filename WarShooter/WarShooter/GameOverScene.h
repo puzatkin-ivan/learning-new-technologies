@@ -29,6 +29,7 @@ private:
 	sf::View m_view;
 	sf::Sprite m_background;
 	sf::Text m_title;
+	sf::Text m_message;
 	SocketMaster & m_socketMaster;
 	SAssets & m_assets;
 	GameContext & m_gameContext;

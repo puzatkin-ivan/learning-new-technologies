@@ -160,6 +160,8 @@ void StartGameScene::ResumePauseAudio()
 void StartGameScene::Update(float dt, bool isConnected)
 {
 	(void)&dt;
+
+	m_audioPlayer.Update(dt);
 	if (isConnected && m_isNextScene && IsNicknameStringEmpty())
 	{
 		m_nextSceneType = SceneType::GameScene;

@@ -15,6 +15,10 @@ static const auto CONTENT_TITLE = "GameOver";
 
 static const unsigned CHARACTER_SIZE = 50;
 
+static const sf::Vector2f POSITION_MESSAGE = { 100.f, 270.f };
+
+static const auto CONTENT_MESSAGE = "Press R to continue";
+
 static const auto WINDOW_COLOR = sf::Color::White;
 
 }
@@ -36,6 +40,12 @@ GameOverScene::GameOverScene(sf::RenderWindow & window, GameContext & gameContex
 	m_title.setFillColor(COLOR_TITLE);
 	m_title.setCharacterSize(CHARACTER_SIZE);
 	m_title.setString(CONTENT_TITLE);
+
+	m_message.setFont(m_assets.BREE_SERIF_FONT);
+	m_message.setPosition(POSITION_MESSAGE);
+	m_message.setFillColor(COLOR_TITLE);
+	m_message.setCharacterSize(CHARACTER_SIZE);
+	m_message.setString(CONTENT_MESSAGE);
 
 	m_nextSceneType = SceneType::GameOverScene;
 }
@@ -116,6 +126,8 @@ void GameOverScene::ResumePauseAudio()
 void GameOverScene::Update(float dt, const std::string & ip)
 {
 	(void)&dt;
+
+	m_audioPlayer.Update(dt);
 	m_gameContext.Update(m_view, ip);
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 }
@@ -125,6 +137,7 @@ void GameOverScene::Draw() const
 	m_window.clear(WINDOW_COLOR);
 	m_window.draw(m_background);
 	m_window.draw(m_title);
+	m_window.draw(m_message);
 }
 
 void GameOverScene::SendKey(const ASCIICodeKey & keyCode)

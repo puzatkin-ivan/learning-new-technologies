@@ -63,6 +63,8 @@ void PauseScene::CheckEvents()
 void PauseScene::Update(float dt)
 {
 	(void)&dt;
+
+	m_audioPlayer.Update(dt);
 }
 
 void PauseScene::Draw() const
