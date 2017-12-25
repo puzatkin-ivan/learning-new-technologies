@@ -11,6 +11,8 @@
 #include "SocketMaster.h"
 #include "HealthPoints.h"
 
+using json = nlohmann::json;
+
 class GameContext
 {
 public:
@@ -30,12 +32,12 @@ private:
 	void UpdateBlocks(const std::vector<Block> & vectorBlocks);
 	void UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::View & view, const std::string & ip);
 
-	void UpdateParametersBullets(const nlohmann::basic_json<> & data);
-	void UpdateParametersPlayers(const nlohmann::basic_json<> & data);
-	void InitParametersPlayer(const nlohmann::basic_json<> & path, Shooter & player);
-	void UpdateParametersTable(const nlohmann::basic_json<> & data);
+	void UpdateParametersBullets(const json & data);
+	void UpdateParametersPlayers(const json & data);
+	void InitParametersPlayer(const json & path, Shooter & player);
+	void UpdateParametersTable(const json & data);
 
-	void InitPlayerTable(const nlohmann::basic_json<> & path, PlayerTable & newPlayer);
+	void InitPlayerTable(const json & path, PlayerTable & newPlayer);
 	void SetCenterView(sf::View & view, const std::unique_ptr<ShooterView> & player, const std::string & ip);
 
 	void InitMarginField();

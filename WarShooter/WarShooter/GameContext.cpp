@@ -2,8 +2,6 @@
 
 #include "GameContext.h"
 
-using json = nlohmann::json;
-
 namespace
 {
 
@@ -179,7 +177,7 @@ void GameContext::ProcessUpdateData(const std::string & path)
 	UpdateParametersTable(data);
 }
 
-void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
+void GameContext::UpdateParametersBullets(const json & data)
 {
 	size_t index = 0;
 	for (const auto & element : data[ARRAY_BULLETS])
@@ -207,7 +205,7 @@ void GameContext::UpdateParametersBullets(const nlohmann::basic_json<> & data)
 	}
 }
 
-void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
+void GameContext::UpdateParametersPlayers(const json & data)
 {
 	size_t index = 0;
 	for (const auto & element : data[ARRAY_PLAYERS_FOR_DRAW])
@@ -233,7 +231,7 @@ void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
 	}
 }
 
-void GameContext::InitParametersPlayer(const nlohmann::basic_json<> & path, Shooter & player)
+void GameContext::InitParametersPlayer(const json & path, Shooter & player)
 {
 	player.position = sf::Vector2f(float(path[X]), float(path[Y]));
 	player.health = path[HEALTH];
@@ -245,7 +243,7 @@ void GameContext::InitParametersPlayer(const nlohmann::basic_json<> & path, Shoo
 	player.isDrawable = true;
 }
 
-void GameContext::UpdateParametersTable(const nlohmann::basic_json<> & data)
+void GameContext::UpdateParametersTable(const json & data)
 {
 	size_t index = 0;
 	for (const auto & element : data[ARRAY_PLAYERS_FOR_TABLE])
@@ -271,7 +269,7 @@ void GameContext::UpdateParametersTable(const nlohmann::basic_json<> & data)
 	}
 }
 
-void GameContext::InitPlayerTable(const nlohmann::basic_json<> & path, PlayerTable & player)
+void GameContext::InitPlayerTable(const json & path, PlayerTable & player)
 {
 	player.playerId = path[PLAYER_ID].get<std::string>();
 	player.nickname = path[NICKNAME].get<std::string>();
