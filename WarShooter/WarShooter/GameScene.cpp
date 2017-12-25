@@ -23,7 +23,7 @@ GameScene::GameScene(sf::RenderWindow & window, GameContext & gameContext, Socke
 
 	m_view.reset(sf::FloatRect(0, 0, float(WINDOW_SIZE.x), float(WINDOW_SIZE.y)));
 
-	m_isOpportunityDrawbleTable = false;
+	m_isOpportunityDrawableTable = false;
 }
 
 SceneInfo GameScene::Advance(float dt)
@@ -44,7 +44,7 @@ void GameScene::Update(float deltaTime)
 
 	m_audioPlayer.Update(deltaTime);
 	m_gameContext.Update(m_view, m_socketMaster.GetSessionId());
-	if (m_gameContext.isClientDead())
+	if (m_gameContext.IsClientDead())
 	{
 		m_nextSceneType = SceneType::GameOverScene;
 	}
@@ -57,7 +57,7 @@ void GameScene::Update(float deltaTime)
 void GameScene::Draw() const
 {
 	m_window.clear(WINDOW_COLOR);
-	m_gameContext.Draw(m_window, m_isOpportunityDrawbleTable);
+	m_gameContext.Draw(m_window, m_isOpportunityDrawableTable);
 }
 
 void GameScene::CheckEvents()
@@ -89,7 +89,7 @@ void GameScene::CheckKeyPressed(const sf::Event & event)
 		CheckDirection(event, isPressed);
 		if (event.key.code == sf::Keyboard::Tab)
 		{
-			m_isOpportunityDrawbleTable = isPressed;
+			m_isOpportunityDrawableTable = isPressed;
 		}
 	}
 }
@@ -104,7 +104,7 @@ void GameScene::CheckKeyReleased(const sf::Event & event)
 		CheckSpecialKey(event, isReleased);
 		if (event.key.code == sf::Keyboard::Tab)
 		{
-			m_isOpportunityDrawbleTable = isReleased;
+			m_isOpportunityDrawableTable = isReleased;
 		}
 	}
 }

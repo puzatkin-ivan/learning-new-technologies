@@ -42,5 +42,5 @@ private:
 
 	SceneType m_nextSceneType;
 	
-	bool m_isOpportunityDrawbleTable;
+	bool m_isOpportunityDrawableTable;
 };

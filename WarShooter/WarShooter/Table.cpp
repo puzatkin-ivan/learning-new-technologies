@@ -64,7 +64,7 @@ void Table::Update(std::vector<PlayerTable> & listPlayer, const sf::Vector2f & v
 	{
 		if (index < m_vectorPlayers.size())
 		{	
-			if (player.isDrawble)
+			if (player.isDrawable)
 			{
 				UpdatePlayer(player, index, ip);
 			}

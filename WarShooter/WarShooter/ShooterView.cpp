@@ -73,14 +73,14 @@ void ShooterView::Update()
 	if (m_direction == Right)
 	{
 		m_body.setRotation(90.f);
-		const auto offset = sf::Vector2f(float(m_body.getTexture()->getSize().x), 0.f);
-		m_body.setPosition(m_body.getPosition() + offset);
+		const auto OFFSET = sf::Vector2f(float(m_body.getTexture()->getSize().x), 0.f);
+		m_body.setPosition(m_body.getPosition() + OFFSET);
 	}
 	else if (m_direction == Left)
 	{
 		m_body.setRotation(-90.f);
-		const auto offset = sf::Vector2f(0.f, float(m_body.getTexture()->getSize().y));
-		m_body.setPosition(m_body.getPosition() + offset);
+		const auto OFFSET = sf::Vector2f(0.f, float(m_body.getTexture()->getSize().y));
+		m_body.setPosition(m_body.getPosition() + OFFSET);
 	}
 	else if (m_direction == Up)
 	{
@@ -89,8 +89,8 @@ void ShooterView::Update()
 	else if (m_direction == Down)
 	{
 		m_body.setRotation(180.f);
-		const auto offset = sf::Vector2f(m_body.getTexture()->getSize());
-		m_body.setPosition(m_body.getPosition() + offset);
+		const auto OFFSET = sf::Vector2f(m_body.getTexture()->getSize());
+		m_body.setPosition(m_body.getPosition() + OFFSET);
 	}
 }
 
@@ -99,9 +99,9 @@ bool ShooterView::IsDead() const
 	return m_isDead;
 }
 
-void ShooterView::SetOpportunityDrawable(bool isDrawble)
+void ShooterView::SetOpportunityDrawable(bool isDrawable)
 {
-	m_isDrawable = isDrawble;
+	m_isDrawable = isDrawable;
 }
 
 sf::Vector2f ShooterView::GetPosition() const
@@ -127,12 +127,12 @@ void ShooterView::SetParameters(const Shooter & playerOfServer)
 	m_ip = playerOfServer.playerId;
 
 	m_nickname.setString(playerOfServer.nickname);
-	const auto averangeWidthCharacter = 15;
-	const auto  offsetX = float(std::ceil((averangeWidthCharacter * m_nickname.getString().getSize()) / 2));
-	const auto xText = playerOfServer.position.x - offsetX;
-	const auto offsetY = 35.f;
-	const auto yText = m_body.getPosition().y - offsetY;
-	m_nickname.setPosition(sf::Vector2f(xText, yText));
+	const auto AVERANGE_WIDTH_CHARACTER = 15;
+	const auto OFFSET_X = float(std::ceil((AVERANGE_WIDTH_CHARACTER * m_nickname.getString().getSize()) / 2));
+	const auto X_TEXT = playerOfServer.position.x - OFFSET_X;
+	const auto OFFSET_Y = 35.f;
+	const auto Y_TEXT = m_body.getPosition().y - OFFSET_Y;
+	m_nickname.setPosition(sf::Vector2f(X_TEXT, Y_TEXT));
 	
 	m_numberTexture = playerOfServer.numberTexture;
 	m_isDead = playerOfServer.isDead;

@@ -18,7 +18,7 @@ public:
 	GameContext(SAssets & assets);
 	~GameContext() = default;
 
-	bool isClientDead() const;
+	bool IsClientDead() const;
 	void ProcessInitMessage(const std::string & path);
 	void ProcessUpdateData(const std::string & path);
 	void Update(sf::View & view, const std::string & ip);

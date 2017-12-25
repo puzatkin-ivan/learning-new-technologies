@@ -10,7 +10,7 @@ public:
 	unsigned deathCount;
 	bool isDead;
 	std::string nickname;
-	bool isDrawble;
+	bool isDrawable;
 
 private:
 };

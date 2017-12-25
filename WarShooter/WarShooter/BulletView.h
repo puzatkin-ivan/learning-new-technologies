@@ -13,7 +13,7 @@ public:
 	void Update(float dt);
 	void Draw(sf::RenderWindow & window) const;
 	void SetPosition(const sf::Vector2f & position);
-	void SetOpportunityDrawable(bool isDrawble);
+	void SetOpportunityDrawable(bool isDrawable);
 
 private:
 	void SetTexture(sf::Texture & texture);

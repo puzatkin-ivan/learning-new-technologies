@@ -8,7 +8,7 @@ public:
 	std::string direction;
 	std::string nickname;
 	std::string playerId;
-	bool isDrawble;
+	bool isDrawable;
 	bool isDead;
 	unsigned numberTexture;
 

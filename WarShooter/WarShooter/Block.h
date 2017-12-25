@@ -4,7 +4,7 @@ struct Block
 {
 public:
 	sf::Vector2f position;
-	bool isDrawble;
+	bool isDrawable;
 
 private:
 };

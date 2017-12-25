@@ -101,7 +101,7 @@ void GameOverScene::CheckSpecialKeys(const sf::Event & event)
 
 void GameOverScene::ChangeTypeScene()
 {
-	if (!m_gameContext.isClientDead())
+	if (!m_gameContext.IsClientDead())
 	{
 		m_nextSceneType = SceneType::GameScene;
 	}

@@ -9,19 +9,19 @@ namespace
 
 static const size_t AMOUNT_BLOCKS = 100;
 
-static const auto POSITION_MARGIN_UP = sf::Vector2f({ -30.f, -30.f });
+static const auto POSITION_MARGIN_UP = sf::Vector2f(-30.f, -30.f);
 
-static const auto POSITION_MARGIN_LEFT = sf::Vector2f({ -30.f, 0.f });
+static const auto POSITION_MARGIN_LEFT = sf::Vector2f(-30.f, 0.f);
 
-static const auto POSITION_MARGIN_DOWN = sf::Vector2f({ 0.f, 1800.f });
+static const auto POSITION_MARGIN_DOWN = sf::Vector2f(0.f, 1800.f);
 
-static const auto POSITION_MARGIN_RIGHT = sf::Vector2f({ 4500.f, 0.f });
+static const auto POSITION_MARGIN_RIGHT = sf::Vector2f(4500.f, 0.f);
 
 static const auto COLOR_MARGIN = sf::Color({ 127, 116, 63 });
 
-static const auto SIZE_MARGIN_UP_DOWN = sf::Vector2f({ 4500.f, 30.f });
+static const auto SIZE_MARGIN_UP_DOWN = sf::Vector2f(4500.f, 30.f);
 
-static const auto SIZE_MARGIN_LEFT_RIGHT = sf::Vector2f({ 30.f, 1830.f });
+static const auto SIZE_MARGIN_LEFT_RIGHT = sf::Vector2f(30.f, 1830.f);
 
 }
 
@@ -46,7 +46,7 @@ void GameContext::Update(sf::View & view, const std::string & ip)
 	m_healthPoints.SetPosition(view.getCenter());
 }
 
-bool GameContext::isClientDead() const
+bool GameContext::IsClientDead() const
 {
 	return m_isClientDead;
 }
@@ -69,7 +69,7 @@ void GameContext::UpdatePlayers(const std::vector<Shooter> & vectorPlayers, sf::
 	{
 		if (index < m_players.size())
 		{
-			if (playerObject.isDrawble)
+			if (playerObject.isDrawable)
 			{
 				m_players[index]->SetParameters(playerObject);
 				SetCenterView(view, m_players[index], ip);
@@ -114,7 +114,7 @@ void GameContext::SetCenterView(sf::View & view, const std::unique_ptr<ShooterVi
 	}
 }
 
-void GameContext::Draw(sf::RenderWindow & window, bool isOpportunityDrawbleTable) const
+void GameContext::Draw(sf::RenderWindow & window, bool isOpportunityDrawableTable) const
 {
 	window.draw(m_background);
 	for (const auto margin : m_marginField)
@@ -134,7 +134,7 @@ void GameContext::Draw(sf::RenderWindow & window, bool isOpportunityDrawbleTable
 		player->Draw(window);
 	}
 
-	if (isOpportunityDrawbleTable)
+	if (isOpportunityDrawableTable)
 	{
 		m_table.Draw(window);
 	}
@@ -229,7 +229,7 @@ void GameContext::UpdateParametersPlayers(const nlohmann::basic_json<> & data)
 
 	for (index; index < m_data.players.size(); ++index)
 	{
-		 m_data.players[index].isDrawble = false;
+		 m_data.players[index].isDrawable = false;
 	}
 }
 
@@ -242,7 +242,7 @@ void GameContext::InitParametersPlayer(const nlohmann::basic_json<> & path, Shoo
 	player.playerId = path[PLAYER_ID].get<std::string>();
 	player.numberTexture = path[NUMBER_TEXTURE].get<int>();
 	player.isDead = path[IS_DEAD].get<bool>();
-	player.isDrawble = true;
+	player.isDrawable = true;
 }
 
 void GameContext::UpdateParametersTable(const nlohmann::basic_json<> & data)
@@ -267,7 +267,7 @@ void GameContext::UpdateParametersTable(const nlohmann::basic_json<> & data)
 
 	for (index; index < m_listPlayers.size(); ++index)
 	{
-		m_listPlayers[index].isDrawble = false;
+		m_listPlayers[index].isDrawable = false;
 	}
 }
 
@@ -278,7 +278,7 @@ void GameContext::InitPlayerTable(const nlohmann::basic_json<> & path, PlayerTab
 	player.isDead = path[IS_DEAD].get<bool>();
 	player.killCount = path[KILL_COUNT].get<int>();
 	player.deathCount = path[DEATH_COUNT].get<int>();
-	player.isDrawble = true;
+	player.isDrawable = true;
 }
 
 void GameContext::Clear()
