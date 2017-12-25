@@ -33,7 +33,7 @@ void SAssets::AddTexture(sf::Texture & texture, const std::string & path)
 {
 	if (!texture.loadFromFile(path))
 	{
-		//MessageBoxA(nullptr, std::string("File " + path + " not founded").c_str(), "Error", MB_ICONERROR | MB_OK);
+		MessageBoxA(nullptr, std::string("File " + path + " not founded").c_str(), "Error", MB_ICONERROR | MB_OK);
 		_exit(-1);
 	}
 
@@ -51,7 +51,7 @@ void SAssets::AddImage(sf::Image & image, const std::string & path)
 {
 	if (!image.loadFromFile(path))
 	{
-		//MessageBoxA(nullptr, std::string("File " + path + " not founded").c_str(), "Error", MB_ICONERROR | MB_OK);
+		MessageBoxA(nullptr, std::string("File " + path + " not founded").c_str(), "Error", MB_ICONERROR | MB_OK);
 		_exit(-1);
 	}
 }
@@ -60,7 +60,7 @@ void SAssets::AddFont(sf::Font & font, const std::string & string)
 {
 	if (!font.loadFromFile(string))
 	{
-		//MessageBoxA(nullptr, "File not founded", "Error", MB_ICONERROR | MB_OK);
+		MessageBoxA(nullptr, "File not founded", "Error", MB_ICONERROR | MB_OK);
 		_exit(-1);
 	}
 }
