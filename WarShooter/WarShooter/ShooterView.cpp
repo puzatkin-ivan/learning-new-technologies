@@ -127,12 +127,12 @@ void ShooterView::SetParameters(const Shooter & playerOfServer)
 	m_ip = playerOfServer.playerId;
 
 	m_nickname.setString(playerOfServer.nickname);
-	const auto AVERANGE_WIDTH_CHARACTER = 15;
-	const auto OFFSET_X = float(std::ceil((AVERANGE_WIDTH_CHARACTER * m_nickname.getString().getSize()) / 2));
-	const auto X_TEXT = playerOfServer.position.x - OFFSET_X;
+	const auto AVERAGE_CHARACTER_WIDTH = 15;
+	const auto offsetX = float(std::ceil((AVERAGE_CHARACTER_WIDTH * m_nickname.getString().getSize()) / 2));
+	const auto xText = playerOfServer.position.x - offsetX;
 	const auto OFFSET_Y = 35.f;
-	const auto Y_TEXT = m_body.getPosition().y - OFFSET_Y;
-	m_nickname.setPosition(sf::Vector2f(X_TEXT, Y_TEXT));
+	const auto yText = m_body.getPosition().y - OFFSET_Y;
+	m_nickname.setPosition(sf::Vector2f(xText, yText));
 	
 	m_numberTexture = playerOfServer.numberTexture;
 	m_isDead = playerOfServer.isDead;
