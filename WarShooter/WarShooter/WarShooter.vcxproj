@@ -138,7 +138,7 @@ xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
       <Command>xcopy /Y /E /I "$(LIB_PATHx86)SFML\bin\$(Configuration)" "$(TargetDir)"
 xcopy /Y /E /I "$(ProjectDir)images" "$(TargetDir)images"
 xcopy /Y /E /I "$(ProjectDir)fonts" "$(TargetDir)fonts"
-xcopy /Y /E /I "$(ProjectDir)sounds" "$(TargetDir)sounds"
+xcopy /Y /E /I "$(ProjectDir)audio" "$(TargetDir)audio"
 </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

@@ -14,11 +14,11 @@ static const sf::Color WINDOW_COLOR = sf::Color::White;
 
 static const sf::String WINDOW_TITLE = "WarShooter 2.0";
 
-static const std::string MUSIC_PATH = "sounds/";
+static const std::string MUSIC_PATH = "audio/music/";
 
 static const unsigned MAX_VOLUME = 100;
 
-static const auto PATH_TO_SOUND_FIRE = "sounds/fire.ogg";
+static const auto PATH_TO_SOUND_FIRE = "audio/sound/fire.ogg";
 
 static const auto MESSAGE_NEW_PLAYER = "new_player";
 
